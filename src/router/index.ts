@@ -1,7 +1,7 @@
 import { createRouter, createWebHistory } from 'vue-router'
 import AdminLayout from '../layouts/AdminLayout.vue'
 import HomeView from '../views/HomeView.vue'
-import PackageSetupView from '../views/PackageSetupView.vue'
+
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -16,9 +16,9 @@ const router = createRouter({
           component: HomeView,
         },
         {
-          path: 'packages',
-          name: 'packages',
-          component: PackageSetupView,
+          path: 'products-detail',
+          name: 'products-detail',
+          component: () => import('../views/ProductDetailSetupView.vue'),
         },
         {
           path: 'deliveries',

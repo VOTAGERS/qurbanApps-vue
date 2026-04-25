@@ -26,21 +26,21 @@
             <i class="ti ti-apps"></i>
           </li>
           <li class="pc-item">
-            <router-link to="/packages" class="pc-link">
+            <router-link to="/products-detail" class="pc-link">
               <span class="pc-micon"><i class="ti ti-box"></i></span>
-              <span class="pc-mtext">Setup Package</span>
+              <span class="pc-mtext">Product Menu</span>
             </router-link>
           </li>
           <li class="pc-item">
             <router-link to="/orders" class="pc-link">
               <span class="pc-micon"><i class="ti ti-shopping-cart"></i></span>
-              <span class="pc-mtext">Order List</span>
+              <span class="pc-mtext">Order Menu</span>
             </router-link>
           </li>
           <li class="pc-item">
             <router-link to="/deliveries" class="pc-link">
               <span class="pc-micon"><i class="ti ti-truck-delivery"></i></span>
-              <span class="pc-mtext">Delivery List</span>
+              <span class="pc-mtext">Delivery Menu</span>
             </router-link>
           </li>
         </ul>

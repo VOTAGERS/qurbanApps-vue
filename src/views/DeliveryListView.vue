@@ -26,7 +26,7 @@
       <div class="col-sm-12">
         <div class="card">
           <div class="card-header d-flex justify-content-between align-items-center">
-            <h5>Daftar Pengiriman (Delivery)</h5>
+            <h5>Delivery List</h5>
             <button class="btn btn-primary" @click="fetchDeliveries">
               <i class="ti ti-refresh me-1"></i> Refresh Data
             </button>
@@ -37,12 +37,12 @@
                 <thead>
                   <tr>
                     <th>#</th>
-                    <th>ID Order</th>
-                    <th>Dikirim Via</th>
-                    <th>Status Pengiriman</th>
-                    <th>Waktu Kirim</th>
-                    <th>Status Record</th>
-                    <th class="text-end">Aksi</th>
+                    <th>Order ID</th>
+                    <th>Sent Via</th>
+                    <th>Delivery Status</th>
+                    <th>Sent Time</th>
+                    <th>Record Status</th>
+                    <th class="text-end">Actions</th>
                   </tr>
                 </thead>
                 <tbody>
@@ -57,7 +57,7 @@
                     </td>
                     <td>
                       <span :class="['badge', delivery.delivery_status === 'sent' ? 'bg-light-success text-success' : 'bg-light-warning text-warning']">
-                        {{ delivery.delivery_status === 'sent' ? 'Terkirim' : 'Pending' }}
+                        {{ delivery.delivery_status === 'sent' ? 'Sent' : 'Pending' }}
                       </span>
                     </td>
                     <td>{{ delivery.sent_at ? new Date(delivery.sent_at).toLocaleString('id-ID') : '-' }}</td>
@@ -73,7 +73,7 @@
                     </td>
                   </tr>
                   <tr v-if="deliveries.length === 0">
-                    <td colspan="7" class="text-center text-muted py-4">Belum ada data pengiriman.</td>
+                    <td colspan="7" class="text-center text-muted py-4">No delivery data available.</td>
                   </tr>
                 </tbody>
               </table>

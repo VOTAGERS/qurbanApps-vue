@@ -26,7 +26,7 @@
       <div class="col-sm-12">
         <div class="card">
           <div class="card-header d-flex justify-content-between align-items-center">
-            <h5>Daftar Pesanan Qurban</h5>
+            <h5>Qurban Order List</h5>
             <button class="btn btn-primary" @click="fetchOrders">
               <i class="ti ti-refresh me-1"></i> Refresh Data
             </button>
@@ -37,14 +37,14 @@
                 <thead>
                   <tr>
                     <th>#</th>
-                    <th>Kode Order</th>
+                    <th>Order Code</th>
                     <th>Customer</th>
-                    <th>Paket Qurban</th>
+                    <th>Qurban Product</th>
                     <th>Qty</th>
-                    <th>Total Harga</th>
+                    <th>Total Price</th>
                     <th>Payment</th>
                     <th>Qurban Status</th>
-                    <th class="text-end">Aksi</th>
+                    <th class="text-end">Actions</th>
                   </tr>
                 </thead>
                 <tbody>
@@ -53,10 +53,10 @@
                     <td><strong>{{ order.order_code }}</strong></td>
                     <td>{{ order.user ? order.user.name : 'Unknown User' }}</td>
                     <td>
-                      <span v-if="order.package">
-                         {{ order.package.animal_type }} - {{ order.package.country }}
+                      <span v-if="order.product_woo">
+                         {{ order.product_woo.name }} 
                       </span>
-                      <span v-else class="text-muted">No Package</span>
+                      <span v-else class="text-muted">No Product</span>
                     </td>
                     <td>{{ order.quantity }}</td>
                     <td>Rp {{ Number(order.total_price).toLocaleString('id-ID') }}</td>
@@ -80,7 +80,7 @@
                     </td>
                   </tr>
                   <tr v-if="orders.length === 0">
-                    <td colspan="9" class="text-center text-muted py-4">Belum ada data pesanan.</td>
+                    <td colspan="9" class="text-center text-muted py-4">No order data available.</td>
                   </tr>
                 </tbody>
               </table>
@@ -111,10 +111,10 @@ interface OrderData {
     name: string;
     email: string;
   };
-  package?: {
-    id_package: number;
-    animal_type: string;
-    country: string;
+  product_woo?: {
+    id: number;
+    woo_id: number;
+    name: string;
   };
 }
 
