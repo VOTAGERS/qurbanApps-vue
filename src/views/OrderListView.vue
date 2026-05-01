@@ -51,7 +51,7 @@
                   <tr v-for="(order, index) in orders" :key="order.id_order">
                     <td>{{ index + 1 }}</td>
                     <td><strong>{{ order.order_code }}</strong></td>
-                    <td>{{ order.user ? order.user.name : 'Unknown User' }}</td>
+                    <td>{{ order.user ? (order.user.first_name + ' ' + (order.user.last_name || '')).trim() : 'Unknown User' }}</td>
                     <td>
                       <span v-if="order.product_woo">
                          {{ order.product_woo.name }} 
@@ -108,7 +108,8 @@ interface OrderData {
   status: string;
   user?: {
     id_user: number;
-    name: string;
+    first_name: string;
+    last_name: string;
     email: string;
   };
   product_woo?: {
