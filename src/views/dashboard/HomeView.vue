@@ -184,11 +184,11 @@ watch(buyer, (newBuyer) => {
                         <label class="form-label small">Last Name</label>
                         <input type="text" class="form-control form-control-sm" v-model="buyer.lastName">
                       </div>
-                      <div class="col-12">
+                      <div class="col-sm-6">
                         <label class="form-label small">Email</label>
                         <input type="email" class="form-control form-control-sm" v-model="buyer.email">
                       </div>
-                      <div class="col-12">
+                      <div class="col-sm-6">
                         <label class="form-label small">Phone Number</label>
                         <input type="text" class="form-control form-control-sm" v-model="buyer.phone">
                       </div>
@@ -243,11 +243,11 @@ watch(buyer, (newBuyer) => {
                         <label class="form-label small">Last Name</label>
                         <input type="text" class="form-control form-control-sm" v-model="shipping.lastName" :disabled="sameAsBuyer">
                       </div>
-                      <div class="col-12">
+                      <div class="col-sm-6">
                         <label class="form-label small">Email</label>
                         <input type="email" class="form-control form-control-sm" v-model="shipping.email" :disabled="sameAsBuyer">
                       </div>
-                      <div class="col-12">
+                      <div class="col-sm-6">
                         <label class="form-label small">Phone Number</label>
                         <input type="text" class="form-control form-control-sm" v-model="shipping.phone" :disabled="sameAsBuyer">
                       </div>
@@ -300,13 +300,15 @@ watch(buyer, (newBuyer) => {
                             <label class="form-label small">Name</label>
                             <input type="text" class="form-control form-control-sm" v-model="rec.name" placeholder="Full Name">
                           </div>
-                          <div class="mb-2">
-                            <label class="form-label small">Email</label>
-                            <input type="email" class="form-control form-control-sm" v-model="rec.email" placeholder="Email Address">
-                          </div>
-                          <div class="mb-0">
-                            <label class="form-label small">Phone Number</label>
-                            <input type="text" class="form-control form-control-sm" v-model="rec.phone" placeholder="Phone Number">
+                          <div class="row g-2">
+                            <div class="col-sm-6 mb-2">
+                              <label class="form-label small">Email</label>
+                              <input type="email" class="form-control form-control-sm" v-model="rec.email" placeholder="Email Address">
+                            </div>
+                            <div class="col-sm-6 mb-2">
+                              <label class="form-label small">Phone Number</label>
+                              <input type="text" class="form-control form-control-sm" v-model="rec.phone" placeholder="Phone Number">
+                            </div>
                           </div>
                         </div>
                       </div>

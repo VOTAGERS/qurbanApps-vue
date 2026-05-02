@@ -1,9 +1,6 @@
 import { createRouter, createWebHistory } from 'vue-router'
 import AdminLayout from '../layouts/AdminLayout.vue'
-import HomeView from '../views/HomeView.vue'
-// Import the new payment view
-import PaymentView from '../views/PaymentView.vue'
-
+import { dashboardRoutes } from './routes/dashboard'
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -12,36 +9,7 @@ const router = createRouter({
       path: '/',
       component: AdminLayout,
       children: [
-        {
-          path: '',
-          name: 'home',
-          component: HomeView,
-        },
-        {
-          path: 'products-detail',
-          name: 'products-detail',
-          component: () => import('../views/ProductDetailSetupView.vue'),
-        },
-
-        {
-          path: 'orders',
-          name: 'orders',
-          component: () => import('../views/OrderListView.vue'),
-        },
-        {
-          path: 'my-orders',
-          name: 'my-orders',
-          component: () => import('../views/MyOrderView.vue'),
-        },
-        // Add the new payment route
-        {
-          path: 'payment',
-          name: 'payment',
-          component: PaymentView,
-          props: (route) => ({
-            order_code: route.query.order_code
-          })
-        }
+        ...dashboardRoutes
       ]
     }
   ],
