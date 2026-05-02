@@ -123,11 +123,7 @@ watch(buyer, (newBuyer) => {
 <template>
   <div class="row">
     <div class="col-12">
-      <div class="card mb-4">
-        <div class="card-header">
-          <h5>Checkout Simulation</h5>
-        </div>
-        <div class="card-body">
+      <h3 class="mb-4 text-dark font-weight-bold">Checkout Simulation</h3>
           
           <!-- Product Selection -->
           <h6 class="mb-3">1. Select Product</h6>
@@ -142,116 +138,124 @@ watch(buyer, (newBuyer) => {
                 <div class="card-body text-center">
                   <h5 class="card-title">{{ product.name }}</h5>
                   <h6 class="text-primary mb-2">{{ product.price_formatted }}</h6>
-                  <p class="text-muted small mb-0">Max Share: {{ product.max_share }}</p>
                 </div>
               </div>
             </div>
           </div>
 
           <div v-if="selectedProduct">
-            <hr class="my-4">
             <div class="row">
               <!-- Left Column: Buyer & Shipping -->
               <div class="col-md-6">
-                <h6 class="mb-3">2. Buyer Information</h6>
-                <div class="row g-3 mb-4">
-                  <div class="col-sm-6">
-                    <label class="form-label small">First Name</label>
-                    <input type="text" class="form-control" v-model="buyer.firstName">
-                  </div>
-                  <div class="col-sm-6">
-                    <label class="form-label small">Last Name</label>
-                    <input type="text" class="form-control" v-model="buyer.lastName">
-                  </div>
-                  <div class="col-12">
-                    <label class="form-label small">Email</label>
-                    <input type="email" class="form-control" v-model="buyer.email">
-                  </div>
-                  <div class="col-12">
-                    <label class="form-label small">Phone Number</label>
-                    <input type="text" class="form-control" v-model="buyer.phone">
-                  </div>
-                  <div class="col-12">
-                    <label class="form-label small">Company (Optional)</label>
-                    <input type="text" class="form-control" v-model="buyer.company">
-                  </div>
-                  <div class="col-12">
-                    <label class="form-label small">Address 1</label>
-                    <input type="text" class="form-control" v-model="buyer.address1">
-                  </div>
-                  <div class="col-12">
-                    <label class="form-label small">Address 2 (Optional)</label>
-                    <input type="text" class="form-control" v-model="buyer.address2">
-                  </div>
-                  <div class="col-sm-6">
-                    <label class="form-label small">City</label>
-                    <input type="text" class="form-control" v-model="buyer.city">
-                  </div>
-                  <div class="col-sm-6">
-                    <label class="form-label small">State</label>
-                    <input type="text" class="form-control" v-model="buyer.state">
-                  </div>
-                  <div class="col-sm-6">
-                    <label class="form-label small">Postcode</label>
-                    <input type="text" class="form-control" v-model="buyer.postcode">
-                  </div>
-                  <div class="col-sm-6">
-                    <label class="form-label small">Country</label>
-                    <input type="text" class="form-control" v-model="buyer.country">
+                <!-- Buyer Information Card -->
+                <div class="card mb-4 shadow-none border">
+                  <div class="card-body py-3">
+                    <h6 class="card-title text-muted mb-3">2. Buyer Information</h6>
+                    <div class="row g-3">
+                      <div class="col-sm-6">
+                        <label class="form-label small">First Name</label>
+                        <input type="text" class="form-control form-control-sm" v-model="buyer.firstName">
+                      </div>
+                      <div class="col-sm-6">
+                        <label class="form-label small">Last Name</label>
+                        <input type="text" class="form-control form-control-sm" v-model="buyer.lastName">
+                      </div>
+                      <div class="col-12">
+                        <label class="form-label small">Email</label>
+                        <input type="email" class="form-control form-control-sm" v-model="buyer.email">
+                      </div>
+                      <div class="col-12">
+                        <label class="form-label small">Phone Number</label>
+                        <input type="text" class="form-control form-control-sm" v-model="buyer.phone">
+                      </div>
+                      <div class="col-12">
+                        <label class="form-label small">Company (Optional)</label>
+                        <input type="text" class="form-control form-control-sm" v-model="buyer.company">
+                      </div>
+                      <div class="col-12">
+                        <label class="form-label small">Address 1</label>
+                        <input type="text" class="form-control form-control-sm" v-model="buyer.address1">
+                      </div>
+                      <div class="col-12">
+                        <label class="form-label small">Address 2 (Optional)</label>
+                        <input type="text" class="form-control form-control-sm" v-model="buyer.address2">
+                      </div>
+                      <div class="col-sm-6">
+                        <label class="form-label small">City</label>
+                        <input type="text" class="form-control form-control-sm" v-model="buyer.city">
+                      </div>
+                      <div class="col-sm-6">
+                        <label class="form-label small">State</label>
+                        <input type="text" class="form-control form-control-sm" v-model="buyer.state">
+                      </div>
+                      <div class="col-sm-6">
+                        <label class="form-label small">Postcode</label>
+                        <input type="text" class="form-control form-control-sm" v-model="buyer.postcode">
+                      </div>
+                      <div class="col-sm-6">
+                        <label class="form-label small">Country</label>
+                        <input type="text" class="form-control form-control-sm" v-model="buyer.country">
+                      </div>
+                    </div>
                   </div>
                 </div>
 
-                <h6 class="mb-3 d-flex justify-content-between align-items-center">
-                  <span>3. Shipping Information</span>
-                  <div class="form-check form-switch mb-0">
-                    <input class="form-check-input" type="checkbox" id="sameAsBuyer" v-model="sameAsBuyer">
-                    <label class="form-check-label fw-normal small" for="sameAsBuyer">Same as Buyer</label>
-                  </div>
-                </h6>
-                <div class="row g-3 mb-4">
-                  <div class="col-sm-6">
-                    <label class="form-label small">First Name</label>
-                    <input type="text" class="form-control" v-model="shipping.firstName" :disabled="sameAsBuyer">
-                  </div>
-                  <div class="col-sm-6">
-                    <label class="form-label small">Last Name</label>
-                    <input type="text" class="form-control" v-model="shipping.lastName" :disabled="sameAsBuyer">
-                  </div>
-                  <div class="col-12">
-                    <label class="form-label small">Email</label>
-                    <input type="email" class="form-control" v-model="shipping.email" :disabled="sameAsBuyer">
-                  </div>
-                  <div class="col-12">
-                    <label class="form-label small">Phone Number</label>
-                    <input type="text" class="form-control" v-model="shipping.phone" :disabled="sameAsBuyer">
-                  </div>
-                  <div class="col-12">
-                    <label class="form-label small">Company (Optional)</label>
-                    <input type="text" class="form-control" v-model="shipping.company" :disabled="sameAsBuyer">
-                  </div>
-                  <div class="col-12">
-                    <label class="form-label small">Address 1</label>
-                    <input type="text" class="form-control" v-model="shipping.address1" :disabled="sameAsBuyer">
-                  </div>
-                  <div class="col-12">
-                    <label class="form-label small">Address 2 (Optional)</label>
-                    <input type="text" class="form-control" v-model="shipping.address2" :disabled="sameAsBuyer">
-                  </div>
-                  <div class="col-sm-6">
-                    <label class="form-label small">City</label>
-                    <input type="text" class="form-control" v-model="shipping.city" :disabled="sameAsBuyer">
-                  </div>
-                  <div class="col-sm-6">
-                    <label class="form-label small">State</label>
-                    <input type="text" class="form-control" v-model="shipping.state" :disabled="sameAsBuyer">
-                  </div>
-                  <div class="col-sm-6">
-                    <label class="form-label small">Postcode</label>
-                    <input type="text" class="form-control" v-model="shipping.postcode" :disabled="sameAsBuyer">
-                  </div>
-                  <div class="col-sm-6">
-                    <label class="form-label small">Country</label>
-                    <input type="text" class="form-control" v-model="shipping.country" :disabled="sameAsBuyer">
+                <!-- Shipping Information Card -->
+                <div class="card mb-4 shadow-none border">
+                  <div class="card-body py-3">
+                    <h6 class="card-title text-muted mb-3 d-flex justify-content-between align-items-center">
+                      <span>3. Shipping Information</span>
+                      <div class="form-check form-switch mb-0">
+                        <input class="form-check-input" type="checkbox" id="sameAsBuyer" v-model="sameAsBuyer">
+                        <label class="form-check-label fw-normal small text-dark" for="sameAsBuyer">Same as Buyer</label>
+                      </div>
+                    </h6>
+                    <div class="row g-3">
+                      <div class="col-sm-6">
+                        <label class="form-label small">First Name</label>
+                        <input type="text" class="form-control form-control-sm" v-model="shipping.firstName" :disabled="sameAsBuyer">
+                      </div>
+                      <div class="col-sm-6">
+                        <label class="form-label small">Last Name</label>
+                        <input type="text" class="form-control form-control-sm" v-model="shipping.lastName" :disabled="sameAsBuyer">
+                      </div>
+                      <div class="col-12">
+                        <label class="form-label small">Email</label>
+                        <input type="email" class="form-control form-control-sm" v-model="shipping.email" :disabled="sameAsBuyer">
+                      </div>
+                      <div class="col-12">
+                        <label class="form-label small">Phone Number</label>
+                        <input type="text" class="form-control form-control-sm" v-model="shipping.phone" :disabled="sameAsBuyer">
+                      </div>
+                      <div class="col-12">
+                        <label class="form-label small">Company (Optional)</label>
+                        <input type="text" class="form-control form-control-sm" v-model="shipping.company" :disabled="sameAsBuyer">
+                      </div>
+                      <div class="col-12">
+                        <label class="form-label small">Address 1</label>
+                        <input type="text" class="form-control form-control-sm" v-model="shipping.address1" :disabled="sameAsBuyer">
+                      </div>
+                      <div class="col-12">
+                        <label class="form-label small">Address 2 (Optional)</label>
+                        <input type="text" class="form-control form-control-sm" v-model="shipping.address2" :disabled="sameAsBuyer">
+                      </div>
+                      <div class="col-sm-6">
+                        <label class="form-label small">City</label>
+                        <input type="text" class="form-control form-control-sm" v-model="shipping.city" :disabled="sameAsBuyer">
+                      </div>
+                      <div class="col-sm-6">
+                        <label class="form-label small">State</label>
+                        <input type="text" class="form-control form-control-sm" v-model="shipping.state" :disabled="sameAsBuyer">
+                      </div>
+                      <div class="col-sm-6">
+                        <label class="form-label small">Postcode</label>
+                        <input type="text" class="form-control form-control-sm" v-model="shipping.postcode" :disabled="sameAsBuyer">
+                      </div>
+                      <div class="col-sm-6">
+                        <label class="form-label small">Country</label>
+                        <input type="text" class="form-control form-control-sm" v-model="shipping.country" :disabled="sameAsBuyer">
+                      </div>
+                    </div>
                   </div>
                 </div>
               </div>
@@ -264,36 +268,55 @@ watch(buyer, (newBuyer) => {
                     <div class="alert alert-primary py-2 small">
                       You selected <strong>{{ selectedProduct.name }}</strong>. Please provide information for {{ selectedProduct.max_share }} recipient(s).
                     </div>
-                    
-                    <div class="card mb-3 shadow-none border" v-for="(rec, index) in recipients" :key="index">
-                      <div class="card-body py-3">
-                        <h6 class="card-title text-muted mb-3">Recipient {{ index + 1 }}</h6>
-                        <div class="mb-2">
-                          <label class="form-label small">Name</label>
-                          <input type="text" class="form-control form-control-sm" v-model="rec.name" placeholder="Full Name">
-                        </div>
-                        <div class="mb-2">
-                          <label class="form-label small">Email</label>
-                          <input type="email" class="form-control form-control-sm" v-model="rec.email" placeholder="Email Address">
-                        </div>
-                        <div class="mb-0">
-                          <label class="form-label small">Phone Number</label>
-                          <input type="text" class="form-control form-control-sm" v-model="rec.phone" placeholder="Phone Number">
+                    <div class="recipient-scroll pe-2 mb-3" style="max-height: 750px; overflow-y: auto; overflow-x: hidden;">
+                      <div class="card shadow-none border mb-3" v-for="(rec, index) in recipients" :key="index">
+                        <div class="card-body py-3">
+                          <h6 class="card-title text-muted mb-3">Recipient {{ index + 1 }}</h6>
+                          <div class="mb-2">
+                            <label class="form-label small">Name</label>
+                            <input type="text" class="form-control form-control-sm" v-model="rec.name" placeholder="Full Name">
+                          </div>
+                          <div class="mb-2">
+                            <label class="form-label small">Email</label>
+                            <input type="email" class="form-control form-control-sm" v-model="rec.email" placeholder="Email Address">
+                          </div>
+                          <div class="mb-0">
+                            <label class="form-label small">Phone Number</label>
+                            <input type="text" class="form-control form-control-sm" v-model="rec.phone" placeholder="Phone Number">
+                          </div>
                         </div>
                       </div>
                     </div>
-
-                    <div class="d-grid mt-4">
-                      <button class="btn btn-primary btn-lg" @click="processPayment">Proceed to Payment</button>
-                    </div>
                   </div>
+                </div>
+
+                <div class="d-grid mt-3 mb-3">
+                  <button class="btn btn-primary btn-lg py-3 shadow-sm" @click="processPayment">
+                    <i class="ti ti-check me-2"></i> Proceed to Payment
+                  </button>
                 </div>
               </div>
             </div>
           </div>
 
-        </div>
-      </div>
     </div>
   </div>
 </template>
+
+<style scoped>
+/* Custom Scrollbar for Recipient List */
+.recipient-scroll::-webkit-scrollbar {
+  width: 6px;
+}
+.recipient-scroll::-webkit-scrollbar-track {
+  background: #f1f1f1;
+  border-radius: 4px;
+}
+.recipient-scroll::-webkit-scrollbar-thumb {
+  background: #c1c1c1;
+  border-radius: 4px;
+}
+.recipient-scroll::-webkit-scrollbar-thumb:hover {
+  background: #a8a8a8;
+}
+</style>

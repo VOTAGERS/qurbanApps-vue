@@ -22,11 +22,7 @@ const router = createRouter({
           name: 'products-detail',
           component: () => import('../views/ProductDetailSetupView.vue'),
         },
-        {
-          path: 'deliveries',
-          name: 'deliveries',
-          component: () => import('../views/DeliveryListView.vue'),
-        },
+
         {
           path: 'orders',
           name: 'orders',

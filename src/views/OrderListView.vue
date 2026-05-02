@@ -26,7 +26,7 @@
       <div class="col-sm-12">
         <div class="card">
           <div class="card-header d-flex justify-content-between align-items-center">
-            <h5>Qurban Order List</h5>
+            <h3>Qurban Order List</h3>
             <button class="btn btn-primary" @click="fetchOrders">
               <i class="ti ti-refresh me-1"></i> Refresh Data
             </button>
@@ -36,7 +36,7 @@
               <table class="table table-hover mb-0">
                 <thead>
                   <tr>
-                    <th>#</th>
+                    <th>No</th>
                     <th>Order Code</th>
                     <th>Customer</th>
                     <th>Qurban Product</th>

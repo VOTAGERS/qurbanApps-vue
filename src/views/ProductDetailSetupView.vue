@@ -8,7 +8,7 @@
             <ul class="breadcrumb">
               <li class="breadcrumb-item"><router-link to="/">Home</router-link></li>
               <li class="breadcrumb-item"><a href="javascript: void(0)">Management</a></li>
-              <li class="breadcrumb-item" aria-current="page">Setup Product Qurban</li>
+              <li class="breadcrumb-item" aria-current="page">Setup Qurban Product</li>
             </ul>
           </div>
           <div class="col-md-12 mt-2">
@@ -26,7 +26,7 @@
       <div class="col-sm-12">
         <div class="card">
           <div class="card-header d-flex justify-content-between align-items-center">
-            <h5>Product List</h5>
+            <h3>Product List</h3>
             <button class="btn btn-primary" @click="openModal()">
               <i class="ti ti-plus me-1"></i> Add Product
             </button>
@@ -144,6 +144,7 @@
 
 <script setup lang="ts">
 import { ref, onMounted } from 'vue'
+import Swal from 'sweetalert2'
 
 interface WooProduct {
   id: number;
@@ -202,9 +203,9 @@ const openModal = (detail?: ProductDetailData) => {
     editMode.value = true
     editId.value = detail.id
     form.value = {
-      woo_id: detail.product_woo?.woo_id.toString() || '',
+      woo_id: detail.product_woo?.woo_id?.toString() || '',
       name: detail.product_woo?.name || '',
-      price: detail.product_woo?.price || '',
+      price: detail.product_woo?.price?.toString() || '',
       status_woo: detail.product_woo?.status || 'publish',
       country: detail.country,
       max_share: detail.max_share,
@@ -251,19 +252,44 @@ const saveDetail = async () => {
       if (modalInstance) {
         modalInstance.hide()
       }
-      alert(`Product ${editMode.value ? 'updated' : 'created'} successfully!`);
+      Swal.fire({
+        title: 'Success!',
+        text: `Product ${editMode.value ? 'updated' : 'created'} successfully!`,
+        icon: 'success',
+        confirmButtonColor: '#007bff'
+      });
     } else {
-      alert('Failed to save: ' + (result.message || 'Check your data'));
+      Swal.fire({
+        title: 'Error!',
+        text: 'Failed to save: ' + (result.message || 'Check your data'),
+        icon: 'error',
+        confirmButtonColor: '#007bff'
+      });
       console.error(result.errors);
     }
   } catch (error) {
     console.error('Failed to save product:', error)
-    alert('Failed to connect to backend server');
+    Swal.fire({
+      title: 'Error!',
+      text: 'Failed to connect to backend server',
+      icon: 'error',
+      confirmButtonColor: '#007bff'
+    });
   }
 }
 
 const deleteDetail = async (id: number) => {
-  if (!confirm('Are you sure you want to delete this product? (Soft Delete)')) return;
+  const confirmResult = await Swal.fire({
+    title: 'Are you sure?',
+    text: "You want to delete this product? (Soft Delete)",
+    icon: 'warning',
+    showCancelButton: true,
+    confirmButtonColor: '#d33',
+    cancelButtonColor: '#6c757d',
+    confirmButtonText: 'Yes, delete it!'
+  });
+
+  if (!confirmResult.isConfirmed) return;
   
   try {
     const response = await fetch(`http://localhost:8000/api/products-detail/${id}`, {
@@ -275,13 +301,29 @@ const deleteDetail = async (id: number) => {
     
     const result = await response.json()
     if (response.ok && result.success) {
-      alert('Product deleted successfully!');
+      Swal.fire({
+        title: 'Deleted!',
+        text: 'Product deleted successfully!',
+        icon: 'success',
+        confirmButtonColor: '#007bff'
+      });
       await fetchProductDetails()
     } else {
-      alert('Failed to delete product.');
+      Swal.fire({
+        title: 'Failed!',
+        text: 'Failed to delete product.',
+        icon: 'error',
+        confirmButtonColor: '#007bff'
+      });
     }
   } catch (error) {
     console.error('Failed to delete:', error)
+    Swal.fire({
+      title: 'Error!',
+      text: 'Failed to connect to backend server',
+      icon: 'error',
+      confirmButtonColor: '#007bff'
+    });
   }
 }
 </script>

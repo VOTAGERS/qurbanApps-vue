@@ -16,8 +16,8 @@
           </li>
           <li class="pc-item">
             <router-link to="/" class="pc-link">
-              <span class="pc-micon"><i class="ti ti-dashboard"></i></span>
-              <span class="pc-mtext">Default</span>
+              <span class="pc-micon"><i class="ti ti-shopping-cart"></i></span>
+              <span class="pc-mtext">Checkout Simulation</span>
             </router-link>
           </li>
 
@@ -35,12 +35,6 @@
             <router-link to="/orders" class="pc-link">
               <span class="pc-micon"><i class="ti ti-shopping-cart"></i></span>
               <span class="pc-mtext">Order Menu</span>
-            </router-link>
-          </li>
-          <li class="pc-item">
-            <router-link to="/deliveries" class="pc-link">
-              <span class="pc-micon"><i class="ti ti-truck-delivery"></i></span>
-              <span class="pc-mtext">Delivery Menu</span>
             </router-link>
           </li>
         </ul>
