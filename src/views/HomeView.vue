@@ -10,10 +10,13 @@ const router = useRouter() // Initialize router
 const fetchProducts = async () => {
   try {
     const response = await axios.get(`${import.meta.env.VITE_API_BASE_URL}/api/products-woo`)
+    const defaultCurrency = import.meta.env.VITE_DEFAULT_CURRENCY || 'IDR'
+    const locale = defaultCurrency === 'IDR' ? 'id-ID' : (defaultCurrency === 'SGD' ? 'en-SG' : (defaultCurrency === 'MYR' ? 'en-MY' : 'en-US'))
+    
     products.value = response.data.data.map((p: any) => ({
       ...p,
       max_share: p.product_detail?.max_share || 1,
-      price_formatted: new Intl.NumberFormat('id-ID', { style: 'currency', currency: 'IDR' }).format(p.price)
+      price_formatted: new Intl.NumberFormat(locale, { style: 'currency', currency: defaultCurrency }).format(p.price)
     }))
   } catch (error) {
     console.error('Error fetching products:', error)

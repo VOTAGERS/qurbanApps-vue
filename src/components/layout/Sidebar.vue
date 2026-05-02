@@ -3,9 +3,10 @@
   <nav class="pc-sidebar">
     <div class="navbar-wrapper">
       <div class="m-header">
-        <router-link to="/" class="b-brand text-primary">
+        <router-link to="/" class="b-brand text-primary d-flex align-items-center">
           <!-- ========   Change your logo from here   ============ -->
-          <img src="/assets/images/logo-dark.svg" alt="" class="logo logo-lg" />
+          <img src="/assets/images/logo-dark.svg" alt="" class="logo logo-lg me-2" />
+          <span class="brand-name fw-bold fs-4 text-dark">{{ appName }}</span>
         </router-link>
       </div>
       <div class="navbar-content">
@@ -45,4 +46,5 @@
 </template>
 
 <script setup lang="ts">
+const appName = import.meta.env.VITE_APP_NAME || 'QurbanHub'
 </script>

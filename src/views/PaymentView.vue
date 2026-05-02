@@ -66,7 +66,7 @@
               <h5 class="mb-3 text-primary">Product Details</h5>
               <div class="p-3 border rounded bg-light mb-4" v-if="order.product_woo">
                 <p class="mb-1"><strong>Product Name:</strong> {{ order.product_woo.name }}</p>
-                <p class="mb-0" v-if="order.product_woo.price"><strong>Price:</strong> Rp {{ Number(order.product_woo.price).toLocaleString('id-ID') }}</p>
+                <p class="mb-0" v-if="order.product_woo.price"><strong>Price:</strong> {{ formatCurrency(order.product_woo.price) }}</p>
               </div>
               <p v-else class="text-muted mb-4">Product details not available.</p>
 
@@ -87,7 +87,7 @@
                 <p class="mb-1"><strong>Quantity:</strong> {{ order.quantity || order.participants?.length || 1 }}</p>
                 <p class="mb-0 mt-2">
                   <strong>Total Order:</strong> 
-                  <span class="text-success fw-bold ms-2" style="font-size: 1.1rem;">Rp {{ order.total_price ? Number(order.total_price).toLocaleString('id-ID') : '0' }}</span>
+                  <span class="text-success fw-bold ms-2" style="font-size: 1.1rem;">{{ formatCurrency(order.total_price) }}</span>
                 </p>
               </div>
 
@@ -121,6 +121,14 @@
 import { ref, onMounted } from 'vue';
 import { useRoute } from 'vue-router';
 import axios from 'axios'; // Assuming axios is used for API calls
+
+const defaultCurrency = import.meta.env.VITE_DEFAULT_CURRENCY || 'IDR'
+const locale = defaultCurrency === 'IDR' ? 'id-ID' : (defaultCurrency === 'SGD' ? 'en-SG' : (defaultCurrency === 'MYR' ? 'en-MY' : 'en-US'))
+
+const formatCurrency = (value) => {
+  if (!value) return defaultCurrency === 'IDR' ? 'Rp 0' : (defaultCurrency === 'SGD' ? 'S$ 0.00' : (defaultCurrency === 'MYR' ? 'RM 0.00' : '$0.00'))
+  return new Intl.NumberFormat(locale, { style: 'currency', currency: defaultCurrency }).format(Number(value))
+}
 
 const route = useRoute();
 const order = ref(null);
