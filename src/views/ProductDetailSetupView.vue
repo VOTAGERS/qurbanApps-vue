@@ -93,14 +93,9 @@
           <div class="modal-body">
             <form id="detailForm" @submit.prevent="saveDetail">
               <div class="row">
-                <div class="col-md-6 mb-3">
+                <div class="col-md-12 mb-3">
                   <label class="form-label">Product Name (WooCommerce)</label>
                   <input type="text" class="form-control" v-model="form.name" placeholder="Example: Cow Qurban Type A" required>
-                </div>
-                <div class="col-md-6 mb-3">
-                  <label class="form-label">Woo ID (Optional)</label>
-                  <input type="number" class="form-control" v-model="form.woo_id" placeholder="Can be empty">
-                  <small class="text-muted">Leave empty to auto-generate.</small>
                 </div>
               </div>
               <div class="row">

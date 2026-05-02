@@ -1,13 +1,15 @@
 <script setup lang="ts">
 import { ref, reactive, watch, onMounted } from 'vue'
 import axios from 'axios'
+import { useRouter } from 'vue-router' // Import useRouter
 
 const products = ref<any[]>([])
-const selectedProduct = ref<any>(null)
+const selectedProduct = ref<any>(null) // Corrected position
+const router = useRouter() // Initialize router
 
 const fetchProducts = async () => {
   try {
-    const response = await axios.get('http://localhost:8000/api/products-woo')
+    const response = await axios.get(`${import.meta.env.VITE_API_BASE_URL}/api/products-woo`)
     products.value = response.data.data.map((p: any) => ({
       ...p,
       max_share: p.product_detail?.max_share || 1,
@@ -96,8 +98,9 @@ const processPayment = async () => {
       }))
     }
 
-    const response = await axios.post('http://localhost:8000/api/checkout', payload)
-    alert('Checkout successful! Order Code: ' + response.data.order.order_code)
+    const response = await axios.post(`${import.meta.env.VITE_API_BASE_URL}/api/checkout`, payload)
+    router.push({ name: 'payment', query: { order_code: response.data.order.order_code } })
+    // alert('Checkout successful! Order Code: ' + response.data.order.order_code)
   } catch (error) {
     console.error('Checkout error:', error)
     alert('Checkout failed. Please check the console for details.')
