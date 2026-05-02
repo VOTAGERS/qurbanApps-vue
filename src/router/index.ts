@@ -28,6 +28,11 @@ const router = createRouter({
           name: 'orders',
           component: () => import('../views/OrderListView.vue'),
         },
+        {
+          path: 'my-orders',
+          name: 'my-orders',
+          component: () => import('../views/MyOrderView.vue'),
+        },
         // Add the new payment route
         {
           path: 'payment',

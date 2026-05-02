@@ -21,6 +21,12 @@
               <span class="pc-mtext">Checkout Simulation</span>
             </router-link>
           </li>
+          <li class="pc-item">
+            <router-link to="/my-orders" class="pc-link">
+              <span class="pc-micon"><i class="ti ti-history"></i></span>
+              <span class="pc-mtext">My Order</span>
+            </router-link>
+          </li>
 
           <li class="pc-item pc-caption">
             <label>Management</label>
