@@ -261,7 +261,7 @@ const isSaving = ref(false)
 const currentPage = ref(1)
 const itemsPerPage = ref(10)
 
-const API_URL = import.meta.env.VITE_API_BASE_URL || 'http://localhost:8000'
+const API_URL = import.meta.env.VITE_API_BASE_URL
 
 const fetchUsers = async () => {
   loading.value = true

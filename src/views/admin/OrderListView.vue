@@ -116,7 +116,7 @@
 <script setup lang="ts">
 import { ref, onMounted, computed } from 'vue'
 
-const API_URL = import.meta.env.VITE_API_BASE_URL || 'http://localhost:8000'
+const API_URL = import.meta.env.VITE_API_BASE_URL
 const defaultCurrency = import.meta.env.VITE_DEFAULT_CURRENCY || 'IDR'
 const locale = defaultCurrency === 'IDR' ? 'id-ID' : (defaultCurrency === 'SGD' ? 'en-SG' : (defaultCurrency === 'MYR' ? 'en-MY' : 'en-US'))
 
