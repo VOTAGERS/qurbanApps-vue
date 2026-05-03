@@ -1,6 +1,6 @@
 import { createRouter, createWebHistory } from 'vue-router'
 import AdminLayout from '../layouts/AdminLayout.vue'
-import { dashboardRoutes } from './routes/dashboard'
+import { adminRoutes } from './routes/admin'
 import LandingPage from '@/views/LandingPage.vue'
 import CheckoutView from '@/views/CheckoutView.vue'
 
@@ -25,13 +25,13 @@ const router = createRouter({
       }),
     },
 
-    // {
-    //   path: '/admin',
-    //   component: AdminLayout,
-    //   children: [
-    //     ...dashboardRoutes
-    //   ]
-    // }
+    {
+      path: '/admin',
+      component: AdminLayout,
+      children: [
+        ...adminRoutes
+      ]
+    }
   ],
 })
 
