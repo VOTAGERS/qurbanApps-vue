@@ -29,10 +29,7 @@
               aria-haspopup="false"
               aria-expanded="false"
             >
-              <img src="/assets/images/user/avatar-2.jpg" alt="user-image" class="user-avtar" />
-              <span>
-                <i class="ti ti-settings"></i>
-              </span>
+              <i class="ti ti-user fs-2"></i>
             </a>
             <div class="dropdown-menu dropdown-user-profile dropdown-menu-end pc-h-dropdown">
               <div class="dropdown-header">
