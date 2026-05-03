@@ -39,7 +39,7 @@
                 </h4>
                 <p class="text-muted">Project Admin</p>
                 <hr />
-                <a href="#" class="dropdown-item">
+                <a href="#" class="dropdown-item" @click.prevent="handleLogout">
                   <i class="ti ti-logout"></i>
                   <span>Logout</span>
                 </a>
@@ -54,4 +54,34 @@
 </template>
 
 <script setup lang="ts">
+import axios from 'axios'
+import { useRouter } from 'vue-router'
+
+const router = useRouter()
+
+const handleLogout = async () => {
+  try {
+    const token = localStorage.getItem('token')
+
+    
+
+  await axios.post(
+      '/api/admins/logout',
+      {},
+      {
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem('token')}`
+        }
+      }
+    )
+  } catch (error) {
+    console.error('Logout error:', error)
+  }
+
+  // hapus token
+  localStorage.removeItem('token')
+
+  // redirect ke login
+  router.push('/login')
+}
 </script>

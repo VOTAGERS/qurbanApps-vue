@@ -9,6 +9,7 @@
     <!-- Main Content -->
     <div class="pc-container">
       <div class="pc-content">
+        <h3>Welcome, Admin</h3>
         <router-view />
       </div>
     </div>
