@@ -950,10 +950,18 @@ footer {
     background: #060f08;
     padding: 5rem 0 2rem;
 }
+.footer-brand {
+    max-width: 320px;
+}
+
+.footer-contact {
+    min-width: 200px;
+}
 
 .footer-grid {
-    display: grid;
-    grid-template-columns: 2fr 1fr 1fr 1.5fr;
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
     gap: 3rem;
     margin-bottom: 3rem;
 }

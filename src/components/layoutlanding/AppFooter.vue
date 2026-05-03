@@ -4,18 +4,10 @@
       <div class="footer-grid">
         <div class="footer-brand">
           <div class="footer-logo">Qurban<span>Hub</span></div>
-          <p>Mitra ibadah qurban Anda yang amanah, profesional, dan sesuai syariah Islam sejak 2009.</p>
+          <p>Your trusted, professional and Islamically-compliant qurban worship partner</p>
           <div class="footer-socials">
             <a v-for="s in socials" :key="s.label" :href="s.href" :title="s.label">{{ s.icon }}</a>
           </div>
-        </div>
-        <div v-for="col in footerCols" :key="col.title" class="footer-col">
-          <h5>{{ col.title }}</h5>
-          <ul>
-            <li v-for="link in col.links" :key="link.label">
-              <a :href="link.href">{{ link.label }}</a>
-            </li>
-          </ul>
         </div>
         <div class="footer-col footer-contact">
           <h5>Kontak</h5>

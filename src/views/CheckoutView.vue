@@ -213,7 +213,6 @@
               </div>
             </div>
           </transition>
-
           <transition name="slide-fade">
             <div v-if="currentStep === 3" class="form-card" key="step3">
               <div class="card-header">
@@ -233,101 +232,130 @@
                   </svg>
                 </div>
                 <div>
-                  <h2>Metode Pembayaran</h2>
-                  <p>Pilih metode pembayaran yang paling mudah</p>
+                  <h2>Pembayaran</h2>
+                  <p>Masukkan informasi kartu kredit / debit Anda</p>
                 </div>
               </div>
+              <div class="card-brands">
+                <div class="brand-badge">
+                  <svg width="38" height="24" viewBox="0 0 38 24" fill="none">
+                    <rect width="38" height="24" rx="4" fill="#1A1F71" />
+                    <rect x="14" y="6" width="10" height="12" fill="#FF5F00" />
+                    <circle cx="10" cy="12" r="6" fill="#EB001B" />
+                    <circle cx="28" cy="12" r="6" fill="#F79E1B" />
+                  </svg>
+                  <span>Mastercard</span>
+                </div>
+                <div class="brand-badge">
+                  <svg width="38" height="24" viewBox="0 0 38 24" fill="none">
+                    <rect width="38" height="24" rx="4" fill="#1A1F71" />
+                    <text
+                      x="5"
+                      y="17"
+                      font-family="Arial"
+                      font-weight="bold"
+                      font-size="12"
+                      fill="white"
+                    >
+                      VISA
+                    </text>
+                  </svg>
+                  <span>Visa</span>
+                </div>
+                <div class="secure-badge">
+                  <svg
+                    width="14"
+                    height="14"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    stroke-width="2.5"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                  >
+                    <rect x="3" y="11" width="18" height="11" rx="2" />
+                    <path d="M7 11V7a5 5 0 0 1 10 0v4" />
+                  </svg>
+                  SSL Terenkripsi
+                </div>
+              </div>
+              <div class="stripe-form">
+                <div class="stripe-field-group">
+                  <label class="stripe-label">Nomor Kartu</label>
+                  <div
+                    id="card-number-element"
+                    class="stripe-input"
+                    :class="{
+                      'stripe-error': stripeErrors.cardNumber,
+                      'stripe-focus': focusedField === 'number',
+                    }"
+                  ></div>
+                  <span class="stripe-err-msg" v-if="stripeErrors.cardNumber">{{
+                    stripeErrors.cardNumber
+                  }}</span>
+                </div>
 
-              <div class="payment-methods">
-                <label
-                  v-for="method in paymentMethods"
-                  :key="method.id"
-                  class="payment-option"
-                  :class="{ selected: selectedPayment === method.id }"
-                >
-                  <input type="radio" v-model="selectedPayment" :value="method.id" hidden />
-                  <div class="payment-icon-wrap">
-                    <svg
-                      v-if="method.id === 'transfer'"
-                      width="20"
-                      height="20"
-                      viewBox="0 0 24 24"
-                      fill="none"
-                      stroke="currentColor"
-                      stroke-width="2"
-                      stroke-linecap="round"
-                      stroke-linejoin="round"
-                    >
-                      <rect x="2" y="5" width="20" height="14" rx="2" />
-                      <line x1="2" y1="10" x2="22" y2="10" />
-                    </svg>
-                    <svg
-                      v-else-if="method.id === 'qris'"
-                      width="20"
-                      height="20"
-                      viewBox="0 0 24 24"
-                      fill="none"
-                      stroke="currentColor"
-                      stroke-width="2"
-                      stroke-linecap="round"
-                      stroke-linejoin="round"
-                    >
-                      <rect x="3" y="3" width="7" height="7" rx="1" />
-                      <rect x="14" y="3" width="7" height="7" rx="1" />
-                      <rect x="3" y="14" width="7" height="7" rx="1" />
-                      <rect x="14" y="14" width="3" height="3" />
-                      <rect x="18" y="18" width="3" height="3" />
-                      <rect x="14" y="18" width="3" height="3" style="display: none" />
-                    </svg>
-                    <svg
-                      v-else-if="method.id === 'cc'"
-                      width="20"
-                      height="20"
-                      viewBox="0 0 24 24"
-                      fill="none"
-                      stroke="currentColor"
-                      stroke-width="2"
-                      stroke-linecap="round"
-                      stroke-linejoin="round"
-                    >
-                      <rect x="2" y="5" width="20" height="14" rx="2" />
-                      <line x1="2" y1="10" x2="22" y2="10" />
-                      <line x1="6" y1="15" x2="10" y2="15" />
-                    </svg>
-                    <svg
-                      v-else
-                      width="20"
-                      height="20"
-                      viewBox="0 0 24 24"
-                      fill="none"
-                      stroke="currentColor"
-                      stroke-width="2"
-                      stroke-linecap="round"
-                      stroke-linejoin="round"
-                    >
-                      <rect x="2" y="3" width="20" height="14" rx="2" />
-                      <path d="M8 21h8M12 17v4" />
-                    </svg>
+                <div class="stripe-row">
+                  <div class="stripe-field-group">
+                    <label class="stripe-label">Tanggal Kedaluwarsa</label>
+                    <div
+                      id="card-expiry-element"
+                      class="stripe-input"
+                      :class="{
+                        'stripe-error': stripeErrors.cardExpiry,
+                        'stripe-focus': focusedField === 'expiry',
+                      }"
+                    ></div>
+                    <span class="stripe-err-msg" v-if="stripeErrors.cardExpiry">{{
+                      stripeErrors.cardExpiry
+                    }}</span>
                   </div>
-                  <div class="payment-info">
-                    <strong>{{ method.name }}</strong>
-                    <small>{{ method.desc }}</small>
+                  <div class="stripe-field-group">
+                    <label class="stripe-label">Kode CVC</label>
+                    <div
+                      id="card-cvc-element"
+                      class="stripe-input"
+                      :class="{
+                        'stripe-error': stripeErrors.cardCvc,
+                        'stripe-focus': focusedField === 'cvc',
+                      }"
+                    ></div>
+                    <span class="stripe-err-msg" v-if="stripeErrors.cardCvc">{{
+                      stripeErrors.cardCvc
+                    }}</span>
                   </div>
-                  <div class="payment-check" v-if="selectedPayment === method.id">
-                    <svg
-                      width="14"
-                      height="14"
-                      viewBox="0 0 24 24"
-                      fill="none"
-                      stroke="white"
-                      stroke-width="3"
-                      stroke-linecap="round"
-                      stroke-linejoin="round"
-                    >
-                      <polyline points="20 6 9 17 4 12" />
-                    </svg>
-                  </div>
-                </label>
+                </div>
+
+                <div class="stripe-field-group">
+                  <label class="stripe-label">Nama Pemegang Kartu</label>
+                  <input
+                    v-model="cardholderName"
+                    type="text"
+                    class="stripe-input stripe-text-input"
+                    placeholder="Sesuai yang tertera di kartu"
+                    :class="{ 'stripe-error': stripeErrors.cardholderName }"
+                  />
+                  <span class="stripe-err-msg" v-if="stripeErrors.cardholderName">{{
+                    stripeErrors.cardholderName
+                  }}</span>
+                </div>
+                <div v-if="stripeErrors.general" class="stripe-general-error">
+                  <svg
+                    width="16"
+                    height="16"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    stroke-width="2.5"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                  >
+                    <circle cx="12" cy="12" r="10" />
+                    <line x1="12" y1="8" x2="12" y2="12" />
+                    <line x1="12" y1="16" x2="12.01" y2="16" />
+                  </svg>
+                  {{ stripeErrors.general }}
+                </div>
               </div>
 
               <div class="terms-box">
@@ -345,9 +373,10 @@
                 <button
                   class="btn-pay"
                   @click="handlePayment"
-                  :disabled="!agreedToTerms || !selectedPayment || isProcessing"
+                  :disabled="!agreedToTerms || isProcessing || !stripeReady"
                 >
                   <span v-if="isProcessing" class="spinner"></span>
+                  <span v-else-if="!stripeReady" class="loading-stripe">Memuat...</span>
                   <span v-else>
                     <svg
                       width="16"
@@ -415,27 +444,24 @@
                     <path d="M23 21v-2a4 4 0 0 0-3-3.87" />
                     <path d="M16 3.13a4 4 0 0 1 0 7.75" />
                   </svg>
-                  Maks. {{ maxShare }} orang
+                  Maks. {{ maxShare }} person
                 </div>
               </div>
             </div>
 
             <div class="price-breakdown">
               <div class="price-row">
-                <span>Harga hewan</span>
-                <span>{{ formatPrice(productPrice) }}</span>
+                <span>Animal prices</span><span>{{ formatPrice(productPrice) }}</span>
+              </div>
+              <!-- <div class="price-row">
+                <span>Administrative costs</span><span class="free">Gratis</span>
               </div>
               <div class="price-row">
-                <span>Biaya administrasi</span>
-                <span class="free">Gratis</span>
-              </div>
-              <div class="price-row">
-                <span>Biaya distribusi</span>
-                <span class="free">Gratis</span>
-              </div>
+                <span>Biaya distribusi</span><span class="free">Gratis</span>
+              </div> -->
               <div class="price-divider"></div>
               <div class="price-row total">
-                <span>Total Pembayaran</span>
+                <span>Total payment</span>
                 <span class="total-amount">{{ formatPrice(productPrice) }}</span>
               </div>
             </div>
@@ -474,7 +500,7 @@
                 <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z" />
               </svg>
               <div>
-                <strong>Butuh bantuan?</strong>
+                <strong>Need help?</strong>
                 <p>
                   WhatsApp:
                   <a href="https://wa.me/628123456789" target="_blank">+62 812 3456 789</a>
@@ -523,8 +549,10 @@
 </template>
 
 <script setup>
-import { ref, computed, onMounted } from 'vue'
+import { ref, computed, onMounted, onUnmounted, watch, nextTick } from 'vue'
 import { useRoute } from 'vue-router'
+import { loadStripe } from '@stripe/stripe-js'
+import axios from 'axios'
 
 const route = useRoute()
 const SECRET_KEY = 'qurbanhub2026'
@@ -567,6 +595,7 @@ const maxShare = computed(() => parsedParams.value.share)
 const description = computed(() => parsedParams.value.desc)
 
 const currentStep = ref(1)
+
 const buyer = ref({
   firstName: '',
   lastName: '',
@@ -629,36 +658,202 @@ function goToStep3() {
   if (validateRecipients()) {
     currentStep.value = 3
     window.scrollTo({ top: 0, behavior: 'smooth' })
+    nextTick(() => mountStripeElements())
   }
 }
 
-const selectedPayment = ref('')
+const STRIPE_PUBLIC_KEY = import.meta.env.VITE_STRIPE_PUBLIC_KEY
+
+let stripe = null
+let elements = null
+let cardNumber = null
+let cardExpiry = null
+let cardCvc = null
+
+const stripeReady = ref(false)
+const focusedField = ref(null)
+const cardholderName = ref('')
+const stripeErrors = ref({
+  cardNumber: '',
+  cardExpiry: '',
+  cardCvc: '',
+  cardholderName: '',
+  general: '',
+})
+
+async function mountStripeElements() {
+  if (cardNumber) return 
+
+  stripe = await loadStripe(STRIPE_PUBLIC_KEY)
+
+  elements = stripe.elements({
+    appearance: {
+      theme: 'flat',
+      variables: {
+        colorPrimary: '#2d5a2d',
+        colorBackground: '#ffffff',
+        colorText: '#4a4843',
+        colorDanger: '#dc2626',
+        fontFamily: '"DM Sans", system-ui, sans-serif',
+        fontSizeBase: '14px',
+        borderRadius: '10px',
+        spacingUnit: '4px',
+      },
+      rules: {
+        '.Input': {
+          border: '1.5px solid #e8e6df',
+          boxShadow: 'none',
+          padding: '12px 14px',
+          fontSize: '14px',
+          color: '#4a4843',
+          backgroundColor: '#ffffff',
+          transition: 'border-color 0.2s, box-shadow 0.2s',
+        },
+        '.Input:focus': {
+          border: '1.5px solid #2d5a2d',
+          boxShadow: '0 0 0 3px rgba(45,90,45,0.08)',
+        },
+        '.Input--invalid': {
+          border: '1.5px solid #dc2626',
+          boxShadow: '0 0 0 3px rgba(220,38,38,0.06)',
+        },
+        '.Label': {
+          display: 'none', 
+        },
+      },
+    },
+  })
+
+  const fieldStyle = {
+    base: {
+      fontSize: '14px',
+      color: '#4a4843',
+      fontFamily: '"DM Sans", system-ui, sans-serif',
+      fontWeight: '400',
+      '::placeholder': { color: '#a09e96' },
+    },
+    invalid: { color: '#dc2626' },
+  }
+
+  cardNumber = elements.create('cardNumber', { style: fieldStyle, showIcon: true })
+  cardExpiry = elements.create('cardExpiry', { style: fieldStyle })
+  cardCvc = elements.create('cardCvc', { style: fieldStyle })
+
+  cardNumber.mount('#card-number-element')
+  cardExpiry.mount('#card-expiry-element')
+  cardCvc.mount('#card-cvc-element')
+
+  cardNumber.on('focus', () => (focusedField.value = 'number'))
+  cardNumber.on('blur', () => (focusedField.value = null))
+  cardExpiry.on('focus', () => (focusedField.value = 'expiry'))
+  cardExpiry.on('blur', () => (focusedField.value = null))
+  cardCvc.on('focus', () => (focusedField.value = 'cvc'))
+  cardCvc.on('blur', () => (focusedField.value = null))
+
+  cardNumber.on('change', ({ error }) => {
+    stripeErrors.value.cardNumber = error ? error.message : ''
+  })
+  cardExpiry.on('change', ({ error }) => {
+    stripeErrors.value.cardExpiry = error ? error.message : ''
+  })
+  cardCvc.on('change', ({ error }) => {
+    stripeErrors.value.cardCvc = error ? error.message : ''
+  })
+
+  stripeReady.value = true
+}
+
+function destroyStripeElements() {
+  if (cardNumber) {
+    cardNumber.destroy()
+    cardNumber = null
+  }
+  if (cardExpiry) {
+    cardExpiry.destroy()
+    cardExpiry = null
+  }
+  if (cardCvc) {
+    cardCvc.destroy()
+    cardCvc = null
+  }
+  stripeReady.value = false
+}
+
+onUnmounted(() => destroyStripeElements())
+
 const agreedToTerms = ref(false)
 const isProcessing = ref(false)
 const showSuccess = ref(false)
 const orderNumber = ref('')
 
-const paymentMethods = [
-  { id: 'transfer', name: 'Transfer Bank', desc: 'BCA, Mandiri, BNI, BRI' },
-  { id: 'qris', name: 'QRIS', desc: 'GoPay, OVO, Dana, Shopee Pay' },
-  { id: 'cc', name: 'Kartu Kredit', desc: 'Visa, Mastercard' },
-  { id: 'va', name: 'Virtual Account', desc: 'Bayar lewat ATM atau m-Banking' },
-]
-
 const trustList = [
-  'Hewan disertifikasi dokter hewan',
-  'Pemotongan oleh juru sembelih terlatih',
-  'Laporan distribusi dengan foto',
-  '100% Sesuai syariah Islam',
+ 'Animals certified by a veterinarian',
+'Slaughtered by trained slaughterers',
+'Distribution report with photos',
+'100% compliant with Islamic law',
 ]
 
 async function handlePayment() {
-  if (!agreedToTerms.value || !selectedPayment.value) return
+  if (!agreedToTerms.value || !stripeReady.value) return
+
+  if (!cardholderName.value.trim()) {
+    stripeErrors.value.cardholderName = 'Nama pemegang kartu wajib diisi'
+    return
+  }
+  stripeErrors.value.cardholderName = ''
+  stripeErrors.value.general = ''
+
   isProcessing.value = true
-  await new Promise((r) => setTimeout(r, 2000))
-  orderNumber.value = Math.floor(100000 + Math.random() * 900000).toString()
-  isProcessing.value = false
-  showSuccess.value = true
+
+  try {
+    const { data } = await axios.post('/api/checkout/create-payment-intent', {
+      order_id: productId.value,
+      amount: productPrice.value,
+      buyer: buyer.value,
+      recipients: recipients.value,
+      payment_method: 'card',
+    })
+
+    const clientSecret = data.client_secret
+
+    const { error, paymentIntent } = await stripe.confirmCardPayment(clientSecret, {
+      payment_method: {
+        card: cardNumber,
+        billing_details: {
+          name: cardholderName.value,
+          email: buyer.value.email,
+          phone: buyer.value.phone,
+          address: {
+            line1: buyer.value.address,
+            city: buyer.value.city,
+            state: buyer.value.province,
+            postal_code: buyer.value.postalCode,
+            country: 'ID',
+          },
+        },
+      },
+    })
+
+    if (error) {
+      stripeErrors.value.general = error.message
+      return
+    }
+
+    if (paymentIntent.status === 'succeeded') {
+      await axios.post('/api/checkout/confirm-payment', {
+        order_id: productId.value,
+        payment_intent_id: paymentIntent.id,
+      })
+
+      orderNumber.value = paymentIntent.id.slice(-6).toUpperCase()
+      showSuccess.value = true
+    }
+  } catch (err) {
+    stripeErrors.value.general =
+      err?.response?.data?.message || 'Terjadi kesalahan. Silakan coba lagi.'
+  } finally {
+    isProcessing.value = false
+  }
 }
 
 function formatPrice(val) {
@@ -703,6 +898,7 @@ function formatPrice(val) {
   pointer-events: none;
   z-index: 0;
 }
+
 .checkout-header {
   background: var(--g900);
   position: sticky;
@@ -790,6 +986,7 @@ function formatPrice(val) {
 .step-line.done {
   background: rgba(201, 162, 39, 0.5);
 }
+
 .checkout-main {
   max-width: 1200px;
   margin: 0 auto;
@@ -803,6 +1000,7 @@ function formatPrice(val) {
   gap: 32px;
   align-items: start;
 }
+
 .form-card {
   background: var(--white);
   border-radius: 20px;
@@ -845,7 +1043,6 @@ function formatPrice(val) {
   gap: 8px;
   flex-wrap: wrap;
 }
-
 .quota-badge {
   background: var(--gold-p);
   color: var(--gold);
@@ -855,6 +1052,7 @@ function formatPrice(val) {
   font-size: 12px;
   font-weight: 600;
 }
+
 .form-grid {
   display: grid;
   grid-template-columns: 1fr 1fr;
@@ -911,6 +1109,7 @@ input.error {
   color: var(--err);
   font-weight: 500;
 }
+
 .recipient-block {
   border: 1.5px solid var(--gr200);
   border-radius: 14px;
@@ -939,6 +1138,132 @@ input.error {
   font-size: 12px;
   font-weight: 700;
 }
+
+/* ─── Card Brands ──────────────────────────────── */
+.card-brands {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 28px;
+  padding: 14px 16px;
+  background: var(--gr100);
+  border-radius: 12px;
+  border: 1px solid var(--gr200);
+  flex-wrap: wrap;
+}
+.brand-badge {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--gr700);
+}
+.secure-badge {
+  margin-left: auto;
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--g700);
+  background: rgba(45, 90, 45, 0.08);
+  border: 1px solid rgba(45, 90, 45, 0.15);
+  border-radius: 20px;
+  padding: 4px 10px;
+}
+
+/* ─── Stripe Form ─────────────────────────────── */
+.stripe-form {
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+  margin-bottom: 24px;
+}
+.stripe-field-group {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+.stripe-label {
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--g800);
+  letter-spacing: 0.01em;
+}
+
+/* Container untuk Stripe iframe */
+.stripe-input {
+  border: 1.5px solid var(--gr200);
+  border-radius: 10px;
+  padding: 13px 14px;
+  background: var(--white);
+  transition:
+    border-color 0.2s,
+    box-shadow 0.2s;
+  min-height: 46px;
+}
+.stripe-input.stripe-focus {
+  border-color: var(--g600);
+  box-shadow: 0 0 0 3px rgba(45, 90, 45, 0.08);
+}
+.stripe-input.stripe-error {
+  border-color: var(--err);
+  box-shadow: 0 0 0 3px rgba(220, 38, 38, 0.06);
+}
+
+/* Input teks biasa untuk nama cardholder */
+.stripe-text-input {
+  padding: 0 14px !important;
+  height: 46px !important;
+  min-height: 46px !important;
+  border: 1.5px solid var(--gr200) !important;
+  border-radius: 10px !important;
+  font-size: 14px !important;
+  font-family: 'DM Sans', sans-serif !important;
+  color: var(--gr700) !important;
+  background: var(--white) !important;
+  transition: all 0.2s !important;
+  outline: none !important;
+  display: block;
+  width: 100%;
+  box-sizing: border-box;
+}
+.stripe-text-input:focus {
+  border-color: var(--g600) !important;
+  box-shadow: 0 0 0 3px rgba(45, 90, 45, 0.08) !important;
+}
+.stripe-text-input.stripe-error {
+  border-color: var(--err) !important;
+  box-shadow: 0 0 0 3px rgba(220, 38, 38, 0.06) !important;
+}
+
+.stripe-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+}
+
+.stripe-err-msg {
+  font-size: 12px;
+  color: var(--err);
+  font-weight: 500;
+}
+
+.stripe-general-error {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 12px 14px;
+  background: rgba(220, 38, 38, 0.05);
+  border: 1px solid rgba(220, 38, 38, 0.2);
+  border-radius: 10px;
+  font-size: 13px;
+  color: var(--err);
+  font-weight: 500;
+}
+
+/* ─── Buttons ─────────────────────────────────── */
 .btn-next {
   margin-top: 28px;
   width: 100%;
@@ -968,6 +1293,7 @@ input.error {
 .btn-next:hover .arrow {
   transform: translateX(4px);
 }
+
 .btn-row {
   display: flex;
   gap: 12px;
@@ -977,6 +1303,7 @@ input.error {
   flex: 1;
   margin-top: 0;
 }
+
 .btn-back {
   height: 52px;
   padding: 0 20px;
@@ -996,63 +1323,52 @@ input.error {
   color: var(--g700);
   background: rgba(45, 90, 45, 0.04);
 }
-.payment-methods {
-  display: flex;
-  flex-direction: column;
-  gap: 12px;
-  margin-bottom: 24px;
-}
-.payment-option {
-  display: flex;
-  align-items: center;
-  gap: 14px;
-  padding: 16px 18px;
-  border: 1.5px solid var(--gr200);
-  border-radius: 12px;
-  cursor: pointer;
-  transition: all 0.2s;
-  background: var(--white);
-}
-.payment-option:hover {
-  border-color: var(--g600);
-  background: rgba(45, 90, 45, 0.02);
-}
-.payment-option.selected {
-  border-color: var(--g700);
-  background: rgba(45, 90, 45, 0.04);
-  box-shadow: 0 0 0 3px rgba(45, 90, 45, 0.08);
-}
-.payment-icon-wrap {
-  width: 40px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  color: var(--g700);
-  flex-shrink: 0;
-}
-.payment-info {
+
+.btn-pay {
   flex: 1;
-}
-.payment-info strong {
-  display: block;
-  font-size: 14px;
-  font-weight: 600;
-  color: var(--g800);
-}
-.payment-info small {
-  font-size: 12px;
-  color: var(--gr400);
-}
-.payment-check {
-  width: 24px;
-  height: 24px;
-  border-radius: 50%;
-  background: var(--g700);
+  height: 52px;
+  background: linear-gradient(135deg, var(--gold), #b8941f);
+  color: var(--g900);
+  border: none;
+  border-radius: 12px;
+  font-size: 15px;
+  font-weight: 700;
+  font-family: 'DM Sans', sans-serif;
+  cursor: pointer;
   display: flex;
   align-items: center;
   justify-content: center;
+  transition: all 0.2s;
+}
+.btn-pay:hover:not(:disabled) {
+  transform: translateY(-1px);
+  box-shadow: 0 8px 24px rgba(201, 162, 39, 0.4);
+}
+.btn-pay:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
 }
 
+.loading-stripe {
+  font-size: 14px;
+  opacity: 0.7;
+}
+
+.spinner {
+  width: 20px;
+  height: 20px;
+  border: 2px solid rgba(26, 46, 26, 0.2);
+  border-top-color: var(--g900);
+  border-radius: 50%;
+  animation: spin 0.7s linear infinite;
+}
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+/* ─── Terms ───────────────────────────────────── */
 .terms-box {
   padding: 16px;
   background: var(--gr100);
@@ -1083,44 +1399,7 @@ input.error {
   text-decoration: underline;
 }
 
-.btn-pay {
-  flex: 1;
-  height: 52px;
-  background: linear-gradient(135deg, var(--gold), #b8941f);
-  color: var(--g900);
-  border: none;
-  border-radius: 12px;
-  font-size: 15px;
-  font-weight: 700;
-  font-family: 'DM Sans', sans-serif;
-  cursor: pointer;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  transition: all 0.2s;
-}
-.btn-pay:hover:not(:disabled) {
-  transform: translateY(-1px);
-  box-shadow: 0 8px 24px rgba(201, 162, 39, 0.4);
-}
-.btn-pay:disabled {
-  opacity: 0.5;
-  cursor: not-allowed;
-}
-.spinner {
-  width: 20px;
-  height: 20px;
-  border: 2px solid rgba(26, 46, 26, 0.2);
-  border-top-color: var(--g900);
-  border-radius: 50%;
-  animation: spin 0.7s linear infinite;
-}
-@keyframes spin {
-  to {
-    transform: rotate(360deg);
-  }
-}
-
+/* ─── Summary ─────────────────────────────────── */
 .summary-column {
   position: sticky;
   top: 88px;
@@ -1268,6 +1547,7 @@ input.error {
   font-weight: 600;
 }
 
+/* ─── Modal ───────────────────────────────────── */
 .modal-overlay {
   position: fixed;
   inset: 0;
@@ -1347,6 +1627,7 @@ input.error {
   box-shadow: 0 8px 24px rgba(29, 58, 29, 0.3);
 }
 
+/* ─── Transitions ─────────────────────────────── */
 .slide-fade-enter-active {
   transition: all 0.35s cubic-bezier(0.22, 1, 0.36, 1);
 }
@@ -1363,6 +1644,7 @@ input.error {
   opacity: 0;
 }
 
+/* ─── Responsive ──────────────────────────────── */
 @media (max-width: 900px) {
   .checkout-grid {
     grid-template-columns: 1fr;
@@ -1396,6 +1678,15 @@ input.error {
   }
   .summary-card {
     padding: 20px;
+  }
+  .stripe-row {
+    grid-template-columns: 1fr;
+  }
+  .card-brands {
+    flex-wrap: wrap;
+  }
+  .secure-badge {
+    margin-left: 0;
   }
 }
 </style>

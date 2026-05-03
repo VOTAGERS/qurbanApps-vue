@@ -6,7 +6,7 @@
         <a :href="link.href" :class="{ active: activeSection === link.id }">{{ link.label }}</a>
       </li>
     </ul>
-    <a href="#pemesanan" class="nav-cta">Order Qurban</a>
+    <a href="#hewan" class="nav-cta">Order Qurban</a>
   </nav>
 </template>
 
