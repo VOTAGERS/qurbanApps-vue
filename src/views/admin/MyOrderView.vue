@@ -1,4 +1,4 @@
-<template>
+﻿<template>
   <div>
     <!-- [ breadcrumb ] start -->
     <div class="page-header">
@@ -64,8 +64,8 @@
                       </span>
                     </td>
                     <td class="text-end">
-                      <router-link :to="{ name: 'payment', query: { order_code: order.order_code } }" class="btn btn-sm btn-light-primary">
-                        <i class="ti ti-eye me-1"></i> Details
+                      <router-link :to="{ name: 'payment', query: { order_code: order.order_code } }" class="btn btn-sm btn-light-primary" title="Payment Details">
+                        <i class="ti ti-credit-card"></i>
                       </router-link>
                     </td>
                   </tr>

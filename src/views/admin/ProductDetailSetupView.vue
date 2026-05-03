@@ -1,4 +1,4 @@
-<template>
+﻿<template>
   <div>
     <!-- [ breadcrumb ] start -->
     <div class="page-header">
@@ -53,7 +53,7 @@
                       <strong>{{ detail.product_woo ? detail.product_woo.name : 'Unknown Product' }}</strong>
                     </td>
                     <!-- <td><span class="badge bg-light-primary text-primary">{{ detail.product_woo ? detail.product_woo.woo_id : '-' }}</span></td> -->
-                    <td>Rp {{ detail.product_woo ? Number(detail.product_woo.price).toLocaleString('id-ID') : 0 }}</td>
+                    <td>{{ formatCurrency(detail.product_woo?.price || 0) }}</td>
                     <td>{{ detail.country }}</td>
                     <td>{{ detail.max_share }} Orang</td>
                     <td>
@@ -102,7 +102,7 @@
                 <div class="col-md-6 mb-3">
                   <label class="form-label">Product Price</label>
                   <div class="input-group">
-                    <span class="input-group-text">Rp</span>
+                    <span class="input-group-text">{{ currencySymbol }}</span>
                     <input type="number" class="form-control" v-model="form.price" placeholder="2500000" required min="0">
                   </div>
                 </div>
@@ -143,8 +143,16 @@
 </template>
 
 <script setup lang="ts">
-import { ref, onMounted } from 'vue'
+import { ref, onMounted, computed } from 'vue'
 import Swal from 'sweetalert2'
+
+const defaultCurrency = import.meta.env.VITE_DEFAULT_CURRENCY || 'IDR'
+const currencySymbol = defaultCurrency === 'IDR' ? 'Rp' : (defaultCurrency === 'SGD' ? 'S$' : (defaultCurrency === 'MYR' ? 'RM' : '$'))
+const locale = defaultCurrency === 'IDR' ? 'id-ID' : (defaultCurrency === 'SGD' ? 'en-SG' : (defaultCurrency === 'MYR' ? 'en-MY' : 'en-US'))
+
+const formatCurrency = (value: string | number) => {
+  return new Intl.NumberFormat(locale, { style: 'currency', currency: defaultCurrency }).format(Number(value))
+}
 
 interface WooProduct {
   id: number;

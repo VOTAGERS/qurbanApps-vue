@@ -1,4 +1,4 @@
-<template>
+﻿<template>
   <div class="container-fluid">
     <h3 class="text-start mb-4 text-dark font-weight-bold">Payment Details</h3>
     <div v-if="loading">
@@ -12,88 +12,116 @@
       <div class="row mb-4">
         <!-- Left Column: Order Information -->
         <div class="col-md-8">
-          <!-- Customer Information -->
           <div class="card mb-4">
-            <div class="card-header">
+            <div class="card-header d-flex justify-content-between align-items-center" style="cursor: pointer;" data-bs-toggle="collapse" data-bs-target="#customerInfoCollapse">
               <h4 class="mb-0">Customer Information</h4>
+              <i class="ti ti-chevron-down fs-4"></i>
             </div>
-            <div class="card-body">
+            <div class="collapse show" id="customerInfoCollapse">
+              <div class="card-body">
               <div class="row">
                 <!-- Billing Info -->
                 <div class="col-md-6 mb-3 mb-md-0 d-flex flex-column">
                   <h5 class="mb-3 text-primary">Billing Information</h5>
                   <div class="p-3 border rounded bg-light flex-grow-1 text-break">
-                    <template v-if="order.billing && order.billing.user">
-                      <p class="mb-1"><strong>Name:</strong> {{ order.billing.user.first_name }} {{ order.billing.user.last_name }}</p>
-                      <p class="mb-1"><strong>Email:</strong> {{ order.billing.user.email }}</p>
-                      <p class="mb-1"><strong>Phone:</strong> {{ order.billing.user.phone }}</p>
-                      <p class="mb-1"><strong>Address:</strong> {{ order.billing.user.address_1 }}</p>
-                      <p class="mb-1" v-if="order.billing.user.address_2"><strong>Address 2:</strong> {{ order.billing.user.address_2 }}</p>
-                      <p class="mb-1"><strong>City / State:</strong> {{ order.billing.user.city }}, {{ order.billing.user.state }}</p>
-                      <p class="mb-0"><strong>Postcode / Country:</strong> {{ order.billing.user.postcode }}, {{ order.billing.user.country }}</p>
-                    </template>
-                    <p v-else class="text-muted mb-0">Billing details not fully loaded.</p>
+                    <table v-if="order.billing && order.billing.user" class="table table-sm table-borderless mb-0">
+                      <tbody>
+                        <tr><th class="ps-0 py-1 fw-bold text-muted" style="width: 35%">Name</th><td class="py-1">: {{ order.billing.user.first_name }} {{ order.billing.user.last_name }}</td></tr>
+                        <tr><th class="ps-0 py-1 fw-bold text-muted">Email</th><td class="py-1">: {{ order.billing.user.email }}</td></tr>
+                        <tr><th class="ps-0 py-1 fw-bold text-muted">Phone</th><td class="py-1">: {{ order.billing.user.phone }}</td></tr>
+                        <tr><th class="ps-0 py-1 fw-bold text-muted">Address</th><td class="py-1">: {{ order.billing.user.address_1 }}</td></tr>
+                        <tr v-if="order.billing.user.address_2"><th class="ps-0 py-1 fw-bold text-muted">Address 2</th><td class="py-1">: {{ order.billing.user.address_2 }}</td></tr>
+                        <tr><th class="ps-0 py-1 fw-bold text-muted">City / State</th><td class="py-1">: {{ order.billing.user.city }}, {{ order.billing.user.state }}</td></tr>
+                        <tr><th class="ps-0 py-1 fw-bold text-muted">Post / Country</th><td class="py-1">: {{ order.billing.user.postcode }}, {{ order.billing.user.country }}</td></tr>
+                      </tbody>
+                    </table>
+                    <p v-else class="text-muted mb-0 text-center py-3">Billing details not fully loaded.</p>
                   </div>
                 </div>
                 <!-- Shipping Info -->
                 <div class="col-md-6 d-flex flex-column">
                   <h5 class="mb-3 text-primary">Shipping Information</h5>
                   <div class="p-3 border rounded bg-light flex-grow-1 text-break">
-                    <template v-if="order.shipping && order.shipping.user">
-                      <p class="mb-1"><strong>Name:</strong> {{ order.shipping.user.first_name }} {{ order.shipping.user.last_name }}</p>
-                      <p class="mb-1"><strong>Email:</strong> {{ order.shipping.user.email }}</p>
-                      <p class="mb-1"><strong>Phone:</strong> {{ order.shipping.user.phone }}</p>
-                      <p class="mb-1"><strong>Address:</strong> {{ order.shipping.user.address_1 }}</p>
-                      <p class="mb-1" v-if="order.shipping.user.address_2"><strong>Address 2:</strong> {{ order.shipping.user.address_2 }}</p>
-                      <p class="mb-1"><strong>City / State:</strong> {{ order.shipping.user.city }}, {{ order.shipping.user.state }}</p>
-                      <p class="mb-0"><strong>Postcode / Country:</strong> {{ order.shipping.user.postcode }}, {{ order.shipping.user.country }}</p>
-                    </template>
-                    <p v-else class="text-muted mb-0">Shipping details not fully loaded.</p>
+                    <table v-if="order.shipping && order.shipping.user" class="table table-sm table-borderless mb-0">
+                      <tbody>
+                        <tr><th class="ps-0 py-1 fw-bold text-muted" style="width: 35%">Name</th><td class="py-1">: {{ order.shipping.user.first_name }} {{ order.shipping.user.last_name }}</td></tr>
+                        <tr><th class="ps-0 py-1 fw-bold text-muted">Email</th><td class="py-1">: {{ order.shipping.user.email }}</td></tr>
+                        <tr><th class="ps-0 py-1 fw-bold text-muted">Phone</th><td class="py-1">: {{ order.shipping.user.phone }}</td></tr>
+                        <tr><th class="ps-0 py-1 fw-bold text-muted">Address</th><td class="py-1">: {{ order.shipping.user.address_1 }}</td></tr>
+                        <tr v-if="order.shipping.user.address_2"><th class="ps-0 py-1 fw-bold text-muted">Address 2</th><td class="py-1">: {{ order.shipping.user.address_2 }}</td></tr>
+                        <tr><th class="ps-0 py-1 fw-bold text-muted">City / State</th><td class="py-1">: {{ order.shipping.user.city }}, {{ order.shipping.user.state }}</td></tr>
+                        <tr><th class="ps-0 py-1 fw-bold text-muted">Post / Country</th><td class="py-1">: {{ order.shipping.user.postcode }}, {{ order.shipping.user.country }}</td></tr>
+                      </tbody>
+                    </table>
+                    <p v-else class="text-muted mb-0 text-center py-3">Shipping details not fully loaded.</p>
                   </div>
                 </div>
               </div>
+              </div>
             </div>
           </div>
 
-          <!-- Order Details -->
           <div class="card mb-4">
-            <div class="card-header">
-              <h4 class="mb-0">Order Details</h4>
+            <div class="card-header d-flex justify-content-between align-items-center" style="cursor: pointer;" data-bs-toggle="collapse" data-bs-target="#orderSummaryCollapse">
+              <h4 class="mb-0">Order Summary</h4>
+              <i class="ti ti-chevron-down fs-4"></i>
             </div>
-            <div class="card-body">
-              
-              <!-- Product Detail -->
-              <h5 class="mb-3 text-primary">Product Details</h5>
-              <div class="p-3 border rounded bg-light mb-4" v-if="order.product_woo">
-                <p class="mb-1"><strong>Product Name:</strong> {{ order.product_woo.name }}</p>
-                <p class="mb-0" v-if="order.product_woo.price"><strong>Price:</strong> Rp {{ Number(order.product_woo.price).toLocaleString('id-ID') }}</p>
+            <div class="collapse show" id="orderSummaryCollapse">
+              <div class="card-body">
+              <div class="row mb-4">
+                <!-- Product Detail Column -->
+                <div class="col-md-6 d-flex flex-column mb-3 mb-md-0">
+                  <h5 class="mb-3 text-primary">Product Details</h5>
+                  <div class="p-3 border rounded bg-light flex-grow-1" v-if="order.product_woo">
+                    <table class="table table-sm table-borderless mb-0">
+                      <tbody>
+                        <tr><th class="ps-0 py-1 fw-bold text-muted" style="width: 40%">Product Name</th><td class="py-1">: {{ order.product_woo.name }}</td></tr>
+                        <tr><th class="ps-0 py-1 fw-bold text-muted">Price</th><td class="py-1">: {{ formatCurrency(order.product_woo.price) }}</td></tr>
+                      </tbody>
+                    </table>
+                  </div>
+                  <p v-else class="text-muted mb-0 text-center py-3">Product details not available.</p>
+                </div>
+
+                <!-- Pricing Summary Column -->
+                <div class="col-md-6 d-flex flex-column">
+                  <h5 class="mb-3 text-primary">Pricing Details</h5>
+                  <div class="p-3 border rounded bg-light flex-grow-1">
+                    <table class="table table-sm table-borderless mb-0">
+                      <tbody>
+                        <tr><th class="ps-0 py-1 fw-bold text-muted" style="width: 40%">Order Code</th><td class="py-1">: {{ order.order_code }}</td></tr>
+                        <tr><th class="ps-0 py-1 fw-bold text-muted">Quantity</th><td class="py-1">: {{ order.quantity || order.participants?.length || 1 }}</td></tr>
+                        <tr>
+                          <th class="ps-0 py-1 fw-bold text-muted">Total Order</th>
+                          <td class="py-1">: <span class="text-success fw-bold fs-6">{{ formatCurrency(order.total_price) }}</span></td>
+                        </tr>
+                      </tbody>
+                    </table>
+                  </div>
+                </div>
               </div>
-              <p v-else class="text-muted mb-4">Product details not available.</p>
 
               <!-- Recipient(s) -->
-              <h5 class="mb-3 text-primary">Recipient(s)</h5>
-              <div v-for="(recipient, index) in order.participants" :key="index" class="recipient-item-card mb-3 p-3 border rounded bg-light">
-                <p class="mb-1"><strong>Name:</strong> {{ recipient.qurban_name }}</p>
-                <p v-if="recipient.email" class="mb-1"><strong>Email:</strong> {{ recipient.email }}</p>
-                <p v-if="recipient.phone_number" class="mb-1"><strong>Phone:</strong> {{ recipient.phone_number }}</p>
-                <p v-if="recipient.remarks" class="mb-0"><strong>Remarks:</strong> {{ recipient.remarks }}</p>
+              <h5 class="mb-3 pt-3 border-top text-primary">Recipient Information</h5>
+              <div class="row">
+                <div v-for="(recipient, index) in order.participants" :key="index" class="col-md-6 mb-3">
+                  <div class="recipient-item-card h-100 p-3 border rounded bg-light text-break">
+                    <table class="table table-sm table-borderless mb-0">
+                      <tbody>
+                        <tr><th class="ps-0 py-1 fw-bold text-muted" style="width: 35%">Name</th><td class="py-1">: {{ recipient.qurban_name }}</td></tr>
+                        <tr v-if="recipient.email"><th class="ps-0 py-1 fw-bold text-muted">Email</th><td class="py-1">: {{ recipient.email }}</td></tr>
+                        <tr v-if="recipient.phone_number"><th class="ps-0 py-1 fw-bold text-muted">Phone</th><td class="py-1">: {{ recipient.phone_number }}</td></tr>
+                        <tr v-if="recipient.remarks"><th class="ps-0 py-1 fw-bold text-muted">Remarks</th><td class="py-1">: {{ recipient.remarks }}</td></tr>
+                      </tbody>
+                    </table>
+                  </div>
+                </div>
               </div>
               <p v-if="!order.participants || order.participants.length === 0" class="text-muted mb-4">No recipients found.</p>
-
-              <!-- Order Summary -->
-              <h5 class="mb-3 pt-3 border-top text-primary">Order Summary</h5>
-              <div class="p-3 border rounded bg-light">
-                <p class="mb-1"><strong>Order Code:</strong> {{ order.order_code }}</p>
-                <p class="mb-1"><strong>Quantity:</strong> {{ order.quantity || order.participants?.length || 1 }}</p>
-                <p class="mb-0 mt-2">
-                  <strong>Total Order:</strong> 
-                  <span class="text-success fw-bold ms-2" style="font-size: 1.1rem;">Rp {{ order.total_price ? Number(order.total_price).toLocaleString('id-ID') : '0' }}</span>
-                </p>
-              </div>
-
             </div>
           </div>
         </div>
+      </div>
 
         <!-- Right Column: Payment Method -->
         <div class="col-md-4">
@@ -121,6 +149,14 @@
 import { ref, onMounted } from 'vue';
 import { useRoute } from 'vue-router';
 import axios from 'axios'; // Assuming axios is used for API calls
+
+const defaultCurrency = import.meta.env.VITE_DEFAULT_CURRENCY || 'IDR'
+const locale = defaultCurrency === 'IDR' ? 'id-ID' : (defaultCurrency === 'SGD' ? 'en-SG' : (defaultCurrency === 'MYR' ? 'en-MY' : 'en-US'))
+
+const formatCurrency = (value) => {
+  if (!value) return defaultCurrency === 'IDR' ? 'Rp 0' : (defaultCurrency === 'SGD' ? 'S$ 0.00' : (defaultCurrency === 'MYR' ? 'RM 0.00' : '$0.00'))
+  return new Intl.NumberFormat(locale, { style: 'currency', currency: defaultCurrency }).format(Number(value))
+}
 
 const route = useRoute();
 const order = ref(null);
