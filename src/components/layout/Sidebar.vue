@@ -16,13 +16,13 @@
             <i class="ti ti-dashboard"></i>
           </li>
           <li class="pc-item">
-            <router-link to="/" class="pc-link">
+            <router-link to="/admin/checkout" class="pc-link">
               <span class="pc-micon"><i class="ti ti-shopping-cart"></i></span>
               <span class="pc-mtext">Checkout Simulation</span>
             </router-link>
           </li>
           <li class="pc-item">
-            <router-link to="/my-orders" class="pc-link">
+            <router-link to="/admin/my-orders" class="pc-link">
               <span class="pc-micon"><i class="ti ti-history"></i></span>
               <span class="pc-mtext">My Order</span>
             </router-link>
@@ -33,13 +33,13 @@
             <i class="ti ti-apps"></i>
           </li>
           <li class="pc-item">
-            <router-link to="/products-detail" class="pc-link">
+            <router-link to="/admin/products-detail" class="pc-link">
               <span class="pc-micon"><i class="ti ti-box"></i></span>
               <span class="pc-mtext">Product Menu</span>
             </router-link>
           </li>
           <li class="pc-item">
-            <router-link to="/orders" class="pc-link">
+            <router-link to="/admin/orders" class="pc-link">
               <span class="pc-micon"><i class="ti ti-shopping-cart"></i></span>
               <span class="pc-mtext">Order Menu</span>
             </router-link>

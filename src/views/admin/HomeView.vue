@@ -10,13 +10,10 @@ const router = useRouter() // Initialize router
 const fetchProducts = async () => {
   try {
     const response = await axios.get(`${import.meta.env.VITE_API_BASE_URL}/api/products-woo`)
-    const defaultCurrency = import.meta.env.VITE_DEFAULT_CURRENCY || 'IDR'
-    const locale = defaultCurrency === 'IDR' ? 'id-ID' : (defaultCurrency === 'SGD' ? 'en-SG' : (defaultCurrency === 'MYR' ? 'en-MY' : 'en-US'))
-    
     products.value = response.data.data.map((p: any) => ({
       ...p,
       max_share: p.product_detail?.max_share || 1,
-      price_formatted: new Intl.NumberFormat(locale, { style: 'currency', currency: defaultCurrency }).format(p.price)
+      price_formatted: new Intl.NumberFormat('id-ID', { style: 'currency', currency: 'IDR' }).format(p.price)
     }))
   } catch (error) {
     console.error('Error fetching products:', error)
@@ -124,44 +121,23 @@ watch(buyer, (newBuyer) => {
 </script>
 
 <template>
-  <!-- [ breadcrumb ] start -->
-    <div class="page-header">
-      <div class="page-block">
-        <div class="row align-items-center">
-          <div class="col-md-12">
-            <ul class="breadcrumb">
-              <li class="breadcrumb-item"><router-link to="/">Home</router-link></li>
-              <li class="breadcrumb-item"><a href="javascript: void(0)">Dashboard</a></li>
-              <li class="breadcrumb-item" aria-current="page">Checkout Simulation</li>
-            </ul>
-          </div>
-          <div class="col-md-12 mt-2">
-            <div class="page-header-title">
-              <h2 class="mb-0">Checkout Simulation</h2>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
   <div class="row">
     <div class="col-12">
+      <h3 class="mb-4 text-dark font-weight-bold">Checkout Simulation</h3>
+          
           <!-- Product Selection -->
-          <div class="card mb-4">
-            <div class="card-body">
-              <h6 class="mb-3">1. Select Product</h6>
-              <div class="row g-3">
-                <div class="col-md-4" v-for="product in products" :key="product.id">
-                  <div 
-                    class="card border mb-0 h-100" 
-                    :class="{ 'border-primary shadow-sm bg-light-primary': selectedProduct?.id === product.id }"
-                    @click="selectProduct(product)"
-                    style="cursor: pointer;"
-                  >
-                    <div class="card-body text-center p-3">
-                      <h5 class="card-title mb-1">{{ product.name }}</h5>
-                      <h6 class="text-primary fw-bold mb-0">{{ product.price_formatted }}</h6>
-                    </div>
-                  </div>
+          <h6 class="mb-3">1. Select Product</h6>
+          <div class="row mb-4">
+            <div class="col-md-4" v-for="product in products" :key="product.id">
+              <div 
+                class="card border" 
+                :class="{ 'border-primary shadow-sm': selectedProduct?.id === product.id }"
+                @click="selectProduct(product)"
+                style="cursor: pointer;"
+              >
+                <div class="card-body text-center">
+                  <h5 class="card-title">{{ product.name }}</h5>
+                  <h6 class="text-primary mb-2">{{ product.price_formatted }}</h6>
                 </div>
               </div>
             </div>

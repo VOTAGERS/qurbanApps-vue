@@ -59,7 +59,7 @@
                       <span v-else class="text-muted">No Product</span>
                     </td>
                     <td>{{ order.quantity }}</td>
-                    <td>{{ formatCurrency(order.total_price) }}</td>
+                    <td>Rp {{ Number(order.total_price).toLocaleString('id-ID') }}</td>
                     <td>
                       <span :class="getPaymentBadgeClass(order.payment_status)">
                         {{ order.payment_status }}
@@ -95,13 +95,6 @@
 
 <script setup lang="ts">
 import { ref, onMounted } from 'vue'
-
-const defaultCurrency = import.meta.env.VITE_DEFAULT_CURRENCY || 'IDR'
-const locale = defaultCurrency === 'IDR' ? 'id-ID' : (defaultCurrency === 'SGD' ? 'en-SG' : (defaultCurrency === 'MYR' ? 'en-MY' : 'en-US'))
-
-const formatCurrency = (value: string | number) => {
-  return new Intl.NumberFormat(locale, { style: 'currency', currency: defaultCurrency }).format(Number(value))
-}
 
 interface OrderData {
   id_order: number;
