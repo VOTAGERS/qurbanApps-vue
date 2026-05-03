@@ -1,4 +1,4 @@
-﻿<template>
+<template>
   <div class="container-fluid">
     <h3 class="text-start mb-4 text-dark font-weight-bold">Payment Details</h3>
     <div v-if="loading">
@@ -192,14 +192,47 @@ const fetchOrderDetails = async () => {
 onMounted(() => {
   fetchOrderDetails();
 });
+const proceedToPayment = async () => {
+  if (!order.value || !order.value.order_code) {
+    alert('Data order tidak ditemukan');
+    return;
+  }
 
-const proceedToPayment = () => {
-  // This is where you would implement the Stripe Checkout integration.
-  // For now, we can just log that the action was triggered or navigate to a placeholder payment page.
-  alert('Proceeding to payment process...');
-  // Example: redirect to a Stripe checkout page or trigger Stripe.js
-  // window.location.href = '/stripe-checkout?order_code=' + order.value.order_code; 
-  // Or trigger Stripe.js elements directly
+  try {
+    const headers = {
+      'Content-Type': 'application/json'
+    };
+
+    const token = localStorage.getItem('token');
+    if (token) {
+      headers['Authorization'] = 'Bearer ' + token;
+    }
+
+    const res = await fetch(`${import.meta.env.VITE_API_BASE_URL}/api/create-checkout-session`, {
+      method: 'POST',
+      headers: headers,
+      body: JSON.stringify({
+        order_code: order.value.order_code
+      })
+    });
+
+    if (!res.ok) {
+      const errorData = await res.json();
+      throw new Error(errorData.message || 'Gagal membuat sesi pembayaran');
+    }
+
+    const data = await res.json();
+    
+    if (data.url) {
+      window.location.href = data.url;
+    } else {
+      throw new Error('URL pembayaran tidak ditemukan');
+    }
+
+  } catch (err) {
+    console.error('Payment Error:', err);
+    alert('Gagal ke payment: ' + err.message);
+  }
 };
 </script>
 
