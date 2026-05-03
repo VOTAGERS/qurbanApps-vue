@@ -43,6 +43,12 @@
               <span class="pc-mtext">Order Menu</span>
             </router-link>
           </li>
+          <li class="pc-item">
+            <router-link to="/admin/users" class="pc-link">
+              <span class="pc-micon"><i class="ti ti-users"></i></span>
+              <span class="pc-mtext">User Menu</span>
+            </router-link>
+          </li>
         </ul>
       </div>
     </div>
