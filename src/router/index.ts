@@ -2,21 +2,25 @@ import { createRouter, createWebHistory } from 'vue-router'
 
 // Layout
 import AdminLayout from '../layouts/AdminLayout.vue'
+import PublicLayout from '../layouts/PublicLayout.vue'
 
 // Pages
-import Landing from '../views/Landing.vue'
 import { adminRoutes } from './routes/admin'
-
-
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
   routes: [
-    // ✅ LANDING PAGE (tanpa admin layout)
+    // ✅ PUBLIC AREA (Landing, etc.)
     {
-      path: '',
-      name: 'landing',
-      component: Landing,
+      path: '/',
+      component: PublicLayout,
+      children: [
+        {
+          path: '',
+          name: 'landing',
+          component: () => import('../views/Landing.vue'),
+        }
+      ]
     },
 
     // ✅ ADMIN AREA
@@ -24,6 +28,10 @@ const router = createRouter({
       path: '/admin',
       component: AdminLayout,
       children: [
+        {
+          path: '',
+          redirect: '/admin/checkout'
+        },
         ...adminRoutes
       ]
     }

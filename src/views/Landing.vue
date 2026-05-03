@@ -350,53 +350,7 @@
 </template>
 
 <script setup>
-import { onMounted, onUnmounted } from 'vue'
-
-onMounted(() => {
-  // Load Landing Page CSS
-  const styles = [
-    '/assets/css/bootstrap.css',
-    '/assets/css/flexslider.css',
-    '/assets/css/icomoon.css',
-    '/assets/css/tasty-style.css'
-  ];
-  
-  styles.forEach(href => {
-    const link = document.createElement('link');
-    link.rel = 'stylesheet';
-    link.href = href;
-    link.id = 'landing-css-' + href.split('/').pop().replace('.css', '');
-    document.head.appendChild(link);
-  });
-
-  // Load Landing Page Scripts
-  const scripts = [
-    '/assets/js/jquery.min.js',
-    '/assets/js/jquery.easing.1.3.js',
-    '/assets/js/jquery.flexslider-min.js',
-    '/assets/js/jquery.waypoints.min.js',
-    '/assets/js/jquery.stellar.min.js',
-    '/assets/js/main.js'
-  ];
-
-  const loadScript = (index) => {
-    if (index >= scripts.length) return;
-    const script = document.createElement('script');
-    script.src = scripts[index];
-    script.id = 'landing-js-' + index;
-    script.onload = () => loadScript(index + 1);
-    document.body.appendChild(script);
-  };
-
-  loadScript(0);
-})
-
-onUnmounted(() => {
-  // Cleanup CSS
-  document.querySelectorAll('link[id^="landing-css-"]').forEach(el => el.remove());
-  // Cleanup JS (optional)
-  document.querySelectorAll('script[id^="landing-js-"]').forEach(el => el.remove());
-})
+// Landing page logic here if needed
 </script>
 
 <style scoped>

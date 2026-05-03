@@ -3,7 +3,7 @@
   <nav class="pc-sidebar">
     <div class="navbar-wrapper">
       <div class="m-header">
-        <router-link to="/" class="b-brand text-primary d-flex align-items-center">
+        <router-link to="/admin/checkout" class="b-brand text-primary d-flex align-items-center">
           <img src="/assets/images/favicon.svg" alt="" class="logo logo-lg me-2" style="width: 35px;" />
           <span class="brand-name fw-bold fs-4 text-primary">{{ appName }}</span>
         </router-link>
