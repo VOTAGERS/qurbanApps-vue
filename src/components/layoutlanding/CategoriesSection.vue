@@ -35,13 +35,14 @@
             <div class="cat-for">{{ item.for }}</div>
             <div class="cat-price">{{ item.price }}<sup>{{ item.priceSup }}</sup></div>
             <p>{{ item.desc }}</p>
-            <a
-              href="#"
+            <!-- ← Tombol diubah ke button + router -->
+            <button
               class="cat-btn"
               :class="item.featured ? 'cat-btn-gold' : 'cat-btn-outline'"
+              @click="pesanSekarang(item)"
             >
               Pesan Sekarang
-            </a>
+            </button>
           </div>
         </div>
       </div>
@@ -50,10 +51,16 @@
 </template>
 
 <script setup>
+import { useRouter } from 'vue-router'
+import { useCheckout } from '@/composables/useCheckout'
+const router = useRouter()
+
 defineProps({
   categories: { type: Array,   default: () => [] },
   loading:    { type: Boolean, default: true },
   error:      { type: String,  default: null },
 })
 defineEmits(['retry'])
+
+const { pesanSekarang } = useCheckout()
 </script>

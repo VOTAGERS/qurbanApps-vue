@@ -11,45 +11,45 @@ const FALLBACK_IMAGES = [
 
 function formatPrice(value) {
   return new Intl.NumberFormat('id-ID', {
-    style: 'currency',
-    currency: 'IDR',
-    minimumFractionDigits: 0,
+    style: 'currency', currency: 'IDR', minimumFractionDigits: 0,
   }).format(Number(value ?? 0))
 }
 
 function mapItem(item, index) {
   return {
-    id: item.id,
+    id:       item.id,
     featured: index === 0,
-    title: item.product_woo?.name ?? 'Produk Qurban',
-    for: `Maks. ${item.max_share} orang`,
-    price: formatPrice(item.product_woo?.price),
+    title:    item.product_woo?.name ?? 'Produk Qurban',
+    for:      `Maks. ${item.max_share} orang`,
+    price:    formatPrice(item.product_woo?.price),
     priceSup: '/ekor',
-    desc: `${item.status === 'A' ? '✓ Tersedia' : '✗ Tidak Tersedia'} · Maks. ${item.max_share} orang`,
-    img: FALLBACK_IMAGES[index % FALLBACK_IMAGES.length],
-    status: item.status,
+    desc:     `${item.status === 'A' ? '✓ Tersedia' : '✗ Tidak Tersedia'} · Maks. ${item.max_share} orang`,
+    img:      FALLBACK_IMAGES[index % FALLBACK_IMAGES.length],
+    status:   item.status,
+    // ← Field tambahan untuk checkout
+    rawPrice: Number(item.product_woo?.price ?? 0),
+    maxShare: item.max_share,
   }
 }
 
 export function useCategories() {
   const categories = ref([])
-  const loading = ref(true)
-  const error = ref(null)
+  const loading    = ref(true)
+  const error      = ref(null)
 
   async function fetchCategories() {
     try {
-      const res = await fetch(API_URL)
+      const res  = await fetch(API_URL)
       if (!res.ok) throw new Error(`HTTP ${res.status}`)
       const json = await res.json()
-
       if (json.success && json.data) {
         categories.value = json.data.map(mapItem)
       } else {
         error.value = 'Data produk tidak ditemukan.'
       }
     } catch (e) {
-      console.error('[useCategories] fetch error:', e)
-      error.value = 'Gagal memuat data produk. Periksa koneksi API.'
+      console.error('[useCategories]', e)
+      error.value = 'Gagal memuat data produk.'
     } finally {
       loading.value = false
     }
