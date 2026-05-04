@@ -173,7 +173,7 @@ const fetchOrderDetails = async () => {
 
   try {
     // Use environment variable for API base URL
-    const response = await axios.get(`${import.meta.env.VITE_API_BASE_URL}/api/orders/${orderCode}`);
+    const response = await axios.get(`${import.meta.env.VITE_API_BASE_URL}/api/order-details/${orderCode}`);
     console.log('Full API Response:', response); // Log full response
     order.value = response.data.data;
     console.log('Order details fetched:', order.value);
