@@ -1,4 +1,4 @@
-﻿<template>
+<template>
   <div>
     <!-- [ breadcrumb ] start -->
     <div class="page-header">
@@ -188,7 +188,7 @@ let modalInstance: any = null
 
 const fetchProductDetails = async () => {
   try {
-    const response = await fetch('http://localhost:8000/api/products-detail')
+    const response = await fetch(`${import.meta.env.VITE_API_BASE_URL}/api/products-detail`)
     const result = await response.json()
     if (result.success) {
       productDetails.value = result.data
@@ -239,8 +239,8 @@ const openModal = (detail?: ProductDetailData) => {
 const saveDetail = async () => {
   try {
     const url = editMode.value 
-      ? `http://localhost:8000/api/products-detail/${editId.value}`
-      : 'http://localhost:8000/api/products-detail'
+      ? `${import.meta.env.VITE_API_BASE_URL}/api/products-detail/${editId.value}`
+      : `${import.meta.env.VITE_API_BASE_URL}/api/products-detail`
       
     const method = editMode.value ? 'PUT' : 'POST'
 
@@ -300,7 +300,7 @@ const deleteDetail = async (id: number) => {
   if (!confirmResult.isConfirmed) return;
   
   try {
-    const response = await fetch(`http://localhost:8000/api/products-detail/${id}`, {
+    const response = await fetch(`${import.meta.env.VITE_API_BASE_URL}/api/products-detail/${id}`, {
       method: 'DELETE',
       headers: {
         'Accept': 'application/json'

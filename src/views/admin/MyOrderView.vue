@@ -1,4 +1,4 @@
-﻿<template>
+<template>
   <div>
     <!-- [ breadcrumb ] start -->
     <div class="page-header">
@@ -47,8 +47,8 @@
                   </tr>
                 </thead>
                 <tbody>
-                  <tr v-for="(order, index) in orders" :key="order.id_order">
-                    <td>{{ index + 1 }}</td>
+                  <tr v-for="(order, index) in paginatedOrders" :key="order.id_order">
+                    <td>{{ (currentPage - 1) * itemsPerPage + index + 1 }}</td>
                     <td><span class="fw-bold text-primary">{{ order.order_code }}</span></td>
                     <td>{{ order.product_woo?.name || 'N/A' }}</td>
                     <td>{{ order.quantity }}</td>
@@ -78,6 +78,26 @@
                 </tbody>
               </table>
             </div>
+
+            <!-- Pagination Controls -->
+            <div v-if="orders.length > itemsPerPage" class="d-flex align-items-center justify-content-between p-3 border-top mt-3">
+              <div class="text-muted small">
+                Showing {{ startItem }} to {{ endItem }} of {{ orders.length }} entries
+              </div>
+              <nav>
+                <ul class="pagination pagination-sm mb-0">
+                  <li class="page-item" :class="{ disabled: currentPage === 1 }">
+                    <button class="page-link" @click="currentPage--">Previous</button>
+                  </li>
+                  <li class="page-item" :class="{ active: currentPage === page }" v-for="page in totalPages" :key="page">
+                    <button class="page-link" @click="currentPage = page">{{ page }}</button>
+                  </li>
+                  <li class="page-item" :class="{ disabled: currentPage === totalPages }">
+                    <button class="page-link" @click="currentPage++">Next</button>
+                  </li>
+                </ul>
+              </nav>
+            </div>
           </div>
         </div>
       </div>
@@ -87,8 +107,9 @@
 </template>
 
 <script setup lang="ts">
-import { ref, onMounted } from 'vue'
+import { ref, onMounted, computed } from 'vue'
 
+const API_URL = import.meta.env.VITE_API_BASE_URL
 const defaultCurrency = import.meta.env.VITE_DEFAULT_CURRENCY || 'IDR'
 const locale = defaultCurrency === 'IDR' ? 'id-ID' : (defaultCurrency === 'SGD' ? 'en-SG' : (defaultCurrency === 'MYR' ? 'en-MY' : 'en-US'))
 
@@ -97,12 +118,12 @@ const formatCurrency = (value: string | number) => {
 }
 
 const orders = ref<any[]>([])
+const currentPage = ref(1)
+const itemsPerPage = ref(10)
 
 const fetchMyOrders = async () => {
   try {
-    // For now, we fetch all orders but label it "My Orders"
-    // In a real app, you would fetch by user_id or with auth headers
-    const response = await fetch(`${import.meta.env.VITE_API_BASE_URL}/api/orders`)
+    const response = await fetch(`${API_URL}/api/orders`)
     const result = await response.json()
     if (result.success) {
       orders.value = result.data
@@ -111,6 +132,17 @@ const fetchMyOrders = async () => {
     console.error('Failed to fetch orders:', error)
   }
 }
+
+// Pagination Logic
+const totalPages = computed(() => Math.ceil(orders.value.length / itemsPerPage.value))
+const startItem = computed(() => ((currentPage.value - 1) * itemsPerPage.value) + 1)
+const endItem = computed(() => Math.min(currentPage.value * itemsPerPage.value, orders.value.length))
+
+const paginatedOrders = computed(() => {
+  const start = (currentPage.value - 1) * itemsPerPage.value
+  const end = start + itemsPerPage.value
+  return orders.value.slice(start, end)
+})
 
 const getPaymentBadgeClass = (status: string) => {
   switch (status) {
@@ -132,3 +164,9 @@ onMounted(() => {
   fetchMyOrders()
 })
 </script>
+
+<style scoped>
+.page-link {
+  cursor: pointer;
+}
+</style>

@@ -12,6 +12,18 @@ export default defineConfig(({ mode }) => {
     plugins: [
       vue(),
       vueDevTools(),
+      {
+        name: 'mpa-rewrite',
+        configureServer(server) {
+          server.middlewares.use((req, res, next) => {
+            // Jika request diawali /admin tapi bukan file statis (punya titik), arahkan ke admin.html
+            if (req.url && req.url.startsWith('/admin') && !req.url.includes('.')) {
+              req.url = '/admin.html';
+            }
+            next();
+          });
+        }
+      }
     ],
     resolve: {
       alias: {

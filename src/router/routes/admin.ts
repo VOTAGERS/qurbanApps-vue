@@ -23,6 +23,11 @@ export const adminRoutes = [
     component: () => import('../../views/admin/MyOrderView.vue'),
   },
   {
+    path: 'users',
+    name: 'users',
+    component: () => import('../../views/admin/UserListView.vue'),
+  },
+  {
     path: 'payment',
     name: 'payment',
     component: PaymentView,

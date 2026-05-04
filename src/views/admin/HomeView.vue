@@ -1,4 +1,4 @@
-﻿<script setup lang="ts">
+<script setup lang="ts">
 import { ref, reactive, watch, onMounted } from 'vue'
 import axios from 'axios'
 import { useRouter } from 'vue-router' // Import useRouter
@@ -102,7 +102,12 @@ const processPayment = async () => {
     }
 
     const response = await axios.post(`${import.meta.env.VITE_API_BASE_URL}/api/checkout`, payload)
-    router.push({ name: 'payment', query: { order_code: response.data.order.order_code } })
+    
+    if (response.data.checkout_url) {
+      window.location.href = response.data.checkout_url
+    } else {
+      router.push({ name: 'payment', query: { order_code: response.data.order.order_code } })
+    }
     // alert('Checkout successful! Order Code: ' + response.data.order.order_code)
   } catch (error) {
     console.error('Checkout error:', error)
