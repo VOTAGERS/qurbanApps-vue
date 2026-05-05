@@ -49,5 +49,16 @@ export const adminRoutes = [
     path: 'order-detail',
     name: 'order-detail',
     component: () => import('../../views/admin/OrderDetailView.vue'),
+  },
+  {
+    path: 'certificates',
+    name: 'certificates',
+    component: () => import('../../views/admin/CertificateView.vue'),
+  },
+  {
+    path: 'certificate-participants/:id',
+    name: 'certificate-participants',
+    component: () => import('../../views/admin/CertificateParticipantView.vue'),
+    props: true
   }
 ]

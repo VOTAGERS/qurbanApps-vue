@@ -21,6 +21,12 @@
                 <span class="pc-mtext">My Order</span>
               </router-link>
             </li>
+            <li class="pc-item">
+              <router-link to="/admin/certificates" class="pc-link">
+                <span class="pc-micon"><i class="ti ti-certificate"></i></span>
+                <span class="pc-mtext">Certificate Menu</span>
+              </router-link>
+            </li>
           <!-- </template> commented for customer-->
 
           <!-- <template v-if="authStore.isAdmin"> commented for admin-->
