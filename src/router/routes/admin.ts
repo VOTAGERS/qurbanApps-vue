@@ -34,5 +34,15 @@ export const adminRoutes = [
     props: (route: any) => ({
       order_code: route.query.order_code
     })
+  },
+  {
+    path: 'role-access',
+    name: 'role-access',
+    component: () => import('../../views/admin/RoleAccessView.vue'),
+  },
+  {
+    path: 'user-access',
+    name: 'user-access',
+    component: () => import('../../views/admin/UserAccessView.vue'),
   }
 ]

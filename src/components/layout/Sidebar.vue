@@ -10,52 +10,70 @@
       </div>
       <div class="navbar-content">
         <ul class="pc-navbar">
-          <li class="pc-item pc-caption">
-            <label>Dashboard</label>
-            <i class="ti ti-dashboard"></i>
-          </li>
-          <li class="pc-item">
-            <router-link to="/admin/checkout" class="pc-link">
-              <span class="pc-micon"><i class="ti ti-shopping-cart"></i></span>
-              <span class="pc-mtext">Checkout Simulation</span>
-            </router-link>
-          </li>
-          <li class="pc-item">
-            <router-link to="/admin/my-orders" class="pc-link">
-              <span class="pc-micon"><i class="ti ti-history"></i></span>
-              <span class="pc-mtext">My Order</span>
-            </router-link>
-          </li>
+          <!-- <template v-if="authStore.isCustomer"> commented for customer-->
+            <li class="pc-item pc-caption">
+              <label>Dashboard</label>
+              <i class="ti ti-dashboard"></i>
+            </li>
+            <li class="pc-item">
+              <router-link to="/admin/checkout" class="pc-link">
+                <span class="pc-micon"><i class="ti ti-shopping-cart"></i></span>
+                <span class="pc-mtext">Checkout Simulation</span>
+              </router-link>
+            </li>
+            <li class="pc-item">
+              <router-link to="/admin/my-orders" class="pc-link">
+                <span class="pc-micon"><i class="ti ti-history"></i></span>
+                <span class="pc-mtext">My Order</span>
+              </router-link>
+            </li>
+          <!-- </template> commented for customer-->
 
-          <li class="pc-item pc-caption">
-            <label>Management</label>
-            <i class="ti ti-apps"></i>
-          </li>
-          <li class="pc-item">
-            <router-link to="/admin/products-detail" class="pc-link">
-              <span class="pc-micon"><i class="ti ti-box"></i></span>
-              <span class="pc-mtext">Product Menu</span>
-            </router-link>
-          </li>
-          <li class="pc-item">
-            <router-link to="/admin/orders" class="pc-link">
-              <span class="pc-micon"><i class="ti ti-shopping-cart"></i></span>
-              <span class="pc-mtext">Order Menu</span>
-            </router-link>
-          </li>
-          <li class="pc-item">
-            <router-link to="/admin/users" class="pc-link">
-              <span class="pc-micon"><i class="ti ti-users"></i></span>
-              <span class="pc-mtext">User Menu</span>
-            </router-link>
-          </li>
+          <!-- <template v-if="authStore.isAdmin"> commented for admin-->
+            <li class="pc-item pc-caption">
+              <label>Management</label>
+              <i class="ti ti-apps"></i>
+            </li>
+            <li class="pc-item">
+              <router-link to="/admin/products-detail" class="pc-link">
+                <span class="pc-micon"><i class="ti ti-box"></i></span>
+                <span class="pc-mtext">Product Menu</span>
+              </router-link>
+            </li>
+            <li class="pc-item">
+              <router-link to="/admin/orders" class="pc-link">
+                <span class="pc-micon"><i class="ti ti-shopping-cart"></i></span>
+                <span class="pc-mtext">Order Menu</span>
+              </router-link>
+            </li>
+            <li class="pc-item">
+              <router-link to="/admin/users" class="pc-link">
+                <span class="pc-micon"><i class="ti ti-users"></i></span>
+                <span class="pc-mtext">User Menu</span>
+              </router-link>
+            </li>
+            <li class="pc-item">
+              <router-link to="/admin/role-access" class="pc-link">
+                <span class="pc-micon"><i class="ti ti-lock"></i></span>
+                <span class="pc-mtext">Role Access Menu</span>
+              </router-link>
+            </li>
+            <li class="pc-item">
+              <router-link to="/admin/user-access" class="pc-link">
+                <span class="pc-micon"><i class="ti ti-shield-lock"></i></span>
+                <span class="pc-mtext">User Access Menu</span>
+              </router-link>
+            </li>
+          <!-- </template> commented for admin-->
         </ul>
       </div>
     </div>
   </nav>
-  <!-- [ Sidebar Menu ] end -->
 </template>
 
 <script setup lang="ts">
+import { useAuthStore } from '../../stores/auth'
+
+const authStore = useAuthStore()
 const appName = import.meta.env.VITE_APP_NAME || 'QurbanHub'
 </script>
