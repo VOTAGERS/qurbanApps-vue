@@ -146,6 +146,7 @@
               </button>
             </div>
           </transition>
+
           <transition name="slide-fade">
             <div v-if="currentStep === 2" class="form-card" key="step2">
               <div class="card-header">
@@ -213,6 +214,7 @@
               </div>
             </div>
           </transition>
+
           <transition name="slide-fade">
             <div v-if="currentStep === 3" class="form-card" key="step3">
               <div class="card-header">
@@ -279,6 +281,7 @@
                   SSL Terenkripsi
                 </div>
               </div>
+
               <div class="stripe-form">
                 <div class="stripe-field-group">
                   <label class="stripe-label">Nomor Kartu</label>
@@ -444,24 +447,24 @@
                     <path d="M23 21v-2a4 4 0 0 0-3-3.87" />
                     <path d="M16 3.13a4 4 0 0 1 0 7.75" />
                   </svg>
-                  Maks. {{ maxShare }} person
+                  Maks. {{ maxShare }} orang
                 </div>
               </div>
             </div>
 
             <div class="price-breakdown">
               <div class="price-row">
-                <span>Animal prices</span><span>{{ formatPrice(productPrice) }}</span>
+                <span>Harga hewan</span><span>{{ formatPrice(productPrice) }}</span>
               </div>
-              <!-- <div class="price-row">
-                <span>Administrative costs</span><span class="free">Gratis</span>
+              <div class="price-row">
+                <span>Biaya administrasi</span><span class="free">Gratis</span>
               </div>
               <div class="price-row">
                 <span>Biaya distribusi</span><span class="free">Gratis</span>
-              </div> -->
+              </div>
               <div class="price-divider"></div>
               <div class="price-row total">
-                <span>Total payment</span>
+                <span>Total Pembayaran</span>
                 <span class="total-amount">{{ formatPrice(productPrice) }}</span>
               </div>
             </div>
@@ -500,7 +503,7 @@
                 <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z" />
               </svg>
               <div>
-                <strong>Need help?</strong>
+                <strong>Butuh bantuan?</strong>
                 <p>
                   WhatsApp:
                   <a href="https://wa.me/628123456789" target="_blank">+62 812 3456 789</a>
@@ -593,9 +596,7 @@ const productName = computed(() => parsedParams.value.name)
 const productPrice = computed(() => parsedParams.value.price)
 const maxShare = computed(() => parsedParams.value.share)
 const description = computed(() => parsedParams.value.desc)
-
 const currentStep = ref(1)
-
 const buyer = ref({
   firstName: '',
   lastName: '',
@@ -718,7 +719,7 @@ async function mountStripeElements() {
           boxShadow: '0 0 0 3px rgba(220,38,38,0.06)',
         },
         '.Label': {
-          display: 'none', 
+          display: 'none',
         },
       },
     },
@@ -742,7 +743,6 @@ async function mountStripeElements() {
   cardNumber.mount('#card-number-element')
   cardExpiry.mount('#card-expiry-element')
   cardCvc.mount('#card-cvc-element')
-
   cardNumber.on('focus', () => (focusedField.value = 'number'))
   cardNumber.on('blur', () => (focusedField.value = null))
   cardExpiry.on('focus', () => (focusedField.value = 'expiry'))
@@ -780,17 +780,16 @@ function destroyStripeElements() {
 }
 
 onUnmounted(() => destroyStripeElements())
-
 const agreedToTerms = ref(false)
 const isProcessing = ref(false)
 const showSuccess = ref(false)
 const orderNumber = ref('')
 
 const trustList = [
- 'Animals certified by a veterinarian',
-'Slaughtered by trained slaughterers',
-'Distribution report with photos',
-'100% compliant with Islamic law',
+  'Hewan disertifikasi dokter hewan',
+  'Pemotongan oleh juru sembelih terlatih',
+  'Laporan distribusi dengan foto',
+  '100% Sesuai syariah Islam',
 ]
 
 async function handlePayment() {
@@ -806,12 +805,36 @@ async function handlePayment() {
   isProcessing.value = true
 
   try {
-    const { data } = await axios.post('/api/checkout/create-payment-intent', {
-      order_id: productId.value,
-      amount: productPrice.value,
-      buyer: buyer.value,
-      recipients: recipients.value,
-      payment_method: 'card',
+    const { data } = await axios.post('http://localhost:8000/api/checkout/create-payment-intent', {
+      product_id: productId.value,
+      quantity: 1,
+      total_price: productPrice.value,
+      billing: {
+        first_name: buyer.value.firstName,
+        last_name: buyer.value.lastName,
+        phone: buyer.value.phone,
+        email: buyer.value.email,
+        address: buyer.value.address,
+        city: buyer.value.city,
+        province: buyer.value.province,
+        postal_code: buyer.value.postalCode,
+      },
+      shipping: {
+        first_name: buyer.value.firstName,
+        last_name: buyer.value.lastName,
+        phone: buyer.value.phone,
+        email: buyer.value.email,
+        address: buyer.value.address,
+        city: buyer.value.city,
+        province: buyer.value.province,
+        postal_code: buyer.value.postalCode,
+      },
+      recipients: recipients.value.map((r) => ({
+        qurban_name: r.name,
+        email: r.email || null,
+        phone_number: r.phone || null,
+        remarks: null,
+      })),
     })
 
     const clientSecret = data.client_secret
@@ -840,8 +863,8 @@ async function handlePayment() {
     }
 
     if (paymentIntent.status === 'succeeded') {
-      await axios.post('/api/checkout/confirm-payment', {
-        order_id: productId.value,
+      await axios.post('http://localhost:8000/api/checkout/confirm-payment', {
+        order_code: data.order_code, 
         payment_intent_id: paymentIntent.id,
       })
 
@@ -1139,7 +1162,6 @@ input.error {
   font-weight: 700;
 }
 
-/* ─── Card Brands ──────────────────────────────── */
 .card-brands {
   display: flex;
   align-items: center;
@@ -1173,7 +1195,6 @@ input.error {
   padding: 4px 10px;
 }
 
-/* ─── Stripe Form ─────────────────────────────── */
 .stripe-form {
   display: flex;
   flex-direction: column;
@@ -1192,7 +1213,6 @@ input.error {
   letter-spacing: 0.01em;
 }
 
-/* Container untuk Stripe iframe */
 .stripe-input {
   border: 1.5px solid var(--gr200);
   border-radius: 10px;
@@ -1212,7 +1232,6 @@ input.error {
   box-shadow: 0 0 0 3px rgba(220, 38, 38, 0.06);
 }
 
-/* Input teks biasa untuk nama cardholder */
 .stripe-text-input {
   padding: 0 14px !important;
   height: 46px !important;
@@ -1263,7 +1282,6 @@ input.error {
   font-weight: 500;
 }
 
-/* ─── Buttons ─────────────────────────────────── */
 .btn-next {
   margin-top: 28px;
   width: 100%;
@@ -1367,8 +1385,6 @@ input.error {
     transform: rotate(360deg);
   }
 }
-
-/* ─── Terms ───────────────────────────────────── */
 .terms-box {
   padding: 16px;
   background: var(--gr100);
@@ -1398,8 +1414,6 @@ input.error {
 .terms-check a:hover {
   text-decoration: underline;
 }
-
-/* ─── Summary ─────────────────────────────────── */
 .summary-column {
   position: sticky;
   top: 88px;
@@ -1547,7 +1561,6 @@ input.error {
   font-weight: 600;
 }
 
-/* ─── Modal ───────────────────────────────────── */
 .modal-overlay {
   position: fixed;
   inset: 0;
@@ -1627,7 +1640,6 @@ input.error {
   box-shadow: 0 8px 24px rgba(29, 58, 29, 0.3);
 }
 
-/* ─── Transitions ─────────────────────────────── */
 .slide-fade-enter-active {
   transition: all 0.35s cubic-bezier(0.22, 1, 0.36, 1);
 }
@@ -1644,7 +1656,6 @@ input.error {
   opacity: 0;
 }
 
-/* ─── Responsive ──────────────────────────────── */
 @media (max-width: 900px) {
   .checkout-grid {
     grid-template-columns: 1fr;
