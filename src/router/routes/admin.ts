@@ -44,5 +44,10 @@ export const adminRoutes = [
     path: 'user-access',
     name: 'user-access',
     component: () => import('../../views/admin/UserAccessView.vue'),
+  },
+  {
+    path: 'order-detail',
+    name: 'order-detail',
+    component: () => import('../../views/admin/OrderDetailView.vue'),
   }
 ]

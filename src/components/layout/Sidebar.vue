@@ -16,12 +16,6 @@
               <i class="ti ti-dashboard"></i>
             </li>
             <li class="pc-item">
-              <router-link to="/admin/checkout" class="pc-link">
-                <span class="pc-micon"><i class="ti ti-shopping-cart"></i></span>
-                <span class="pc-mtext">Checkout Simulation</span>
-              </router-link>
-            </li>
-            <li class="pc-item">
               <router-link to="/admin/my-orders" class="pc-link">
                 <span class="pc-micon"><i class="ti ti-history"></i></span>
                 <span class="pc-mtext">My Order</span>
@@ -64,6 +58,12 @@
                 <span class="pc-mtext">User Access Menu</span>
               </router-link>
             </li>
+            <li class="pc-item">
+              <router-link to="/admin/checkout" class="pc-link">
+                <span class="pc-micon"><i class="ti ti-shopping-cart"></i></span>
+                <span class="pc-mtext">Checkout Simulation</span>
+              </router-link>
+            </li>
           <!-- </template> commented for admin-->
         </ul>
       </div>
@@ -77,3 +77,7 @@ import { useAuthStore } from '../../stores/auth'
 const authStore = useAuthStore()
 const appName = import.meta.env.VITE_APP_NAME || 'QurbanHub'
 </script>
+
+<style scoped>
+/* Sidebar styles */
+</style>

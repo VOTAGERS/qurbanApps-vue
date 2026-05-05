@@ -805,7 +805,7 @@ async function handlePayment() {
   isProcessing.value = true
 
   try {
-    const { data } = await axios.post('http://localhost:8000/api/checkout/create-payment-intent', {
+    const { data } = await axios.post(`${import.meta.env.VITE_API_BASE_URL}/api/checkout/create-payment-intent`, {
       product_id: productId.value,
       quantity: 1,
       total_price: productPrice.value,
@@ -863,7 +863,7 @@ async function handlePayment() {
     }
 
     if (paymentIntent.status === 'succeeded') {
-      await axios.post('http://localhost:8000/api/checkout/confirm-payment', {
+      await axios.post(`${import.meta.env.VITE_API_BASE_URL}/api/checkout/confirm-payment`, {
         order_code: data.order_code, 
         payment_intent_id: paymentIntent.id,
       })
