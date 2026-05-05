@@ -76,7 +76,7 @@
                       <span v-else class="badge bg-light-warning text-warning">Pending</span>
                     </td>
                     <td class="text-end">
-                      <a v-if="participant.certificate" :href="participant.certificate.file_url" target="_blank" class="btn btn-sm btn-light-primary" title="Download">
+                      <a v-if="participant.certificate" :href="`${apiBaseUrl}/api/certificates/download/${participant.certificate.id_certificate}`" class="btn btn-sm btn-light-primary" title="Download">
                         <i class="ti ti-download"></i>
                       </a>
                       <span v-else class="text-muted small">No File</span>
