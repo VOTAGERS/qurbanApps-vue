@@ -11,7 +11,7 @@
         </p>
         <div class="cta-btns">
           <a href="#hewan" class="btn-gold btn-lg">Order Now</a>
-          <a href="#kontak" class="btn-ghost btn-lg">Hubungi Kami</a>
+          <!-- <a href="#kontak" class="btn-ghost btn-lg">Hubungi Kami</a> -->
         </div>
       </div>
     </div>

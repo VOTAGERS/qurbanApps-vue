@@ -12,11 +12,11 @@ function mapItem(item, index) {
   return {
     id:       item.id,
     featured: index === 0,
-    title:    item.product_woo?.name ?? 'Produk Qurban',
-    for:      `Maks. ${item.max_share} orang`,
+    title:    item.product_woo?.name ?? 'Qurbani Products',
+    for:      `Maks. ${item.max_share} people`,
     price:    formatPrice(item.product_woo?.price),
     priceSup: '/ekor',
-    desc:     `${item.status === 'A' ? '✓ Tersedia' : '✗ Tidak Tersedia'} · Maks. ${item.max_share} orang`,
+    desc:     `${item.status === 'A' ? '✓ Tersedia' : '✗ Tidak Tersedia'} · Maks. ${item.max_share} people`,
     img:      item.product_woo?.image ?? null,
     status:   item.status,
     rawPrice: Number(item.product_woo?.price ?? 0),
@@ -37,11 +37,11 @@ export function useCategories() {
       if (json.success && json.data) {
         categories.value = json.data.map(mapItem)
       } else {
-        error.value = 'Data produk tidak ditemukan.'
+        error.value = 'Product data not found.'
       }
     } catch (e) {
       console.error('[useCategories]', e)
-      error.value = 'Gagal memuat data produk.'
+      error.value = 'Failed to load product data.'
     } finally {
       loading.value = false
     }
