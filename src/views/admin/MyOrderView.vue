@@ -64,6 +64,9 @@
                       </span>
                     </td>
                     <td class="text-end">
+                      <router-link :to="{ name: 'order-detail', query: { order_code: order.order_code } }" class="btn btn-sm btn-light-info me-1" title="View Detail">
+                        <i class="ti ti-eye"></i>
+                      </router-link>
                       <router-link :to="{ name: 'payment', query: { order_code: order.order_code } }" class="btn btn-sm btn-light-primary" title="Payment Details">
                         <i class="ti ti-credit-card"></i>
                       </router-link>
