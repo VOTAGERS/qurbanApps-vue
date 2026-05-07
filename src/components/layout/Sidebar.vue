@@ -4,8 +4,8 @@
     <div class="navbar-wrapper">
       <div class="m-header">
         <router-link to="/admin/checkout" class="b-brand text-primary d-flex align-items-center">
-          <img src="/assets/images/favicon.svg" alt="" class="logo logo-lg me-2" style="width: 35px;" />
-          <span class="brand-name fw-bold fs-4 text-primary">{{ appName }}</span>
+          <img src="/assets/images/logos/ILM logo white.jpeg" alt="" class="logo logo-lg me-2 rounded-circle" style="width: 45px; height: 45px; object-fit: cover; border: 2px solid rgba(255,255,255,0.2);" />
+          <span class="brand-name fw-bold fs-4 text-white">{{ appName }}</span>
         </router-link>
       </div>
       <div class="navbar-content">

@@ -264,14 +264,14 @@ const saveDetail = async () => {
         title: 'Success!',
         text: `Product ${editMode.value ? 'updated' : 'created'} successfully!`,
         icon: 'success',
-        confirmButtonColor: '#007bff'
+        confirmButtonColor: '#7A1B2E'
       });
     } else {
       Swal.fire({
         title: 'Error!',
         text: 'Failed to save: ' + (result.message || 'Check your data'),
         icon: 'error',
-        confirmButtonColor: '#007bff'
+        confirmButtonColor: '#7A1B2E'
       });
       console.error(result.errors);
     }
@@ -281,7 +281,7 @@ const saveDetail = async () => {
       title: 'Error!',
       text: 'Failed to connect to backend server',
       icon: 'error',
-      confirmButtonColor: '#007bff'
+      confirmButtonColor: '#7A1B2E'
     });
   }
 }
@@ -313,7 +313,7 @@ const deleteDetail = async (id: number) => {
         title: 'Deleted!',
         text: 'Product deleted successfully!',
         icon: 'success',
-        confirmButtonColor: '#007bff'
+        confirmButtonColor: '#7A1B2E'
       });
       await fetchProductDetails()
     } else {
@@ -321,7 +321,7 @@ const deleteDetail = async (id: number) => {
         title: 'Failed!',
         text: 'Failed to delete product.',
         icon: 'error',
-        confirmButtonColor: '#007bff'
+        confirmButtonColor: '#7A1B2E'
       });
     }
   } catch (error) {
@@ -330,7 +330,7 @@ const deleteDetail = async (id: number) => {
       title: 'Error!',
       text: 'Failed to connect to backend server',
       icon: 'error',
-      confirmButtonColor: '#007bff'
+      confirmButtonColor: '#7A1B2E'
     });
   }
 }

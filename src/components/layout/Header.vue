@@ -34,7 +34,7 @@
             <div class="dropdown-menu dropdown-user-profile dropdown-menu-end pc-h-dropdown">
               <div class="dropdown-header">
                 <h4>
-                  Good Morning,
+                  Welcome,
                   <span class="small text-muted">Admin</span>
                 </h4>
                 <p class="text-muted">Project Admin</p>
