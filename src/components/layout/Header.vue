@@ -35,11 +35,11 @@
               <div class="dropdown-header">
                 <h4>
                   Welcome,
-                  <span class="small text-muted">Admin</span>
+                  <span class="small text-muted">{{ userName }}</span>
                 </h4>
-                <p class="text-muted">Project Admin</p>
+                <p class="text-muted">{{ userRole }}</p>
                 <hr />
-                <a href="#" class="dropdown-item">
+                <a href="#" class="dropdown-item" @click.prevent="handleLogout">
                   <i class="ti ti-logout"></i>
                   <span>Logout</span>
                 </a>
@@ -54,4 +54,40 @@
 </template>
 
 <script setup lang="ts">
+import { computed } from 'vue';
+import axios from 'axios';
+
+const user = JSON.parse(localStorage.getItem('user') || '{}');
+const roles = JSON.parse(localStorage.getItem('roles') || '[]');
+const appName = import.meta.env.VITE_APP_NAME || 'QurbanHub';
+
+const userName = computed(() => {
+  if (user.first_name) return `${user.first_name} ${user.last_name || ''}`;
+  return 'User';
+});
+
+const userRole = computed(() => {
+  if (roles.length > 0) {
+    return roles[0].role_name;
+  }
+  return 'Customer';
+});
+
+const handleLogout = async () => {
+  try {
+    const token = localStorage.getItem('token');
+    await axios.post(`${import.meta.env.VITE_API_BASE_URL}/api/logout`, {}, {
+      headers: {
+        Authorization: `Bearer ${token}`
+      }
+    });
+  } catch (error) {
+    console.error('Logout failed:', error);
+  } finally {
+    localStorage.removeItem('token');
+    localStorage.removeItem('user');
+    localStorage.removeItem('roles');
+    window.location.href = '/login';
+  }
+};
 </script>

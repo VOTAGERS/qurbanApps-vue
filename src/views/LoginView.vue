@@ -6,15 +6,37 @@
         <span class="logo-qurban">Qurban</span><span class="logo-hub">Hub</span> Admin
       </h2>
       
-      <!-- Step 1: Request OTP -->
-      <form v-if="step === 1" @submit.prevent="requestOtp" class="form-grid">
+      <!-- Login Method Toggle -->
+      <div v-if="step === 1" class="method-toggle mb-4">
+        <button 
+          type="button"
+          class="toggle-btn" 
+          :class="{ active: loginMethod === 'otp' }" 
+          @click="loginMethod = 'otp'"
+        >OTP</button>
+        <button 
+          type="button"
+          class="toggle-btn" 
+          :class="{ active: loginMethod === 'password' }" 
+          @click="loginMethod = 'password'"
+        >Password</button>
+      </div>
+
+      <!-- Step 1: Login Form -->
+      <form v-if="step === 1" @submit.prevent="loginMethod === 'otp' ? requestOtp() : loginWithPassword()" class="form-grid">
         <div class="field full">
           <label for="email" class="form-label">Email Address</label>
           <input type="email" id="email" v-model="email" placeholder="admin@qurbanhub.com" required />
         </div>
+
+        <div v-if="loginMethod === 'password'" class="field full">
+          <label for="password" class="form-label">Password</label>
+          <input type="password" id="password" v-model="password" placeholder="••••••••" required />
+        </div>
+
         <button type="submit" class="btn-pay mt-3" :disabled="isLoading">
           <span v-if="isLoading" class="spinner"></span>
-          <span v-else>Send OTP via Email</span>
+          <span v-else>{{ loginMethod === 'otp' ? 'Send OTP via Email' : 'Login' }}</span>
         </button>
       </form>
 
@@ -44,7 +66,9 @@ import { useRouter } from 'vue-router';
 import axios from 'axios';
 
 const step = ref(1);
+const loginMethod = ref('otp');
 const email = ref('');
+const password = ref('');
 const otpCode = ref('');
 const isLoading = ref(false);
 const router = useRouter();
@@ -62,6 +86,31 @@ const requestOtp = async () => {
   } catch (error: any) {
     console.error('Failed to send OTP:', error);
     alert(error.response?.data?.message || 'Failed to send OTP. Please check your email.');
+  } finally {
+    isLoading.value = false;
+  }
+};
+
+const loginWithPassword = async () => {
+  if (!email.value || !password.value) return;
+  isLoading.value = true;
+  try {
+    const response = await axios.post(`${import.meta.env.VITE_API_BASE_URL}/api/auth/login-password`, {
+      email: email.value,
+      password: password.value,
+    });
+
+    if (response.data.success) {
+      const { token, user, roles } = response.data.data;
+      localStorage.setItem('token', token);
+      localStorage.setItem('user', JSON.stringify(user));
+      localStorage.setItem('roles', JSON.stringify(roles));
+      
+      window.location.href = '/admin/my-orders';
+    }
+  } catch (error: any) {
+    console.error('Password login failed:', error);
+    alert(error.response?.data?.message || 'Invalid email or password.');
   } finally {
     isLoading.value = false;
   }
@@ -164,6 +213,34 @@ const verifyOtp = async () => {
   display: flex;
   flex-direction: column;
   gap: 1.25rem;
+}
+
+.method-toggle {
+  display: flex;
+  background: var(--gr100);
+  padding: 4px;
+  border-radius: 10px;
+  gap: 4px;
+}
+
+.toggle-btn {
+  flex: 1;
+  padding: 8px;
+  border: none;
+  background: transparent;
+  border-radius: 8px;
+  font-family: inherit;
+  font-weight: 600;
+  font-size: 0.9rem;
+  color: var(--gr400);
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.toggle-btn.active {
+  background: var(--white);
+  color: var(--g900);
+  box-shadow: 0 2px 8px rgba(0,0,0,0.05);
 }
 
 .field {

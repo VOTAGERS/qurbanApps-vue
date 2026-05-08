@@ -10,7 +10,7 @@ function formatPrice(value) {
 
 function mapItem(item, index) {
   return {
-    id:       item.id,
+    id:       item.idproduct_woo,
     featured: index === 0,
     title:    item.product_woo?.name ?? 'Qurbani Products',
     for:      `Maks. ${item.max_share} people`,

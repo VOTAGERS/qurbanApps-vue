@@ -2,10 +2,10 @@
   <!-- [ Sidebar Menu ] start -->
   <nav class="pc-sidebar">
     <div class="navbar-wrapper">
-      <div class="m-header">
-        <router-link to="/admin/checkout" class="b-brand text-primary d-flex align-items-center">
-          <img src="/assets/images/logos/ILM logo white.jpeg" alt="" class="logo logo-lg me-2 rounded-circle" style="width: 45px; height: 45px; object-fit: cover; border: 2px solid rgba(255,255,255,0.2);" />
-          <span class="brand-name fw-bold fs-4 text-white">{{ appName }}</span>
+      <div class="m-header" style="background: #ffffff; border-bottom: 1px solid rgba(0,0,0,0.05);">
+        <router-link to="/admin/checkout" class="b-brand d-flex align-items-center text-decoration-none">
+          <img src="/assets/images/logos/ILM logo white.jpeg" alt="logo" class="logo logo-lg me-2 rounded-circle" style="width: 45px; height: 45px; object-fit: cover; border: 1px solid rgba(0,0,0,0.1);" />
+          <span class="fw-bold fs-4" style="color: #7A1B2E;">{{ appName }}</span>
         </router-link>
       </div>
       <div class="navbar-content">
