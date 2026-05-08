@@ -36,7 +36,7 @@
 <style>
 .about {
   padding: 100px 0;
-  background: linear-gradient(180deg, #0b2e13 0%, #0a2410 100%);
+  background: linear-gradient(180deg, #000000 0%, #0a0a0a 100%);
   overflow: hidden;
 }
 
@@ -64,7 +64,7 @@
   width: 420px;
   height: 420px;
   border-radius: 50%;
-  border: 1px solid rgba(212, 175, 55, 0.15);
+  border: 1px solid rgba(220, 38, 38, 0.15);
   animation: rotateBorder 12s linear infinite;
 }
 
@@ -74,7 +74,7 @@
   width: 340px;
   height: 340px;
   border-radius: 50%;
-  border: 1px dashed rgba(212, 175, 55, 0.1);
+  border: 1px dashed rgba(220, 38, 38, 0.1);
   animation: rotateBorder 8s linear infinite reverse;
 }
 
@@ -92,10 +92,10 @@
   height: 380px;
   border-radius: 50%;
   overflow: hidden;
-  border: 3px solid rgba(212, 175, 55, 0.4);
+  border: 3px solid rgba(220, 38, 38, 0.4);
   box-shadow:
-    0 0 40px rgba(212, 175, 55, 0.15),
-    0 0 80px rgba(212, 175, 55, 0.08),
+    0 0 40px rgba(220, 38, 38, 0.15),
+    0 0 80px rgba(220, 38, 38, 0.08),
     0 20px 60px rgba(0, 0, 0, 0.5);
   animation: glowPulseAbout 3s ease-in-out infinite;
   z-index: 2;
@@ -118,14 +118,14 @@
   0%,
   100% {
     box-shadow:
-      0 0 30px rgba(212, 175, 55, 0.15),
-      0 0 60px rgba(212, 175, 55, 0.08),
+      0 0 30px rgba(220, 38, 38, 0.15),
+      0 0 60px rgba(220, 38, 38, 0.08),
       0 20px 60px rgba(0, 0, 0, 0.5);
   }
   50% {
     box-shadow:
-      0 0 50px rgba(212, 175, 55, 0.35),
-      0 0 100px rgba(212, 175, 55, 0.15),
+      0 0 50px rgba(220, 38, 38, 0.35),
+      0 0 100px rgba(220, 38, 38, 0.15),
       0 20px 60px rgba(0, 0, 0, 0.5);
   }
 }
@@ -133,15 +133,15 @@
   position: absolute;
   bottom: 10px;
   right: 30px;
-  background: linear-gradient(135deg, #d4af37, #f0d060);
-  color: #000;
+  background: linear-gradient(135deg, #dc2626, #ef4444);
+  color: #fff;
   font-size: 12px;
   font-weight: 700;
   padding: 10px 18px;
   border-radius: 30px;
   letter-spacing: 1px;
   z-index: 3;
-  box-shadow: 0 8px 24px rgba(212, 175, 55, 0.4);
+  box-shadow: 0 8px 24px rgba(220, 38, 38, 0.4);
   animation: floatBadge 3s ease-in-out infinite;
 }
 
@@ -164,7 +164,7 @@
   display: inline-flex;
   align-items: center;
   gap: 8px;
-  color: #d4af37;
+  color: #dc2626;
   font-size: 12px;
   font-weight: 700;
   letter-spacing: 3px;
@@ -175,7 +175,7 @@
   content: '';
   width: 30px;
   height: 2px;
-  background: #d4af37;
+  background: #dc2626;
   border-radius: 2px;
 }
 
@@ -187,7 +187,7 @@
 }
 
 .sec-title em {
-  color: #d4af37;
+  color: #dc2626;
   font-style: italic;
 }
 
@@ -208,8 +208,8 @@
   align-items: center;
   gap: 14px;
   padding: 14px 18px;
-  background: rgba(255, 255, 255, 0.04);
-  border: 1px solid rgba(212, 175, 55, 0.12);
+  background: rgba(255, 255, 255, 0.02);
+  border: 1px solid rgba(220, 38, 38, 0.12);
   border-radius: 12px;
   color: rgba(255, 255, 255, 0.85);
   font-size: 14px;
@@ -217,8 +217,8 @@
 }
 
 .check-item:hover {
-  background: rgba(212, 175, 55, 0.08);
-  border-color: rgba(212, 175, 55, 0.35);
+  background: rgba(220, 38, 38, 0.08);
+  border-color: rgba(220, 38, 38, 0.35);
   transform: translateX(6px);
 }
 
@@ -227,8 +227,8 @@
   height: 32px;
   min-width: 32px;
   border-radius: 50%;
-  background: linear-gradient(135deg, #d4af37, #f0d060);
-  color: #000;
+  background: linear-gradient(135deg, #dc2626, #ef4444);
+  color: #fff;
   font-weight: 900;
   font-size: 14px;
   display: flex;

@@ -775,7 +775,7 @@
               height="40"
               viewBox="0 0 24 24"
               fill="none"
-              stroke="#2d5a2d"
+              stroke="#7a1c2e"
               stroke-width="2.5"
               stroke-linecap="round"
               stroke-linejoin="round"
@@ -1414,10 +1414,10 @@ function formatPrice(val) {
 }
 
 .checkout-page {
-  --g900: #1a2e1a;
-  --g800: #1e3a1e;
-  --g700: #234523;
-  --g600: #2d5a2d;
+  --g900: #2e0a11;
+  --g800: #4a101b;
+  --g700: #7a1c2e;
+  --g600: #ad1515;
   --gold: #c9a227;
   --gold-l: #e8c84a;
   --gold-p: #fdf3d0;
@@ -1438,7 +1438,7 @@ function formatPrice(val) {
   position: fixed;
   inset: 0;
   background-image:
-    radial-gradient(circle at 10% 20%, rgba(29, 58, 29, 0.04) 0%, transparent 50%),
+    radial-gradient(circle at 10% 20%, rgba(46, 10, 17, 0.04) 0%, transparent 50%),
     radial-gradient(circle at 90% 80%, rgba(201, 162, 39, 0.04) 0%, transparent 50%);
   pointer-events: none;
   z-index: 0;
@@ -1776,7 +1776,7 @@ input::placeholder {
 }
 input:focus {
   border-color: var(--g600);
-  box-shadow: 0 0 0 3px rgba(45, 90, 45, 0.08);
+  box-shadow: 0 0 0 3px rgba(122, 28, 46, 0.08);
 }
 input.error {
   border-color: var(--err);
@@ -1887,13 +1887,13 @@ input.error {
   transition: all 0.2s;
 }
 .bank-item:hover {
-  border-color: rgba(45, 90, 45, 0.3);
-  background: rgba(45, 90, 45, 0.02);
+  border-color: rgba(122, 28, 46, 0.3);
+  background: rgba(122, 28, 46, 0.02);
 }
 .bank-item.selected {
   border-color: var(--g600);
-  background: rgba(45, 90, 45, 0.03);
-  box-shadow: 0 0 0 3px rgba(45, 90, 45, 0.08);
+  background: rgba(122, 28, 46, 0.03);
+  box-shadow: 0 0 0 3px rgba(122, 28, 46, 0.08);
 }
 .bank-radio {
   flex-shrink: 0;
@@ -2026,8 +2026,8 @@ input.error {
   font-size: 12px;
   font-weight: 600;
   color: var(--g700);
-  background: rgba(45, 90, 45, 0.08);
-  border: 1px solid rgba(45, 90, 45, 0.15);
+  background: rgba(122, 28, 46, 0.08);
+  border: 1px solid rgba(122, 28, 46, 0.15);
   border-radius: 20px;
   padding: 4px 10px;
 }
@@ -2085,7 +2085,7 @@ input.error {
 }
 .stripe-text-input:focus {
   border-color: var(--g600) !important;
-  box-shadow: 0 0 0 3px rgba(45, 90, 45, 0.08) !important;
+  box-shadow: 0 0 0 3px rgba(122, 28, 46, 0.08) !important;
 }
 .stripe-text-input.stripe-error {
   border-color: var(--err) !important;
@@ -2164,7 +2164,7 @@ input.error {
 .btn-back:hover {
   border-color: var(--g700);
   color: var(--g700);
-  background: rgba(45, 90, 45, 0.04);
+  background: rgba(122, 28, 46, 0.04);
 }
 .btn-pay {
   flex: 1;
@@ -2197,7 +2197,7 @@ input.error {
 .spinner {
   width: 20px;
   height: 20px;
-  border: 2px solid rgba(26, 46, 26, 0.2);
+  border: 2px solid rgba(46, 10, 17, 0.2);
   border-top-color: var(--g900);
   border-radius: 50%;
   animation: spin 0.7s linear infinite;
@@ -2245,7 +2245,7 @@ input.error {
   background: var(--g900);
   border-radius: 20px;
   padding: 28px;
-  box-shadow: 0 8px 40px rgba(26, 46, 26, 0.25);
+  box-shadow: 0 8px 40px rgba(46, 10, 17, 0.25);
 }
 .summary-header {
   margin-bottom: 24px;
@@ -2445,7 +2445,7 @@ input.error {
   width: 72px;
   height: 72px;
   border-radius: 50%;
-  background: #e8f5e9;
+  background: #f9f2f3;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -2524,7 +2524,7 @@ input.error {
 }
 .btn-home:hover {
   transform: translateY(-1px);
-  box-shadow: 0 8px 24px rgba(29, 58, 29, 0.3);
+  box-shadow: 0 8px 24px rgba(46, 10, 17, 0.3);
 }
 .slide-fade-enter-active {
   transition: all 0.35s cubic-bezier(0.22, 1, 0.36, 1);

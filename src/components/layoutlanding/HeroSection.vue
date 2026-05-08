@@ -57,7 +57,7 @@
 
 <style>
 .gold-card {
-  border: 1px solid rgba(212, 175, 55, 0.4);
+  border: 1px solid rgba(220, 38, 38, 0.4);
   animation:
     slideIn 0.9s ease forwards,
     glowPulse 3s ease-in-out infinite;
@@ -69,15 +69,15 @@
   100% {
     box-shadow:
       0 30px 90px rgba(0, 0, 0, 0.5),
-      0 0 20px rgba(212, 175, 55, 0.2),
-      0 0 40px rgba(212, 175, 55, 0.1);
+      0 0 20px rgba(220, 38, 38, 0.2),
+      0 0 40px rgba(220, 38, 38, 0.1);
   }
   50% {
     box-shadow:
       0 30px 90px rgba(0, 0, 0, 0.5),
-      0 0 40px rgba(212, 175, 55, 0.6),
-      0 0 80px rgba(212, 175, 55, 0.3),
-      0 0 120px rgba(212, 175, 55, 0.15);
+      0 0 40px rgba(220, 38, 38, 0.6),
+      0 0 80px rgba(220, 38, 38, 0.3),
+      0 0 120px rgba(220, 38, 38, 0.15);
   }
 }
 
@@ -87,7 +87,7 @@
   justify-content: center;
   gap: 10px;
   margin-top: 14px;
-  color: rgba(212, 175, 55, 0.85);
+  color: rgba(220, 38, 38, 0.85);
   font-size: 12px;
   font-weight: 600;
   letter-spacing: 1.5px;
@@ -100,7 +100,7 @@
 .label-dot {
   width: 5px;
   height: 5px;
-  background: #d4af37;
+  background: #dc2626;
   border-radius: 50%;
   animation: glowDot 2s ease-in-out infinite;
 }
