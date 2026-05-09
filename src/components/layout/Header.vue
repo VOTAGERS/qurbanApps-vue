@@ -56,6 +56,7 @@
 <script setup lang="ts">
 import { computed } from 'vue';
 import axios from 'axios';
+import Swal from 'sweetalert2';
 
 const user = JSON.parse(localStorage.getItem('user') || '{}');
 const roles = JSON.parse(localStorage.getItem('roles') || '[]');
@@ -79,22 +80,35 @@ const userRole = computed(() => {
 });
 
 const handleLogout = async () => {
-  try {
-    const token = localStorage.getItem('token');
-    if (token) {
-      await axios.post(`${import.meta.env.VITE_API_BASE_URL}/api/auth/logout`, {}, {
-        headers: {
-          Authorization: `Bearer ${token}`
-        }
-      });
+  const result = await Swal.fire({
+    title: 'Logout',
+    text: 'Apakah Anda yakin ingin keluar?',
+    icon: 'question',
+    showCancelButton: true,
+    confirmButtonColor: '#7A1B2E',
+    cancelButtonColor: '#6c757d',
+    confirmButtonText: 'Ya, Logout',
+    cancelButtonText: 'Batal'
+  });
+
+  if (result.isConfirmed) {
+    try {
+      const token = localStorage.getItem('token');
+      if (token) {
+        await axios.post(`${import.meta.env.VITE_API_BASE_URL}/api/auth/logout`, {}, {
+          headers: {
+            Authorization: `Bearer ${token}`
+          }
+        });
+      }
+    } catch (error) {
+      console.error('Logout failed:', error);
+    } finally {
+      localStorage.removeItem('token');
+      localStorage.removeItem('user');
+      localStorage.removeItem('roles');
+      window.location.href = '/login';
     }
-  } catch (error) {
-    console.error('Logout failed:', error);
-  } finally {
-    localStorage.removeItem('token');
-    localStorage.removeItem('user');
-    localStorage.removeItem('roles');
-    window.location.href = '/login';
   }
 };
 </script>

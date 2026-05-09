@@ -89,7 +89,7 @@
                       <button class="btn btn-sm btn-light-primary me-1" title="Edit" data-bs-toggle="modal" data-bs-target="#editUserModal" @click="startEdit(user)">
                         <i class="ti ti-edit"></i>
                       </button>
-                      <button class="btn btn-sm btn-light-danger" title="Delete">
+                      <button class="btn btn-sm btn-light-danger" title="Delete" @click="confirmDelete(user)">
                         <i class="ti ti-trash"></i>
                       </button>
                     </td>
@@ -404,6 +404,7 @@
 
 <script setup lang="ts">
 import { ref, onMounted, computed } from 'vue'
+import Swal from 'sweetalert2'
 
 const users = ref<any[]>([])
 const loading = ref(true)
@@ -486,14 +487,56 @@ const addUser = async () => {
       // Refresh list
       fetchUsers()
     } else {
-      alert(result.message || 'Failed to create user')
+      Swal.fire({
+        icon: 'error',
+        title: 'Oops...',
+        text: result.message || 'Failed to create user'
+      })
     }
   } catch (error) {
     console.error('Error creating user:', error)
-    alert('An error occurred while creating user')
+    Swal.fire({
+      icon: 'error',
+      title: 'Error',
+      text: 'An error occurred while creating user'
+    })
   } finally {
     isSaving.value = false
   }
+}
+
+const confirmDelete = (user: any) => {
+  Swal.fire({
+    title: 'Are you sure?',
+    text: `You are about to delete user: ${user.first_name}. This action cannot be undone!`,
+    icon: 'warning',
+    showCancelButton: true,
+    confirmButtonColor: '#7A1B2E',
+    cancelButtonColor: '#6c757d',
+    confirmButtonText: 'Yes, delete it!',
+    cancelButtonText: 'Cancel'
+  }).then(async (result) => {
+    if (result.isConfirmed) {
+      try {
+        const response = await fetch(`${API_URL}/api/users/${user.id_user}`, {
+          method: 'DELETE'
+        })
+        const data = await response.json()
+        if (data.success) {
+          Swal.fire({
+            icon: 'success',
+            title: 'Deleted!',
+            text: 'User has been deleted.',
+            timer: 2000,
+            showConfirmButton: false
+          })
+          fetchUsers()
+        }
+      } catch (error) {
+        Swal.fire('Error', 'Failed to delete user', 'error')
+      }
+    }
+  })
 }
 
 const startEdit = (user: any) => {
@@ -503,25 +546,44 @@ const startEdit = (user: any) => {
 
 const saveUser = async () => {
   isSaving.value = true
-  // Simulasi loading 1 detik
-  setTimeout(() => {
-    // Cari index user yang diedit
-    const index = users.value.findIndex(u => u.id_user === editingUser.value.id_user)
-    if (index !== -1) {
-      // Update data di local state
-      users.value[index] = { ...editingUser.value }
-    }
+  try {
+    const response = await fetch(`${API_URL}/api/users/${editingUser.value.id_user}`, {
+      method: 'PUT',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(editingUser.value)
+    })
+    const result = await response.json()
     
-    isSaving.value = false
-    // Tutup modal secara manual menggunakan atribut Bootstrap
-    const modalElement = document.getElementById('editUserModal')
-    if (modalElement) {
-      // Menggunakan cara manual jika tidak memakai library bootstrap-vue/vuetify
-      const closeBtn = modalElement.querySelector('[data-bs-dismiss="modal"]') as HTMLElement
+    if (result.success) {
+      Swal.fire({
+        icon: 'success',
+        title: 'Updated!',
+        text: 'User updated successfully',
+        timer: 2000,
+        showConfirmButton: false
+      })
+      // Close modal
+      const closeBtn = document.querySelector('#editUserModal .btn-close') as HTMLElement
       closeBtn?.click()
+      // Refresh list
+      fetchUsers()
+    } else {
+      Swal.fire({
+        icon: 'error',
+        title: 'Failed',
+        text: result.message || 'Failed to update user'
+      })
     }
-    alert('User updated successfully (Frontend Only)')
-  }, 1000)
+  } catch (error) {
+    console.error('Error updating user:', error)
+    Swal.fire({
+      icon: 'error',
+      title: 'Error',
+      text: 'An error occurred while updating user'
+    })
+  } finally {
+    isSaving.value = false
+  }
 }
 
 // Pagination Logic
