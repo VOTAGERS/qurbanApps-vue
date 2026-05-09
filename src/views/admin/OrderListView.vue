@@ -25,12 +25,18 @@
     <div class="row">
       <div class="col-sm-12">
         <div class="card">
-          <div class="card-header d-flex justify-content-between align-items-center">
-            <h3>Qurban Order List</h3>
-            <button class="btn btn-primary" @click="fetchOrders">
-              <i class="ti ti-refresh me-1"></i> Refresh Data
-            </button>
-          </div>
+           <div class="card-header d-flex justify-content-between align-items-center">
+             <h3>Qurban Order List</h3>
+             <div class="d-flex gap-2">
+               <button class="btn btn-success" @click="exportToExcel" :disabled="isLoadingExport">
+                 <i class="ti ti-file-spreadsheet me-1"></i> 
+                 {{ isLoadingExport ? 'Exporting...' : 'Export Excel' }}
+               </button>
+               <button class="btn btn-primary" @click="fetchOrders">
+                 <i class="ti ti-refresh me-1"></i> Refresh Data
+               </button>
+             </div>
+           </div>
           <div class="card-body">
             <div class="table-responsive">
               <table class="table table-hover mb-0">
@@ -145,6 +151,36 @@ interface OrderData {
     woo_id: number;
     name: string;
   };
+}
+
+const isLoadingExport = ref(false)
+const exportToExcel = async () => {
+  isLoadingExport.value = true
+  try {
+    const response = await fetch(`${API_URL}/api/orders/export-excel`, {
+      method: 'GET',
+      // headers: {
+      //   'Authorization': `Bearer ${localStorage.getItem('token')}`, 
+      // },
+    })
+
+    if (!response.ok) throw new Error('Export failed')
+
+    const blob = await response.blob()
+    const url = window.URL.createObjectURL(blob)
+    const link = document.createElement('a')
+    link.href = url
+    link.setAttribute('download', `sales-report-${new Date().toISOString().slice(0,10)}.xlsx`)
+    document.body.appendChild(link)
+    link.click()
+    link.remove()
+    window.URL.revokeObjectURL(url)
+  } catch (error) {
+    console.error('Export error:', error)
+    alert('Gagal mendownload laporan Excel. Pastikan endpoint di backend sudah tersedia.')
+  } finally {
+    isLoadingExport.value = false
+  }
 }
 
 const orders = ref<OrderData[]>([])
