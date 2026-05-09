@@ -4,18 +4,22 @@ import { ref, computed } from 'vue'
 export const useAuthStore = defineStore('auth', () => {
   // State: ambil data dari localStorage jika ada
   const user = ref(JSON.parse(localStorage.getItem('user') || 'null'))
-  const roles = ref<string[]>(JSON.parse(localStorage.getItem('roles') || '[]'))
+  const roles = ref<any[]>(JSON.parse(localStorage.getItem('roles') || '[]'))
   const token = ref(localStorage.getItem('token') || null)
 
   // Getters
   const isAuthenticated = computed(() => !!token.value)
   
   const hasRole = (roleName: string) => {
-    return roles.value.includes(roleName)
+    return roles.value.some((r: any) => {
+      const code = typeof r === 'string' ? r : r.role_code;
+      return code === roleName;
+    })
   }
 
   const isCustomer = computed(() => hasRole('eQurban-Customer'))
   const isAdmin = computed(() => hasRole('eQurban-Admin'))
+  const isSuperAdmin = computed(() => hasRole('eQurban-SuperAdmin'))
 
   // Actions
   function setAuthData(userData: any, userRoles: string[], userToken: string) {
@@ -44,6 +48,7 @@ export const useAuthStore = defineStore('auth', () => {
     isAuthenticated,
     isCustomer,
     isAdmin,
+    isSuperAdmin,
     hasRole,
     setAuthData,
     clearAuth

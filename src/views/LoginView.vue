@@ -106,7 +106,8 @@ const loginWithPassword = async () => {
       localStorage.setItem('user', JSON.stringify(user));
       localStorage.setItem('roles', JSON.stringify(roles));
       
-      window.location.href = '/admin/my-orders';
+      
+      window.location.href = '/admin';
     }
   } catch (error: any) {
     console.error('Password login failed:', error);
@@ -131,7 +132,8 @@ const verifyOtp = async () => {
       localStorage.setItem('user', JSON.stringify(user));
       localStorage.setItem('roles', JSON.stringify(roles));
       
-      window.location.href = '/admin/my-orders';
+      
+      window.location.href = '/admin';
     }
   } catch (error: any) {
     console.error('OTP verification failed:', error);

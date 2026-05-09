@@ -3,14 +3,22 @@
   <nav class="pc-sidebar">
     <div class="navbar-wrapper">
       <div class="m-header" style="background: #ffffff; border-bottom: 1px solid rgba(0,0,0,0.05);">
-        <router-link to="/admin/checkout" class="b-brand d-flex align-items-center text-decoration-none">
+        <router-link to="/admin" class="b-brand d-flex align-items-center text-decoration-none">
           <img src="/assets/images/logos/ILM logo white.jpeg" alt="logo" class="logo logo-lg me-2 rounded-circle" style="width: 45px; height: 45px; object-fit: cover; border: 1px solid rgba(0,0,0,0.1);" />
           <span class="fw-bold fs-4" style="color: #7A1B2E;">{{ appName }}</span>
         </router-link>
       </div>
       <div class="navbar-content">
         <ul class="pc-navbar">
-          <!-- <template v-if="authStore.isCustomer"> commented for customer-->
+          <li class="pc-item">
+            <router-link to="/admin" class="pc-link">
+              <span class="pc-micon"><i class="ti ti-dashboard"></i></span>
+              <span class="pc-mtext">Dashboard</span>
+            </router-link>
+          </li>
+
+          <!-- [ Customer & SuperAdmin Only Menus ] -->
+          <template v-if="authStore.isCustomer || authStore.isSuperAdmin">
             <li class="pc-item pc-caption">
               <label>Dashboard</label>
               <i class="ti ti-dashboard"></i>
@@ -27,9 +35,10 @@
                 <span class="pc-mtext">Certificate Menu</span>
               </router-link>
             </li>
-          <!-- </template> commented for customer-->
+          </template>
 
-          <!-- <template v-if="authStore.isAdmin"> commented for admin-->
+          <!-- [ Common Admin/SuperAdmin Menus ] -->
+          <template v-if="authStore.isAdmin || authStore.isSuperAdmin">
             <li class="pc-item pc-caption">
               <label>Management</label>
               <i class="ti ti-apps"></i>
@@ -46,6 +55,10 @@
                 <span class="pc-mtext">Order Menu</span>
               </router-link>
             </li>
+          </template>
+
+          <!-- [ SuperAdmin Only Menus ] -->
+          <template v-if="authStore.isSuperAdmin">
             <li class="pc-item">
               <router-link to="/admin/users" class="pc-link">
                 <span class="pc-micon"><i class="ti ti-users"></i></span>
@@ -65,12 +78,12 @@
               </router-link>
             </li>
             <li class="pc-item">
-              <router-link to="/admin/checkout" class="pc-link">
+              <router-link to="/admin/checkout-simulation" class="pc-link">
                 <span class="pc-micon"><i class="ti ti-shopping-cart"></i></span>
                 <span class="pc-mtext">Checkout Simulation</span>
               </router-link>
             </li>
-          <!-- </template> commented for admin-->
+          </template>
         </ul>
       </div>
     </div>

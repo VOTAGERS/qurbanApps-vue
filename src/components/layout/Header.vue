@@ -59,6 +59,7 @@ import axios from 'axios';
 
 const user = JSON.parse(localStorage.getItem('user') || '{}');
 const roles = JSON.parse(localStorage.getItem('roles') || '[]');
+console.log('Current User Roles:', roles);
 const appName = import.meta.env.VITE_APP_NAME || 'QurbanHub';
 
 const userName = computed(() => {
@@ -68,6 +69,10 @@ const userName = computed(() => {
 
 const userRole = computed(() => {
   if (roles.length > 0) {
+    // Prioritaskan tampilan role SuperAdmin jika ada
+    const superAdmin = roles.find((r: any) => r.role_code === 'eQurban-SuperAdmin');
+    if (superAdmin) return superAdmin.role_name;
+    
     return roles[0].role_name;
   }
   return 'Customer';
@@ -76,11 +81,13 @@ const userRole = computed(() => {
 const handleLogout = async () => {
   try {
     const token = localStorage.getItem('token');
-    await axios.post(`${import.meta.env.VITE_API_BASE_URL}/api/logout`, {}, {
-      headers: {
-        Authorization: `Bearer ${token}`
-      }
-    });
+    if (token) {
+      await axios.post(`${import.meta.env.VITE_API_BASE_URL}/api/auth/logout`, {}, {
+        headers: {
+          Authorization: `Bearer ${token}`
+        }
+      });
+    }
   } catch (error) {
     console.error('Logout failed:', error);
   } finally {

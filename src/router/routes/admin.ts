@@ -1,10 +1,16 @@
 import HomeView from '../../views/admin/HomeView.vue'
+import DashboardHomeView from '../../views/admin/DashboardHomeView.vue'
 import PaymentView from '../../views/admin/PaymentView.vue'
 
 export const adminRoutes = [
   {
-    path: 'checkout',
-    name: 'home',
+    path: '',
+    name: 'dashboard-home',
+    component: DashboardHomeView,
+  },
+  {
+    path: 'checkout-simulation',
+    name: 'checkout-simulation',
     component: HomeView,
   },
   {

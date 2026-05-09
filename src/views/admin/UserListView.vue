@@ -27,9 +27,14 @@
         <div class="card">
           <div class="card-header d-flex justify-content-between align-items-center">
             <h3>Users List</h3>
-            <button class="btn btn-primary" @click="fetchUsers">
-              <i class="ti ti-refresh me-1"></i> Refresh Data
-            </button>
+            <div class="d-flex gap-2">
+              <button class="btn btn-success" data-bs-toggle="modal" data-bs-target="#addUserModal">
+                <i class="ti ti-plus me-1"></i> Add User
+              </button>
+              <button class="btn btn-primary" @click="fetchUsers">
+                <i class="ti ti-refresh me-1"></i> Refresh Data
+              </button>
+            </div>
           </div>
           <div class="card-body">
             <div class="table-responsive">
@@ -192,53 +197,202 @@
         </div>
         <div class="modal-body" v-if="editingUser">
           <form @submit.prevent="saveUser">
-            <div class="row g-3">
-              <div class="col-md-6">
-                <label class="form-label">First Name</label>
-                <input type="text" class="form-control" v-model="editingUser.first_name" required />
+            <div class="accordion" id="editUserAccordion">
+              <!-- Card 1: Basic Information -->
+              <div class="card mb-2 shadow-none border">
+                <div class="card-header p-0" id="editHeadingBasic">
+                  <button class="btn btn-link w-100 text-start text-decoration-none p-3 fw-bold d-flex justify-content-between align-items-center" type="button" data-bs-toggle="collapse" data-bs-target="#editCollapseBasic" aria-expanded="true" aria-controls="editCollapseBasic">
+                    <span><i class="ti ti-user me-2"></i>Basic Information</span>
+                    <i class="ti ti-chevron-down"></i>
+                  </button>
+                </div>
+                <div id="editCollapseBasic" class="collapse show" aria-labelledby="editHeadingBasic" data-bs-parent="#editUserAccordion">
+                  <div class="card-body pt-0">
+                    <div class="row g-3">
+                      <div class="col-md-6">
+                        <label class="form-label small fw-bold">First Name <span class="text-danger">*</span></label>
+                        <input type="text" class="form-control form-control-sm" v-model="editingUser.first_name" required />
+                      </div>
+                      <div class="col-md-6">
+                        <label class="form-label small fw-bold">Last Name</label>
+                        <input type="text" class="form-control form-control-sm" v-model="editingUser.last_name" />
+                      </div>
+                      <div class="col-md-6">
+                        <label class="form-label small fw-bold">Email Address <span class="text-danger">*</span></label>
+                        <input type="email" class="form-control form-control-sm" v-model="editingUser.email" required />
+                      </div>
+                      <div class="col-md-6">
+                        <label class="form-label small fw-bold">Phone Number <span class="text-danger">*</span></label>
+                        <input type="text" class="form-control form-control-sm" v-model="editingUser.phone" required />
+                      </div>
+                      <div class="col-12">
+                        <label class="form-label small fw-bold">Company</label>
+                        <input type="text" class="form-control form-control-sm" v-model="editingUser.company" />
+                      </div>
+                    </div>
+                  </div>
+                </div>
               </div>
-              <div class="col-md-6">
-                <label class="form-label">Last Name</label>
-                <input type="text" class="form-control" v-model="editingUser.last_name" />
-              </div>
-              <div class="col-md-6">
-                <label class="form-label">Email Address</label>
-                <input type="email" class="form-control" v-model="editingUser.email" required />
-              </div>
-              <div class="col-md-6">
-                <label class="form-label">Phone Number</label>
-                <input type="text" class="form-control" v-model="editingUser.phone" />
-              </div>
-              <div class="col-12">
-                <label class="form-label">Company Name</label>
-                <input type="text" class="form-control" v-model="editingUser.company" />
-              </div>
-              <div class="col-12">
-                <label class="form-label">Address Line 1</label>
-                <input type="text" class="form-control" v-model="editingUser.address_1" />
-              </div>
-              <div class="col-12">
-                <label class="form-label">Address Line 2</label>
-                <input type="text" class="form-control" v-model="editingUser.address_2" />
-              </div>
-              <div class="col-md-4">
-                <label class="form-label">City</label>
-                <input type="text" class="form-control" v-model="editingUser.city" />
-              </div>
-              <div class="col-md-4">
-                <label class="form-label">Postcode</label>
-                <input type="text" class="form-control" v-model="editingUser.postcode" />
-              </div>
-              <div class="col-md-4">
-                <label class="form-label">Country</label>
-                <input type="text" class="form-control" v-model="editingUser.country" />
+
+              <!-- Card 2: Address Information -->
+              <div class="card mb-0 shadow-none border">
+                <div class="card-header p-0" id="editHeadingAddress">
+                  <button class="btn btn-link w-100 text-start text-decoration-none p-3 fw-bold d-flex justify-content-between align-items-center collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#editCollapseAddress" aria-expanded="false" aria-controls="editCollapseAddress">
+                    <span><i class="ti ti-map-pin me-2"></i>Address Information</span>
+                    <i class="ti ti-chevron-down"></i>
+                  </button>
+                </div>
+                <div id="editCollapseAddress" class="collapse" aria-labelledby="editHeadingAddress" data-bs-parent="#editUserAccordion">
+                  <div class="card-body pt-0">
+                    <div class="row g-3">
+                      <div class="col-12">
+                        <label class="form-label small fw-bold">Address 1</label>
+                        <input type="text" class="form-control form-control-sm" v-model="editingUser.address_1" />
+                      </div>
+                      <div class="col-12">
+                        <label class="form-label small fw-bold">Address 2</label>
+                        <input type="text" class="form-control form-control-sm" v-model="editingUser.address_2" />
+                      </div>
+                      <div class="col-md-4">
+                        <label class="form-label small fw-bold">City</label>
+                        <input type="text" class="form-control form-control-sm" v-model="editingUser.city" />
+                      </div>
+                      <div class="col-md-4">
+                        <label class="form-label small fw-bold">State</label>
+                        <input type="text" class="form-control form-control-sm" v-model="editingUser.state" />
+                      </div>
+                      <div class="col-md-4">
+                        <label class="form-label small fw-bold">Postcode</label>
+                        <input type="text" class="form-control form-control-sm" v-model="editingUser.postcode" />
+                      </div>
+                      <div class="col-md-6">
+                        <label class="form-label small fw-bold">Country</label>
+                        <input type="text" class="form-control form-control-sm" v-model="editingUser.country" />
+                      </div>
+                      <div class="col-md-6">
+                        <label class="form-label small fw-bold">Country Code</label>
+                        <input type="text" class="form-control form-control-sm" v-model="editingUser.country_code" maxlength="2" />
+                      </div>
+                    </div>
+                  </div>
+                </div>
               </div>
             </div>
+
             <div class="text-end mt-4">
               <button type="button" class="btn btn-secondary me-2" data-bs-dismiss="modal">Cancel</button>
               <button type="submit" class="btn btn-primary px-4" :disabled="isSaving">
                 <span v-if="isSaving" class="spinner-border spinner-border-sm me-1" role="status"></span>
                 Save Changes
+              </button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Add User Modal -->
+  <div class="modal fade" id="addUserModal" tabindex="-1" aria-labelledby="addUserModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="addUserModalLabel">Create New User (Complete)</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          <form @submit.prevent="addUser">
+            <div class="accordion" id="addUserAccordion">
+              <!-- Card 1: Basic Information -->
+              <div class="card mb-2 shadow-none border">
+                <div class="card-header p-0" id="headingBasic">
+                  <button class="btn btn-link w-100 text-start text-decoration-none p-3 fw-bold d-flex justify-content-between align-items-center" type="button" data-bs-toggle="collapse" data-bs-target="#collapseBasic" aria-expanded="true" aria-controls="collapseBasic">
+                    <span><i class="ti ti-user me-2"></i>Basic Information</span>
+                    <i class="ti ti-chevron-down"></i>
+                  </button>
+                </div>
+                <div id="collapseBasic" class="collapse show" aria-labelledby="headingBasic" data-bs-parent="#addUserAccordion">
+                  <div class="card-body pt-0">
+                    <div class="row g-3">
+                      <div class="col-md-6">
+                        <label class="form-label small fw-bold">First Name <span class="text-danger">*</span></label>
+                        <input type="text" class="form-control form-control-sm" v-model="newUser.first_name" required placeholder="Required" />
+                      </div>
+                      <div class="col-md-6">
+                        <label class="form-label small fw-bold">Last Name</label>
+                        <input type="text" class="form-control form-control-sm" v-model="newUser.last_name" placeholder="Optional" />
+                      </div>
+                      <div class="col-md-6">
+                        <label class="form-label small fw-bold">Email Address <span class="text-danger">*</span></label>
+                        <input type="email" class="form-control form-control-sm" v-model="newUser.email" required placeholder="Required" />
+                      </div>
+                      <div class="col-md-6">
+                        <label class="form-label small fw-bold">Password <span class="text-danger">*</span></label>
+                        <input type="password" class="form-control form-control-sm" v-model="newUser.password" required placeholder="Min 6 characters" />
+                      </div>
+                      <div class="col-md-6">
+                        <label class="form-label small fw-bold">Phone Number <span class="text-danger">*</span></label>
+                        <input type="text" class="form-control form-control-sm" v-model="newUser.phone" required placeholder="Required" />
+                      </div>
+                      <div class="col-md-6">
+                        <label class="form-label small fw-bold">Company</label>
+                        <input type="text" class="form-control form-control-sm" v-model="newUser.company" placeholder="Optional" />
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Card 2: Address Information -->
+              <div class="card mb-0 shadow-none border">
+                <div class="card-header p-0" id="headingAddress">
+                  <button class="btn btn-link w-100 text-start text-decoration-none p-3 fw-bold d-flex justify-content-between align-items-center collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseAddress" aria-expanded="false" aria-controls="collapseAddress">
+                    <span><i class="ti ti-map-pin me-2"></i>Address Information</span>
+                    <i class="ti ti-chevron-down"></i>
+                  </button>
+                </div>
+                <div id="collapseAddress" class="collapse" aria-labelledby="headingAddress" data-bs-parent="#addUserAccordion">
+                  <div class="card-body pt-0">
+                    <div class="row g-3">
+                      <div class="col-12">
+                        <label class="form-label small fw-bold">Address 1</label>
+                        <input type="text" class="form-control form-control-sm" v-model="newUser.address_1" />
+                      </div>
+                      <div class="col-12">
+                        <label class="form-label small fw-bold">Address 2</label>
+                        <input type="text" class="form-control form-control-sm" v-model="newUser.address_2" />
+                      </div>
+                      <div class="col-md-4">
+                        <label class="form-label small fw-bold">City</label>
+                        <input type="text" class="form-control form-control-sm" v-model="newUser.city" />
+                      </div>
+                      <div class="col-md-4">
+                        <label class="form-label small fw-bold">State</label>
+                        <input type="text" class="form-control form-control-sm" v-model="newUser.state" />
+                      </div>
+                      <div class="col-md-4">
+                        <label class="form-label small fw-bold">Postcode</label>
+                        <input type="text" class="form-control form-control-sm" v-model="newUser.postcode" />
+                      </div>
+                      <div class="col-md-6">
+                        <label class="form-label small fw-bold">Country</label>
+                        <input type="text" class="form-control form-control-sm" v-model="newUser.country" />
+                      </div>
+                      <div class="col-md-6">
+                        <label class="form-label small fw-bold">Country Code</label>
+                        <input type="text" class="form-control form-control-sm" v-model="newUser.country_code" maxlength="2" />
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div class="text-end mt-4">
+              <button type="button" class="btn btn-secondary me-2" data-bs-dismiss="modal">Cancel</button>
+              <button type="submit" class="btn btn-primary px-4" :disabled="isSaving">
+                <span v-if="isSaving" class="spinner-border spinner-border-sm me-1" role="status"></span>
+                Create User
               </button>
             </div>
           </form>
@@ -257,6 +411,23 @@ const selectedUser = ref<any>(null)
 const editingUser = ref<any>(null)
 const isSaving = ref(false)
 
+// Add User State - Match Model Fillable
+const newUser = ref({
+  first_name: '',
+  last_name: '',
+  email: '',
+  password: '',
+  phone: '',
+  company: '',
+  address_1: '',
+  address_2: '',
+  city: '',
+  state: '',
+  postcode: '',
+  country: '',
+  country_code: 'ID'
+})
+
 // Pagination State
 const currentPage = ref(1)
 const itemsPerPage = ref(10)
@@ -269,17 +440,59 @@ const fetchUsers = async () => {
     const response = await fetch(`${API_URL}/api/users`)
     const result = await response.json()
     
-    if (Array.isArray(result)) {
-      users.value = result
-    } else if (result.success && Array.isArray(result.data)) {
+    if (result.success && Array.isArray(result.data)) {
       users.value = result.data
     } else {
-      users.value = result.data || []
+      users.value = Array.isArray(result) ? result : []
     }
   } catch (error) {
     console.error('Error fetching users:', error)
   } finally {
     loading.value = false
+  }
+}
+
+const addUser = async () => {
+  isSaving.value = true
+  try {
+    const response = await fetch(`${API_URL}/api/users`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(newUser.value)
+    })
+    const result = await response.json()
+    
+    if (result.success) {
+      alert('User created successfully')
+      // Reset form
+      newUser.value = {
+        first_name: '',
+        last_name: '',
+        email: '',
+        password: '',
+        phone: '',
+        company: '',
+        address_1: '',
+        address_2: '',
+        city: '',
+        state: '',
+        postcode: '',
+        country: '',
+        country_code: 'ID'
+      }
+      // Close modal
+      const closeBtn = document.querySelector('#addUserModal .btn-close') as HTMLElement
+      closeBtn?.click()
+      // Refresh list
+      fetchUsers()
+    } else {
+      alert(result.message || 'Failed to create user')
+    }
+  } catch (error) {
+    console.error('Error creating user:', error)
+    alert('An error occurred while creating user')
+  } finally {
+    isSaving.value = false
   }
 }
 
@@ -313,7 +526,7 @@ const saveUser = async () => {
 
 // Pagination Logic
 const totalPages = computed(() => Math.ceil(users.value.length / itemsPerPage.value))
-const startItem = computed(() => ((currentPage.value - 1) * itemsPerPage.value) + 1)
+const startItem = computed(() => users.value.length ? ((currentPage.value - 1) * itemsPerPage.value) + 1 : 0)
 const endItem = computed(() => Math.min(currentPage.value * itemsPerPage.value, users.value.length))
 
 const paginatedUsers = computed(() => {
