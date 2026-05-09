@@ -3,7 +3,7 @@
     <div class="bg-pattern"></div>
     <div class="login-card">
       <h2 class="login-header text-center mb-4">
-        <span class="logo-qurban">Qurban</span><span class="logo-hub">Hub</span> Admin
+        <span class="logo-qurban">{{ appName }}</span> Portal
       </h2>
       
       <!-- Login Method Toggle -->
@@ -72,6 +72,7 @@ const password = ref('');
 const otpCode = ref('');
 const isLoading = ref(false);
 const router = useRouter();
+const appName = import.meta.env.VITE_APP_NAME || 'QurbanHub';
 
 const requestOtp = async () => {
   if (!email.value) return;
