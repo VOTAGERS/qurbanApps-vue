@@ -6,12 +6,12 @@
       <div class="me-auto pc-mob-drp">
         <ul class="list-unstyled">
           <li class="pc-h-item header-mobile-collapse">
-            <a href="#" class="pc-head-link head-link-secondary ms-0" id="sidebar-hide">
+            <a href="#" class="pc-head-link head-link-secondary ms-0" @click.prevent="$emit('toggle-sidebar')">
               <i class="ti ti-menu-2"></i>
             </a>
           </li>
           <li class="pc-h-item pc-sidebar-popup">
-            <a href="#" class="pc-head-link head-link-secondary ms-0" id="mobile-collapse">
+            <a href="#" class="pc-head-link head-link-secondary ms-0" @click.prevent="$emit('toggle-mobile-sidebar')">
               <i class="ti ti-menu-2"></i>
             </a>
           </li>
@@ -57,6 +57,8 @@
 import { computed } from 'vue';
 import axios from 'axios';
 import Swal from 'sweetalert2';
+
+const emit = defineEmits(['toggle-sidebar', 'toggle-mobile-sidebar']);
 
 const user = JSON.parse(localStorage.getItem('user') || '{}');
 const roles = JSON.parse(localStorage.getItem('roles') || '[]');

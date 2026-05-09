@@ -82,13 +82,15 @@
 }
 
 .hero-card-label {
+  position: absolute;
+  bottom: 2.5rem;
+  left: 5rem;
+  z-index: 3;
   display: flex;
   align-items: center;
-  justify-content: center;
   gap: 10px;
-  margin-top: 14px;
-  color: rgba(220, 38, 38, 0.85);
-  font-size: 12px;
+  color: rgba(255, 255, 255, 0.6);
+  font-size: 11px;
   font-weight: 600;
   letter-spacing: 1.5px;
   text-transform: uppercase;

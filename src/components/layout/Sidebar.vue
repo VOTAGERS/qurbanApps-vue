@@ -10,7 +10,7 @@
       </div>
       <div class="navbar-content">
         <ul class="pc-navbar">
-          <li class="pc-item">
+          <li class="pc-item" :class="{ active: isActive('/admin') }">
             <router-link to="/admin" class="pc-link">
               <span class="pc-micon"><i class="ti ti-dashboard"></i></span>
               <span class="pc-mtext">Dashboard</span>
@@ -23,13 +23,13 @@
               <label>Dashboard</label>
               <i class="ti ti-dashboard"></i>
             </li>
-            <li class="pc-item">
+            <li class="pc-item" :class="{ active: isActive('/admin/my-orders') }">
               <router-link to="/admin/my-orders" class="pc-link">
                 <span class="pc-micon"><i class="ti ti-history"></i></span>
                 <span class="pc-mtext">My Order</span>
               </router-link>
             </li>
-            <li class="pc-item">
+            <li class="pc-item" :class="{ active: isActive('/admin/certificates') }">
               <router-link to="/admin/certificates" class="pc-link">
                 <span class="pc-micon"><i class="ti ti-certificate"></i></span>
                 <span class="pc-mtext">Certificate Menu</span>
@@ -43,13 +43,13 @@
               <label>Management</label>
               <i class="ti ti-apps"></i>
             </li>
-            <li class="pc-item">
+            <li class="pc-item" :class="{ active: isActive('/admin/products-detail') }">
               <router-link to="/admin/products-detail" class="pc-link">
                 <span class="pc-micon"><i class="ti ti-box"></i></span>
                 <span class="pc-mtext">Product Menu</span>
               </router-link>
             </li>
-            <li class="pc-item">
+            <li class="pc-item" :class="{ active: isActive('/admin/orders') }">
               <router-link to="/admin/orders" class="pc-link">
                 <span class="pc-micon"><i class="ti ti-shopping-cart"></i></span>
                 <span class="pc-mtext">Order Menu</span>
@@ -59,25 +59,25 @@
 
           <!-- [ SuperAdmin Only Menus ] -->
           <template v-if="authStore.isSuperAdmin">
-            <li class="pc-item">
+            <li class="pc-item" :class="{ active: isActive('/admin/users') }">
               <router-link to="/admin/users" class="pc-link">
                 <span class="pc-micon"><i class="ti ti-users"></i></span>
                 <span class="pc-mtext">User Menu</span>
               </router-link>
             </li>
-            <li class="pc-item">
+            <li class="pc-item" :class="{ active: isActive('/admin/role-access') }">
               <router-link to="/admin/role-access" class="pc-link">
                 <span class="pc-micon"><i class="ti ti-lock"></i></span>
                 <span class="pc-mtext">Role Access Menu</span>
               </router-link>
             </li>
-            <li class="pc-item">
+            <li class="pc-item" :class="{ active: isActive('/admin/user-access') }">
               <router-link to="/admin/user-access" class="pc-link">
                 <span class="pc-micon"><i class="ti ti-shield-lock"></i></span>
                 <span class="pc-mtext">User Access Menu</span>
               </router-link>
             </li>
-            <li class="pc-item">
+            <li class="pc-item" :class="{ active: isActive('/admin/checkout-simulation') }">
               <router-link to="/admin/checkout-simulation" class="pc-link">
                 <span class="pc-micon"><i class="ti ti-shopping-cart"></i></span>
                 <span class="pc-mtext">Checkout Simulation</span>
@@ -91,10 +91,19 @@
 </template>
 
 <script setup lang="ts">
+import { useRoute } from 'vue-router'
 import { useAuthStore } from '../../stores/auth'
 
+const route = useRoute()
 const authStore = useAuthStore()
 const appName = import.meta.env.VITE_APP_NAME || 'QurbanHub'
+
+const isActive = (path: string) => {
+  if (path === '/admin') {
+    return route.path === '/admin'
+  }
+  return route.path.startsWith(path)
+}
 </script>
 
 <style scoped>
