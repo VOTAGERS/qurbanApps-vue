@@ -106,15 +106,40 @@
                     <input type="number" class="form-control" v-model="form.price" placeholder="2500000" required min="0">
                   </div>
                 </div>
-                <div class="col-md-6 mb-3">
-                  <label class="form-label">Status (WooCommerce)</label>
-                  <select class="form-select" v-model="form.status_woo" required>
-                    <option value="publish">Publish</option>
-                    <option value="draft">Draft</option>
-                    <option value="pending">Pending</option>
-                  </select>
+                  <div class="col-md-6 mb-3">
+                    <label class="form-label">Status (WooCommerce)</label>
+                    <select class="form-select" v-model="form.status_woo" required>
+                      <option value="publish">Publish</option>
+                      <option value="draft">Draft</option>
+                      <option value="pending">Pending</option>
+                    </select>
+                  </div>
                 </div>
-              </div>
+
+                <div class="row">
+                  <div class="col-md-12 mb-3">
+                    <label class="form-label">Product Image</label>
+                    <div class="d-flex align-items-center gap-3">
+                      <div v-if="imagePreview" class="image-preview-container position-relative">
+                        <img :src="imagePreview" class="img-thumbnail" style="width: 100px; height: 100px; object-fit: cover;">
+                        <button type="button" class="btn btn-sm btn-danger position-absolute top-0 end-0 m-1 p-0 rounded-circle" style="width: 20px; height: 20px;" @click="removeImage">
+                          <i class="ti ti-x fs-6"></i>
+                        </button>
+                      </div>
+                      <div v-else class="image-upload-placeholder d-flex align-items-center justify-content-center border rounded bg-light" style="width: 100px; height: 100px;">
+                        <i class="ti ti-photo fs-1 text-muted"></i>
+                      </div>
+                      <div class="flex-grow-1">
+                        <input type="file" class="form-control" @change="handleImageChange" accept="image/jpeg,image/png,image/jpg,image/svg+xml,image/webp" :disabled="isUploading">
+                        <small class="text-muted">Max size: 5MB (JPG, PNG, SVG, WebP)</small>
+                        <div v-if="isUploading" class="mt-1">
+                          <div class="spinner-border spinner-border-sm text-primary me-2" role="status"></div>
+                          <span class="small text-primary">Uploading...</span>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
               
               <hr class="my-4">
               <h6 class="mb-3 text-primary">Specific Qurban Details</h6>
@@ -160,6 +185,11 @@ interface WooProduct {
   name: string;
   price: string;
   status: string;
+  id_fileupload?: number;
+  file_upload?: {
+    id: number;
+    url: string;
+  };
 }
 
 interface ProductDetailData {
@@ -182,7 +212,12 @@ const form = ref({
   status_woo: 'publish',
   country: '',
   max_share: 1,
+  id_fileupload: null as number | null,
 })
+
+const imagePreview = ref<string | null>(null)
+const isUploading = ref(false)
+const selectedFile = ref<File | null>(null)
 
 let modalInstance: any = null
 
@@ -217,7 +252,11 @@ const openModal = (detail?: ProductDetailData) => {
       status_woo: detail.product_woo?.status || 'publish',
       country: detail.country,
       max_share: detail.max_share,
+      id_fileupload: detail.product_woo?.id_fileupload || null,
     }
+    const baseUrl = import.meta.env.VITE_API_BASE_URL || ''
+    const existingUrl = detail.product_woo?.file_upload?.url || null
+    imagePreview.value = (existingUrl && !existingUrl.startsWith('http')) ? `${baseUrl}${existingUrl}` : existingUrl
   } else {
     editMode.value = false
     editId.value = null
@@ -228,12 +267,62 @@ const openModal = (detail?: ProductDetailData) => {
       status_woo: 'publish',
       country: '', 
       max_share: 1, 
+      id_fileupload: null,
     }
+    imagePreview.value = null
   }
+  selectedFile.value = null
   
   if (modalInstance) {
     modalInstance.show()
   }
+}
+
+const handleImageChange = (event: any) => {
+  const file = event.target.files[0]
+  if (file) {
+    selectedFile.value = file
+    imagePreview.value = URL.createObjectURL(file)
+    uploadImage()
+  }
+}
+
+const uploadImage = async () => {
+  if (!selectedFile.value) return
+
+  isUploading.value = true
+  const formData = new FormData()
+  formData.append('file', selectedFile.value)
+  formData.append('folder', 'products')
+
+  try {
+    const response = await fetch(`${import.meta.env.VITE_API_BASE_URL}/api/upload`, {
+      method: 'POST',
+      body: formData
+    })
+    
+    const result = await response.json()
+    if (result.success) {
+      form.value.id_fileupload = result.data.id
+      // Ensure the preview URL is absolute
+      const baseUrl = import.meta.env.VITE_API_BASE_URL || ''
+      const uploadedUrl = result.data.url
+      imagePreview.value = uploadedUrl.startsWith('http') ? uploadedUrl : `${baseUrl}${uploadedUrl}`
+    } else {
+      Swal.fire('Error', result.message || 'Upload failed', 'error')
+    }
+  } catch (error) {
+    console.error('Upload error:', error)
+    Swal.fire('Error', 'Failed to upload image', 'error')
+  } finally {
+    isUploading.value = false
+  }
+}
+
+const removeImage = () => {
+  imagePreview.value = null
+  form.value.id_fileupload = null
+  selectedFile.value = null
 }
 
 const saveDetail = async () => {

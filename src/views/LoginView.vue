@@ -21,6 +21,13 @@
           @click="loginMethod = 'password'"
         >Password</button>
       </div>
+      
+      <!-- Styled Error Message -->
+      <div v-if="errorMessage" class="alert-badge mb-4">
+        <i class="ti ti-alert-circle me-2"></i>
+        <span>{{ errorMessage }}</span>
+        <button type="button" class="btn-close-alert" @click="errorMessage = ''">&times;</button>
+      </div>
 
       <!-- Step 1: Login Form -->
       <form v-if="step === 1" @submit.prevent="loginMethod === 'otp' ? requestOtp() : loginWithPassword()" class="form-grid">
@@ -71,6 +78,7 @@ const email = ref('');
 const password = ref('');
 const otpCode = ref('');
 const isLoading = ref(false);
+const errorMessage = ref('');
 const router = useRouter();
 const appName = import.meta.env.VITE_APP_NAME || 'QurbanHub';
 
@@ -86,7 +94,7 @@ const requestOtp = async () => {
     }
   } catch (error: any) {
     console.error('Failed to send OTP:', error);
-    alert(error.response?.data?.message || 'Failed to send OTP. Please check your email.');
+    errorMessage.value = error.response?.data?.message || 'Failed to send OTP. Please check your email.';
   } finally {
     isLoading.value = false;
   }
@@ -112,7 +120,7 @@ const loginWithPassword = async () => {
     }
   } catch (error: any) {
     console.error('Password login failed:', error);
-    alert(error.response?.data?.message || 'Invalid email or password.');
+    errorMessage.value = error.response?.data?.message || 'Invalid email or password.';
   } finally {
     isLoading.value = false;
   }
@@ -138,7 +146,7 @@ const verifyOtp = async () => {
     }
   } catch (error: any) {
     console.error('OTP verification failed:', error);
-    alert(error.response?.data?.message || 'Invalid or expired OTP. Please try again.');
+    errorMessage.value = error.response?.data?.message || 'Invalid or expired OTP. Please try again.';
   } finally {
     isLoading.value = false;
   }
@@ -334,4 +342,46 @@ input:focus {
 .mb-4 { margin-bottom: 1.5rem; }
 .mt-3 { margin-top: 1rem; }
 .mt-4 { margin-top: 1.5rem; }
+
+.alert-badge {
+  background-color: #fef2f2;
+  border: 1px solid #fee2e2;
+  color: #991b1b;
+  padding: 0.75rem 1rem;
+  border-radius: 10px;
+  font-size: 0.85rem;
+  font-weight: 500;
+  display: flex;
+  align-items: center;
+  position: relative;
+  animation: slideIn 0.3s ease;
+  z-index: 10;
+}
+
+.alert-badge i {
+  font-size: 1.1rem;
+}
+
+.btn-close-alert {
+  background: none;
+  border: none;
+  color: #991b1b;
+  font-size: 1.25rem;
+  font-weight: bold;
+  cursor: pointer;
+  margin-left: auto;
+  padding: 0;
+  line-height: 1;
+  opacity: 0.5;
+  transition: opacity 0.2s;
+}
+
+.btn-close-alert:hover {
+  opacity: 1;
+}
+
+@keyframes slideIn {
+  from { opacity: 0; transform: translateY(-10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
 </style>
