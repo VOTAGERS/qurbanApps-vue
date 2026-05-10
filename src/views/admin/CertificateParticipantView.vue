@@ -29,9 +29,18 @@
           <div class="card-header d-flex justify-content-between align-items-center">
             <h3>Participant List</h3>
             <div>
-              <button class="btn btn-secondary me-2" @click="$router.back()">
-                <i class="ti ti-arrow-left me-1"></i> Back
-              </button>
+              <!-- Bagian Header (Baris 31) -->
+                <button class="btn btn-secondary me-2" @click="$router.back()">
+                  <i class="ti ti-arrow-left me-1"></i> Back
+                </button>
+                <!-- TOMBOL BARU: Broadcast WA -->
+                <button 
+                  class="btn btn-success me-2" 
+                  @click="broadcastWA" 
+                  :disabled="participants.length === 0"
+                >
+                  <i class="ti ti-brand-whatsapp me-1"></i> Broadcast WA
+                </button>
               <button 
                 class="btn btn-primary" 
                 @click="generateBulk" 
@@ -48,7 +57,7 @@
               <i class="ti ti-info-circle me-2 fs-4"></i>
               <div>
                 Silakan klik tombol <strong>Generate All Certificates</strong> untuk membuat sertifikat PDF secara massal bagi seluruh peserta di bawah ini.
-              </div>
+              </div> 
             </div>
 
             <div class="table-responsive">
@@ -76,10 +85,22 @@
                       <span v-else class="badge bg-light-warning text-warning">Pending</span>
                     </td>
                     <td class="text-end">
-                      <a v-if="participant.certificate" :href="`${apiBaseUrl}/api/certificates/download/${participant.certificate.id_certificate}`" class="btn btn-sm btn-light-primary" title="Download">
-                        <i class="ti ti-download"></i>
-                      </a>
-                      <span v-else class="text-muted small">No File</span>
+                      <div class="btn-group">
+                        <!-- TOMBOL BARU: WA Individu -->
+                        <button 
+                          v-if="participant.phone_number"
+                          class="btn btn-sm btn-light-success me-1" 
+                          title="Send WhatsApp"
+                          @click="sendSingleWA(participant)"
+                        >
+                          <i class="ti ti-brand-whatsapp"></i>
+                        </button>
+                        
+                        <a v-if="participant.certificate" :href="`${apiBaseUrl}/api/certificates/download/${participant.certificate.id_certificate}`" class="btn btn-sm btn-light-primary" title="Download">
+                          <i class="ti ti-download"></i>
+                        </a>
+                        <span v-else class="text-muted small">No File</span>
+                      </div>
                     </td>
                   </tr>
                   <tr v-if="participants.length === 0">
@@ -163,6 +184,66 @@ const generateBulk = async () => {
 onMounted(() => {
   fetchParticipants()
 })
+
+
+// Fungsi untuk memformat pesan WA
+const generateWAMessage = (participant: any) => {
+  const downloadLink = `${apiBaseUrl}/api/certificates/public/download/${participant.id_participant}`
+  
+  return `Terima Kasih Pejuang Qurban! \u{1F402}\u{2728}
+
+Halo Bapak/Ibu *${participant.qurban_name}*, laporan qurban Anda sudah selesai. Amanah telah kami salurkan kepada yang berhak menerima.
+
+Yuk, cek dan unduh sertifikat qurban Anda di sini:
+🔗 ${downloadLink}
+
+Semoga berkah dan menjadi pahala jariyah. Sampai jumpa di tahun depan!
+
+Salam hangat,
+*QurbanHub*`
+}
+
+const sendSingleWA = (participant: any) => {
+  if (!participant.phone_number) return
+  
+  let phone = participant.phone_number.replace(/\D/g, '')
+  
+  if (phone.startsWith('0')) {
+    phone = '62' + phone.substring(1)
+  }
+
+  const message = encodeURIComponent(generateWAMessage(participant))
+  const waUrl = `https://api.whatsapp.com/send?phone=${phone}&text=${message}`
+  
+  window.open(waUrl, '_blank')
+}
+
+const broadcastWA = async () => {
+  const hasCertificates = participants.value.filter(p => p.certificate)
+  
+  if (hasCertificates.length === 0) {
+    Swal.fire('Info', 'Belum ada sertifikat yang di-generate.', 'info')
+    return
+  }
+
+  const result = await Swal.fire({
+    title: 'Kirim Semua WA?',
+    text: `Akan membuka ${hasCertificates.length} tab WhatsApp. Pastikan browser Anda mengizinkan 'Pop-ups'.`,
+    icon: 'question',
+    showCancelButton: true,
+    confirmButtonText: 'Ya, Kirim!',
+    cancelButtonText: 'Batal'
+  })
+
+  if (result.isConfirmed) {
+    hasCertificates.forEach((p, index) => {
+      setTimeout(() => {
+        sendSingleWA(p)
+      }, index * 2000) 
+    })
+  }
+}
+
 </script>
 
 <style scoped>

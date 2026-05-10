@@ -158,35 +158,43 @@
                     />
                     <span class="err-msg" v-if="errors.phone">{{ errors.phone }}</span>
                   </div>
-                  <div class="field">
-                    <label>City <span class="req">*</span></label>
-                    <input
-                      v-model="buyer.city"
-                      type="text"
-                      placeholder="Jakarta"
-                      :class="{ error: errors.city }"
-                    />
-                    <span class="err-msg" v-if="errors.city">{{ errors.city }}</span>
-                  </div>
-                  <div class="field">
-                    <label>Province <span class="req">*</span></label>
-                    <input
-                      v-model="buyer.province"
-                      type="text"
-                      placeholder="DKI Jakarta"
-                      :class="{ error: errors.province }"
-                    />
-                    <span class="err-msg" v-if="errors.province">{{ errors.province }}</span>
-                  </div>
-                  <div class="field">
-                    <label>Postal Code <span class="req">*</span></label>
-                    <input
-                      v-model="buyer.postalCode"
-                      type="text"
-                      placeholder="10xxx"
-                      :class="{ error: errors.postalCode }"
-                    />
-                    <span class="err-msg" v-if="errors.postalCode">{{ errors.postalCode }}</span>
+                  <div class="field country-field">
+                    <label>Country <span class="req">*</span></label>
+                    <div class="custom-select-container" ref="countryDropdown">
+                      <div
+                        class="selected-country"
+                        @click="isDropdownOpen = !isDropdownOpen"
+                        :class="{ error: errors.country }"
+                      >
+                        <template v-if="selectedCountryData">
+                          <img :src="selectedCountryData.flags.png" class="flag-icon" />
+                          <span>{{ selectedCountryData.name.common }}</span>
+                        </template>
+                        <span v-else class="placeholder">Select Country</span>
+                        <span class="chevron">▼</span>
+                      </div>
+                      <div v-if="isDropdownOpen" class="dropdown-list">
+                        <input
+                          v-model="countrySearch"
+                          type="text"
+                          class="search-input"
+                          placeholder="Search country..."
+                          @click.stop
+                        />
+                        <div class="options-container">
+                          <div
+                            v-for="c in filteredCountries"
+                            :key="c.cca2"
+                            class="option-item"
+                            @click="selectCountry(c)"
+                          >
+                            <img :src="c.flags.png" class="flag-icon" />
+                            <span>{{ c.name.common }}</span>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                    <span class="err-msg" v-if="errors.country">{{ errors.country }}</span>
                   </div>
                   <div class="field">
                     <label>Notes <span class="opt">(optional)</span></label>
@@ -226,42 +234,44 @@
                   >
                 </div>
 
-                <div
-                  v-for="(recipient, index) in allRecipients"
-                  :key="index"
-                  class="recipient-block"
-                >
-                  <div class="recipient-label">
-                    <div class="recipient-num">{{ index + 1 }}</div>
-                    <span>Recipient {{ index + 1 }}</span>
-                    <span class="recipient-animal-tag" v-if="quantity > 1">
-                      Animal {{ Math.ceil((index + 1) / maxShare) }}
-                    </span>
-                  </div>
-                  <div class="form-grid">
-                    <div class="field full">
-                      <label>Full Name <span class="req">*</span></label>
-                      <input
-                        v-model="recipient.name"
-                        type="text"
-                        :placeholder="`Recipient ${index + 1} name`"
-                        :class="{ error: allRecipientErrors[index]?.name }"
-                      />
-                      <span class="err-msg" v-if="allRecipientErrors[index]?.name">{{
-                        allRecipientErrors[index].name
-                      }}</span>
+                <div class="recipients-list-container">
+                  <div
+                    v-for="(recipient, index) in allRecipients"
+                    :key="index"
+                    class="recipient-block"
+                  >
+                    <div class="recipient-label">
+                      <div class="recipient-num">{{ index + 1 }}</div>
+                      <span>Recipient {{ index + 1 }}</span>
+                      <span class="recipient-animal-tag" v-if="quantity > 1">
+                        Animal {{ Math.ceil((index + 1) / maxShare) }}
+                      </span>
                     </div>
-                    <div class="field">
-                      <label>Email <span class="opt">(optional)</span></label>
-                      <input
-                        v-model="recipient.email"
-                        type="email"
-                        placeholder="email@example.com"
-                      />
-                    </div>
-                    <div class="field">
-                      <label>Phone Number <span class="opt">(optional)</span></label>
-                      <input v-model="recipient.phone" type="tel" placeholder="08xxxxxxxxxx" />
+                    <div class="form-grid">
+                      <div class="field full">
+                        <label>Full Name <span class="req">*</span></label>
+                        <input
+                          v-model="recipient.name"
+                          type="text"
+                          :placeholder="`Recipient ${index + 1} name`"
+                          :class="{ error: allRecipientErrors[index]?.name }"
+                        />
+                        <span class="err-msg" v-if="allRecipientErrors[index]?.name">{{
+                          allRecipientErrors[index].name
+                        }}</span>
+                      </div>
+                      <div class="field">
+                        <label>Email <span class="opt">(optional)</span></label>
+                        <input
+                          v-model="recipient.email"
+                          type="email"
+                          placeholder="email@example.com"
+                        />
+                      </div>
+                      <div class="field">
+                        <label>Phone Number <span class="opt">(optional)</span></label>
+                        <input v-model="recipient.phone" type="tel" placeholder="08xxxxxxxxxx" />
+                      </div>
                     </div>
                   </div>
                 </div>
@@ -765,7 +775,7 @@
               height="40"
               viewBox="0 0 24 24"
               fill="none"
-              stroke="#2d5a2d"
+              stroke="#7a1c2e"
               stroke-width="2.5"
               stroke-linecap="round"
               stroke-linejoin="round"
@@ -874,7 +884,7 @@ function decreaseQty() {
   if (quantity.value > 1) quantity.value--
 }
 const totalPrice = computed(() => productPrice.value * quantity.value)
-const totalRecipients = computed(() => maxShare.value)
+const totalRecipients = computed(() => maxShare.value * quantity.value)
 
 const currentStep = ref(1)
 const buyer = ref({
@@ -882,12 +892,56 @@ const buyer = ref({
   lastName: '',
   email: '',
   phone: '',
-  city: '',
-  province: '',
-  postalCode: '',
+  country: '',
+  countryCode: '',
   notes: '',
 })
 const errors = ref({})
+
+const countries = ref([])
+const countrySearch = ref('')
+const isDropdownOpen = ref(false)
+const selectedCountryData = ref(null)
+const countryDropdown = ref(null)
+
+onMounted(async () => {
+  // Existing mount logic...
+  if (totalRecipients.value) rebuildRecipients(totalRecipients.value)
+  
+  // Fetch Countries
+  try {
+    const { data } = await axios.get('https://restcountries.com/v3.1/all?fields=name,flags,cca2')
+    countries.value = data.sort((a, b) => a.name.common.localeCompare(b.name.common))
+    // Default Singapore
+    const sg = countries.value.find((c) => c.cca2 === 'SG')
+    if (sg) selectCountry(sg)
+  } catch (err) {
+    console.error('Failed to fetch countries', err)
+  }
+
+  // Click outside listener
+  window.addEventListener('click', (e) => {
+    if (countryDropdown.value && !countryDropdown.value.contains(e.target)) {
+      isDropdownOpen.value = false
+    }
+  })
+})
+
+const filteredCountries = computed(() => {
+  if (!countrySearch.value) return countries.value
+  return countries.value.filter((c) =>
+    c.name.common.toLowerCase().includes(countrySearch.value.toLowerCase()),
+  )
+})
+
+function selectCountry(c) {
+  selectedCountryData.value = c
+  buyer.value.country = c.name.common
+  buyer.value.countryCode = c.cca2
+  isDropdownOpen.value = false
+  countrySearch.value = ''
+  if (errors.value.country) errors.value.country = ''
+}
 
 function validateBuyer() {
   const e = {}
@@ -897,9 +951,7 @@ function validateBuyer() {
     e.email = 'Invalid email address'
   if (!buyer.value.phone.trim() || !/^08\d{8,12}$/.test(buyer.value.phone))
     e.phone = 'Invalid phone number (08xx)'
-  if (!buyer.value.city.trim()) e.city = 'City is required'
-  if (!buyer.value.province.trim()) e.province = 'Province is required'
-  if (!buyer.value.postalCode.trim()) e.postalCode = 'Postal code is required'
+  if (!buyer.value.country.trim()) e.country = 'Country is required'
   errors.value = e
   return Object.keys(e).length === 0
 }
@@ -920,10 +972,9 @@ function rebuildRecipients(count) {
 
 // const totalRecipients = computed(() => maxShare.value)
 
-// hanya generate sekali
-onMounted(() => {
-  rebuildRecipients(totalRecipients.value)
-})
+// generate awal dan setiap kali quantity (dan otomatis totalRecipients) berubah
+onMounted(() => rebuildRecipients(totalRecipients.value))
+watch(totalRecipients, (n) => rebuildRecipients(n))
 
 function validateRecipients() {
   let valid = true
@@ -1151,9 +1202,8 @@ async function handlePayment() {
             last_name: buyer.value.lastName,
             phone: buyer.value.phone,
             email: buyer.value.email,
-            city: buyer.value.city,
-            province: buyer.value.province,
-            postal_code: buyer.value.postalCode,
+            country: buyer.value.country,
+            country_code: buyer.value.countryCode,
           },
           recipients: allRecipients.value.map((r) => ({
             qurban_name: r.name,
@@ -1195,18 +1245,16 @@ async function handlePayment() {
           last_name: buyer.value.lastName,
           phone: buyer.value.phone,
           email: buyer.value.email,
-          city: buyer.value.city,
-          province: buyer.value.province,
-          postal_code: buyer.value.postalCode,
+          country: buyer.value.country,
+          country_code: buyer.value.countryCode,
         },
         shipping: {
           first_name: buyer.value.firstName,
           last_name: buyer.value.lastName,
           phone: buyer.value.phone,
           email: buyer.value.email,
-          city: buyer.value.city,
-          province: buyer.value.province,
-          postal_code: buyer.value.postalCode,
+          country: buyer.value.country,
+          country_code: buyer.value.countryCode,
         },
         recipients: allRecipients.value.map((r) => ({
           qurban_name: r.name,
@@ -1259,11 +1307,117 @@ function formatPrice(val) {
 <style scoped>
 @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,600;1,500&family=DM+Sans:wght@300;400;500;600&display=swap');
 
+.custom-select-container {
+  position: relative;
+  width: 100%;
+}
+.selected-country {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 12px 14px;
+  background: white;
+  border: 1.5px solid var(--gr200);
+  border-radius: 10px;
+  cursor: pointer;
+  transition: all 0.2s;
+  min-height: 48px;
+}
+.selected-country:hover {
+  border-color: var(--g600);
+}
+.selected-country.error {
+  border-color: #dc2626;
+}
+.flag-icon {
+  width: 24px;
+  height: 16px;
+  object-fit: cover;
+  border-radius: 2px;
+  border: 1px solid #eee;
+}
+.placeholder {
+  color: #888;
+}
+.chevron {
+  margin-left: auto;
+  font-size: 10px;
+  color: #888;
+}
+.dropdown-list {
+  position: absolute;
+  top: calc(100% + 5px);
+  left: 0;
+  right: 0;
+  background: white;
+  border: 1px solid #ddd;
+  border-radius: 10px;
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+  z-index: 1000;
+  padding: 8px;
+}
+.search-input {
+  width: 100%;
+  padding: 8px 12px;
+  border: 1px solid #eee;
+  border-radius: 6px;
+  margin-bottom: 8px;
+  font-size: 14px;
+  outline: none;
+}
+.search-input:focus {
+  border-color: var(--g600);
+}
+.options-container {
+  max-height: 250px;
+  overflow-y: auto;
+}
+.options-container::-webkit-scrollbar {
+  width: 5px;
+}
+.options-container::-webkit-scrollbar-thumb {
+  background: #eee;
+  border-radius: 10px;
+}
+.option-item {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 10px;
+  cursor: pointer;
+  border-radius: 6px;
+  transition: background 0.2s;
+  font-size: 14px;
+}
+.option-item:hover {
+  background: #f5f8f5;
+}
+
+.recipients-list-container {
+  max-height: 560px;
+  overflow-y: auto;
+  padding-right: 8px;
+}
+.recipients-list-container::-webkit-scrollbar {
+  width: 6px;
+}
+.recipients-list-container::-webkit-scrollbar-track {
+  background: var(--gr100, #f1f1f1);
+  border-radius: 4px;
+}
+.recipients-list-container::-webkit-scrollbar-thumb {
+  background: var(--gr300, #ccc);
+  border-radius: 4px;
+}
+.recipients-list-container::-webkit-scrollbar-thumb:hover {
+  background: var(--gr400, #aaa);
+}
+
 .checkout-page {
-  --g900: #1a2e1a;
-  --g800: #1e3a1e;
-  --g700: #234523;
-  --g600: #2d5a2d;
+  --g900: #2e0a11;
+  --g800: #4a101b;
+  --g700: #7a1c2e;
+  --g600: #ad1515;
   --gold: #c9a227;
   --gold-l: #e8c84a;
   --gold-p: #fdf3d0;
@@ -1284,7 +1438,7 @@ function formatPrice(val) {
   position: fixed;
   inset: 0;
   background-image:
-    radial-gradient(circle at 10% 20%, rgba(29, 58, 29, 0.04) 0%, transparent 50%),
+    radial-gradient(circle at 10% 20%, rgba(46, 10, 17, 0.04) 0%, transparent 50%),
     radial-gradient(circle at 90% 80%, rgba(201, 162, 39, 0.04) 0%, transparent 50%);
   pointer-events: none;
   z-index: 0;
@@ -1622,7 +1776,7 @@ input::placeholder {
 }
 input:focus {
   border-color: var(--g600);
-  box-shadow: 0 0 0 3px rgba(45, 90, 45, 0.08);
+  box-shadow: 0 0 0 3px rgba(122, 28, 46, 0.08);
 }
 input.error {
   border-color: var(--err);
@@ -1733,13 +1887,13 @@ input.error {
   transition: all 0.2s;
 }
 .bank-item:hover {
-  border-color: rgba(45, 90, 45, 0.3);
-  background: rgba(45, 90, 45, 0.02);
+  border-color: rgba(122, 28, 46, 0.3);
+  background: rgba(122, 28, 46, 0.02);
 }
 .bank-item.selected {
   border-color: var(--g600);
-  background: rgba(45, 90, 45, 0.03);
-  box-shadow: 0 0 0 3px rgba(45, 90, 45, 0.08);
+  background: rgba(122, 28, 46, 0.03);
+  box-shadow: 0 0 0 3px rgba(122, 28, 46, 0.08);
 }
 .bank-radio {
   flex-shrink: 0;
@@ -1872,8 +2026,8 @@ input.error {
   font-size: 12px;
   font-weight: 600;
   color: var(--g700);
-  background: rgba(45, 90, 45, 0.08);
-  border: 1px solid rgba(45, 90, 45, 0.15);
+  background: rgba(122, 28, 46, 0.08);
+  border: 1px solid rgba(122, 28, 46, 0.15);
   border-radius: 20px;
   padding: 4px 10px;
 }
@@ -1931,7 +2085,7 @@ input.error {
 }
 .stripe-text-input:focus {
   border-color: var(--g600) !important;
-  box-shadow: 0 0 0 3px rgba(45, 90, 45, 0.08) !important;
+  box-shadow: 0 0 0 3px rgba(122, 28, 46, 0.08) !important;
 }
 .stripe-text-input.stripe-error {
   border-color: var(--err) !important;
@@ -2010,7 +2164,7 @@ input.error {
 .btn-back:hover {
   border-color: var(--g700);
   color: var(--g700);
-  background: rgba(45, 90, 45, 0.04);
+  background: rgba(122, 28, 46, 0.04);
 }
 .btn-pay {
   flex: 1;
@@ -2043,7 +2197,7 @@ input.error {
 .spinner {
   width: 20px;
   height: 20px;
-  border: 2px solid rgba(26, 46, 26, 0.2);
+  border: 2px solid rgba(46, 10, 17, 0.2);
   border-top-color: var(--g900);
   border-radius: 50%;
   animation: spin 0.7s linear infinite;
@@ -2091,7 +2245,7 @@ input.error {
   background: var(--g900);
   border-radius: 20px;
   padding: 28px;
-  box-shadow: 0 8px 40px rgba(26, 46, 26, 0.25);
+  box-shadow: 0 8px 40px rgba(46, 10, 17, 0.25);
 }
 .summary-header {
   margin-bottom: 24px;
@@ -2291,7 +2445,7 @@ input.error {
   width: 72px;
   height: 72px;
   border-radius: 50%;
-  background: #e8f5e9;
+  background: #f9f2f3;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -2370,7 +2524,7 @@ input.error {
 }
 .btn-home:hover {
   transform: translateY(-1px);
-  box-shadow: 0 8px 24px rgba(29, 58, 29, 0.3);
+  box-shadow: 0 8px 24px rgba(46, 10, 17, 0.3);
 }
 .slide-fade-enter-active {
   transition: all 0.35s cubic-bezier(0.22, 1, 0.36, 1);
