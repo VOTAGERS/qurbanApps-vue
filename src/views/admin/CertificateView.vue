@@ -8,7 +8,7 @@
             <ul class="breadcrumb">
               <li class="breadcrumb-item"><router-link to="/">Home</router-link></li>
               <li class="breadcrumb-item"><a href="javascript: void(0)">Dashboard</a></li>
-              <li class="breadcrumb-item" aria-current="page">Certificate Menu</li>
+              <li class="breadcrumb-item" aria-current="page">Paid Order for Certificate</li>
             </ul>
           </div>
           <div class="col-md-12 mt-2">
@@ -26,7 +26,7 @@
       <div class="col-sm-12">
         <div class="card">
           <div class="card-header d-flex justify-content-between align-items-center">
-            <h3>Order List for Certificates</h3>
+            <h3>Paid Order for Certificate</h3>
             <button class="btn btn-primary" @click="fetchOrders">
               <i class="ti ti-refresh me-1"></i> Refresh
             </button>

@@ -33,11 +33,62 @@ const router = createRouter({
     {
       path: '/admin',
       component: AdminLayout,
+      meta: { requiresAuth: true },
       children: [
-        ...adminRoutes
+        ...adminRoutes.map(route => ({
+          ...route,
+          meta: { 
+            requiresAuth: true,
+            // Menandai rute khusus SuperAdmin berdasarkan nama/path
+            superAdminOnly: ['users', 'role-access', 'user-access'].includes(route.name as string)
+          }
+        }))
       ]
+    },
+    // Error Routes
+    {
+      path: '/error/:code',
+      name: 'error',
+      component: () => import('@/views/ErrorView.vue'),
+      props: true
+    },
+    // Catch-all route for 404
+    {
+      path: '/:pathMatch(.*)*',
+      name: 'not-found',
+      component: () => import('@/views/ErrorView.vue'),
+      props: { code: '404' }
     }
   ],
+})
+
+// Navigation Guard (Security Middleware)
+import { useAuthStore } from '../stores/auth'
+
+router.beforeEach((to, from, next) => {
+  const authStore = useAuthStore()
+
+  // 1. Cek apakah rute memerlukan autentikasi
+  if (to.matched.some(record => record.meta.requiresAuth)) {
+    if (!authStore.isAuthenticated) {
+      // Jika tidak login, tendang ke login
+      return next({ name: 'login' })
+    }
+
+    // 2. Cek Role (Authorization)
+    // Jika rute hanya untuk SuperAdmin
+    if (to.meta.superAdminOnly && !authStore.isSuperAdmin) {
+      // Jika bukan SuperAdmin, tendang ke Error 403 (Forbidden)
+      return next({ name: 'error', params: { code: '403' } })
+    }
+  }
+
+  // 3. Jika sudah login tapi mencoba akses halaman login lagi
+  if (to.name === 'login' && authStore.isAuthenticated) {
+    return next({ name: 'dashboard-home' })
+  }
+
+  next()
 })
 
 export default router
