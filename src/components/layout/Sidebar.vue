@@ -107,5 +107,22 @@ const isActive = (path: string) => {
 </script>
 
 <style scoped>
-/* Sidebar styles */
+.pc-sidebar .pc-navbar > .pc-item.active > .pc-link {
+  color: #7A1B2E !important;
+  background: rgba(122, 27, 46, 0.05) !important;
+}
+
+.pc-sidebar .pc-navbar > .pc-item.active > .pc-link .pc-micon {
+  color: #7A1B2E !important;
+}
+
+.pc-sidebar .pc-navbar > .pc-item.active:after {
+  background: #7A1B2E !important;
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 3px;
+  height: 100%;
+}
 </style>

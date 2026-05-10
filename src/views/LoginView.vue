@@ -149,10 +149,10 @@ const verifyOtp = async () => {
 @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,600;1,500&family=DM+Sans:wght@300;400;500;600&display=swap');
 
 .login-page {
-  --g900: #1a2e1a;
-  --g800: #1e3a1e;
-  --g700: #234523;
-  --g600: #2d5a2d;
+  --g900: #58101E;
+  --g800: #7A1B2E;
+  --g700: #9A243A;
+  --g600: #B02C45;
   --gold: #c9a227;
   --gold-l: #e8c84a;
   --gold-p: #fdf3d0;
@@ -178,7 +178,7 @@ const verifyOtp = async () => {
   position: absolute;
   inset: 0;
   background-image:
-    radial-gradient(circle at 10% 20%, rgba(29, 58, 29, 0.04) 0%, transparent 50%),
+    radial-gradient(circle at 10% 20%, rgba(122, 27, 46, 0.04) 0%, transparent 50%),
     radial-gradient(circle at 90% 80%, rgba(201, 162, 39, 0.04) 0%, transparent 50%);
   pointer-events: none;
   z-index: 0;

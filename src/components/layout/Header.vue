@@ -114,3 +114,19 @@ const handleLogout = async () => {
   }
 };
 </script>
+
+<style scoped>
+.head-link-primary {
+  color: #7A1B2E !important;
+  background: rgba(122, 27, 46, 0.05) !important;
+  border-radius: 8px;
+}
+.head-link-primary:hover {
+  background: rgba(122, 27, 46, 0.1) !important;
+}
+
+.head-link-secondary:hover {
+  color: #7A1B2E !important;
+  background: rgba(122, 27, 46, 0.05) !important;
+}
+</style>
