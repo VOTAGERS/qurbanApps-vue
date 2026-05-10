@@ -77,9 +77,12 @@
                       </span>
                     </td>
                     <td class="text-end">
-                      <button class="btn btn-sm btn-light-secondary me-1" title="Detail">
-                        <i class="ti ti-eye"></i>
-                      </button>
+                        <button 
+                          class="btn btn-sm btn-light-secondary me-1" 
+                          title="Detail"
+                          @click="viewDetail(order.order_code)">
+                          <i class="ti ti-eye"></i>
+                        </button>
                       <button class="btn btn-sm btn-light-primary" title="Edit">
                         <i class="ti ti-edit"></i>
                       </button>
@@ -121,6 +124,14 @@
 
 <script setup lang="ts">
 import { ref, onMounted, computed } from 'vue'
+
+import { useRouter } from 'vue-router'
+const router = useRouter()
+
+const viewDetail = (orderCode: string) => {
+  router.push({ name: 'order-detail', query: { order_code: orderCode } })
+}
+
 
 const API_URL = import.meta.env.VITE_API_BASE_URL
 const defaultCurrency = import.meta.env.VITE_DEFAULT_CURRENCY || 'IDR'
