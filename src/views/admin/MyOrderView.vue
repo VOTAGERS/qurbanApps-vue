@@ -111,6 +111,9 @@
 
 <script setup lang="ts">
 import { ref, onMounted, computed } from 'vue'
+import { useAuthStore } from '../../stores/auth'
+
+const authStore = useAuthStore()
 
 const API_URL = import.meta.env.VITE_API_BASE_URL
 const defaultCurrency = import.meta.env.VITE_DEFAULT_CURRENCY || 'IDR'
@@ -125,8 +128,15 @@ const currentPage = ref(1)
 const itemsPerPage = ref(10)
 
 const fetchMyOrders = async () => {
+  if (!authStore.user?.id_user) return
+  
   try {
-    const response = await fetch(`${API_URL}/api/orders`)
+    // Jika SuperAdmin, ambil semua data tanpa filter user
+    const endpoint = authStore.isSuperAdmin 
+      ? `${API_URL}/api/orders` 
+      : `${API_URL}/api/orders/user/${authStore.user.id_user}`;
+
+    const response = await fetch(endpoint)
     const result = await response.json()
     if (result.success) {
       orders.value = result.data
