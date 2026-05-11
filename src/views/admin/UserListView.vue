@@ -404,6 +404,7 @@
 
 <script setup lang="ts">
 import { ref, onMounted, computed } from 'vue'
+import { useAuthStore } from '../../stores/auth'
 import Swal from 'sweetalert2'
 
 const users = ref<any[]>([])
@@ -435,10 +436,17 @@ const itemsPerPage = ref(10)
 
 const API_URL = import.meta.env.VITE_API_BASE_URL
 
+const authStore = useAuthStore()
+
 const fetchUsers = async () => {
   loading.value = true
   try {
-    const response = await fetch(`${API_URL}/api/users`)
+    const response = await fetch(`${API_URL}/api/users`, {
+      headers: {
+        'Accept': 'application/json',
+        'Authorization': `Bearer ${authStore.token}`
+      }
+    })
     const result = await response.json()
     
     if (result.success && Array.isArray(result.data)) {
@@ -458,7 +466,11 @@ const addUser = async () => {
   try {
     const response = await fetch(`${API_URL}/api/users`, {
       method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
+      headers: { 
+        'Content-Type': 'application/json',
+        'Accept': 'application/json',
+        'Authorization': `Bearer ${authStore.token}`
+      },
       body: JSON.stringify(newUser.value)
     })
     const result = await response.json()
@@ -519,7 +531,11 @@ const confirmDelete = (user: any) => {
     if (result.isConfirmed) {
       try {
         const response = await fetch(`${API_URL}/api/users/${user.id_user}`, {
-          method: 'DELETE'
+          method: 'DELETE',
+          headers: {
+            'Accept': 'application/json',
+            'Authorization': `Bearer ${authStore.token}`
+          }
         })
         const data = await response.json()
         if (data.success) {
@@ -549,7 +565,11 @@ const saveUser = async () => {
   try {
     const response = await fetch(`${API_URL}/api/users/${editingUser.value.id_user}`, {
       method: 'PUT',
-      headers: { 'Content-Type': 'application/json' },
+      headers: { 
+        'Content-Type': 'application/json',
+        'Accept': 'application/json',
+        'Authorization': `Bearer ${authStore.token}`
+      },
       body: JSON.stringify(editingUser.value)
     })
     const result = await response.json()

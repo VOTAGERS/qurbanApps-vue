@@ -136,7 +136,12 @@ const fetchMyOrders = async () => {
       ? `${API_URL}/api/orders` 
       : `${API_URL}/api/orders/user/${authStore.user.id_user}`;
 
-    const response = await fetch(endpoint)
+    const response = await fetch(endpoint, {
+      headers: {
+        'Accept': 'application/json',
+        'Authorization': `Bearer ${authStore.token}`
+      }
+    })
     const result = await response.json()
     if (result.success) {
       orders.value = result.data

@@ -167,6 +167,7 @@
 
 <script setup lang="ts">
 import { ref, onMounted, computed, watch } from 'vue'
+import { useAuthStore } from '../../stores/auth'
 
 import { useRouter } from 'vue-router'
 const router = useRouter()
@@ -283,9 +284,10 @@ const exportToExcel = async () => {
   try {
     const response = await fetch(`${API_URL}/api/orders/export-excel`, {
       method: 'GET',
-      // headers: {
-      //   'Authorization': `Bearer ${localStorage.getItem('token')}`, 
-      // },
+      headers: {
+        'Accept': 'application/json',
+        'Authorization': `Bearer ${authStore.token}`, 
+      },
     })
 
     if (!response.ok) throw new Error('Export failed')
@@ -311,9 +313,15 @@ const orders = ref<OrderData[]>([])
 const currentPage = ref(1)
 const itemsPerPage = ref(10)
 
+const authStore = useAuthStore()
 const fetchOrders = async () => {
   try {
-    const response = await fetch(`${API_URL}/api/orders`)
+    const response = await fetch(`${API_URL}/api/orders`, {
+      headers: {
+        'Accept': 'application/json',
+        'Authorization': `Bearer ${authStore.token}`
+      }
+    })
     const result = await response.json()
     if (result.success) {
       orders.value = result.data
