@@ -1,6 +1,5 @@
 <template>
   <div>
-    <!-- [ breadcrumb ] start -->
     <div class="page-header">
       <div class="page-block">
         <div class="row align-items-center">
@@ -20,50 +19,62 @@
         </div>
       </div>
     </div>
-    <!-- [ breadcrumb ] end -->
-
-    <!-- [ Main Content ] start -->
     <div class="row">
       <div class="col-sm-12">
         <div class="card">
           <div class="card-header d-flex justify-content-between align-items-center">
             <h3>Participant List</h3>
-            <div>
-              <!-- Bagian Header (Baris 31) -->
-                <button class="btn btn-secondary me-2" @click="$router.back()">
-                  <i class="ti ti-arrow-left me-1"></i> Back
-                </button>
-                <!-- TOMBOL BARU: Broadcast WA -->
-                <button 
-                  class="btn btn-success me-2" 
-                  @click="broadcastWA" 
-                  :disabled="participants.length === 0"
-                >
-                  <i class="ti ti-brand-whatsapp me-1"></i> Broadcast WA
-                </button>
-              <button 
-                class="btn btn-primary" 
-                @click="generateBulk" 
-                :disabled="isGenerating || participants.length === 0"
+            <div class="d-flex gap-2">
+              <button class="btn btn-secondary" @click="$router.back()">
+                <i class="ti ti-arrow-left me-1"></i> Back
+              </button>
+              <button
+                v-if="participantsWithCert.length > 0"
+                class="btn btn-success"
+                :disabled="isBlasting || selectedIds.length === 0"
+                @click="blastSelectedWA"
               >
-                <span v-if="isGenerating" class="spinner-border spinner-border-sm me-2" role="status"></span>
-                <i v-else class="ti ti-certificate me-1"></i> 
+                <span v-if="isBlasting" class="spinner-border spinner-border-sm me-1" role="status"></span>
+                <i v-else class="ti ti-brand-whatsapp me-1"></i>
+                Blast WA
+                <span v-if="selectedIds.length > 0" class="badge bg-white text-success ms-1">{{ selectedIds.length }}</span>
+              </button>
+
+              <button
+                class="btn btn-primary"
+                :disabled="isGenerating || participants.length === 0"
+                @click="generateBulk"
+              >
+                <span v-if="isGenerating" class="spinner-border spinner-border-sm me-1" role="status"></span>
+                <i v-else class="ti ti-certificate me-1"></i>
                 Generate All Certificates
               </button>
             </div>
           </div>
+
           <div class="card-body">
             <div class="alert alert-info d-flex align-items-center mb-4" role="alert">
               <i class="ti ti-info-circle me-2 fs-4"></i>
               <div>
-                Silakan klik tombol <strong>Generate All Certificates</strong> untuk membuat sertifikat PDF secara massal bagi seluruh peserta di bawah ini.
-              </div> 
+                Klik <strong>Generate All Certificates</strong> untuk membuat sertifikat PDF massal.
+                Setelah tersedia, pilih peserta lalu klik <strong>Blast WA</strong>.
+              </div>
             </div>
 
             <div class="table-responsive">
               <table class="table table-hover mb-0">
                 <thead>
                   <tr>
+                    <th style="width: 40px">
+                      <input
+                        type="checkbox"
+                        class="form-check-input"
+                        :checked="isAllSelected"
+                        :indeterminate.prop="isIndeterminate"
+                        :disabled="participantsWithCert.length === 0"
+                        @change="toggleSelectAll"
+                      />
+                    </th>
                     <th>No</th>
                     <th>Participant Name</th>
                     <th>Email</th>
@@ -73,7 +84,20 @@
                   </tr>
                 </thead>
                 <tbody>
-                  <tr v-for="(participant, index) in participants" :key="participant.id_participant">
+                  <tr
+                    v-for="(participant, index) in participants"
+                    :key="participant.id_participant"
+                    :class="{ 'table-active': selectedIds.includes(participant.id_participant) }"
+                  >
+                    <td>
+                      <input
+                        v-if="participant.certificate"
+                        type="checkbox"
+                        class="form-check-input"
+                        :value="participant.id_participant"
+                        v-model="selectedIds"
+                      />
+                    </td>
                     <td>{{ index + 1 }}</td>
                     <td><span class="fw-bold">{{ participant.qurban_name }}</span></td>
                     <td>{{ participant.email }}</td>
@@ -86,25 +110,31 @@
                     </td>
                     <td class="text-end">
                       <div class="btn-group">
-                        <!-- TOMBOL BARU: WA Individu -->
-                        <button 
-                          v-if="participant.phone_number"
-                          class="btn btn-sm btn-light-success me-1" 
+                        <button
+                          v-if="participant.certificate && participant.phone_number"
+                          class="btn btn-sm btn-light-success me-1"
                           title="Send WhatsApp"
-                          @click="sendSingleWA(participant)"
+                          :disabled="isBlasting"
+                          @click="blastSingleWA(participant)"
                         >
                           <i class="ti ti-brand-whatsapp"></i>
                         </button>
-                        
-                        <a v-if="participant.certificate" :href="`${apiBaseUrl}/api/certificates/download/${participant.certificate.id_certificate}`" class="btn btn-sm btn-light-primary" title="Download">
-                          <i class="ti ti-download"></i>
-                        </a>
-                        <span v-else class="text-muted small">No File</span>
+                          <!-- Corrected Code -->
+                          <a
+                            v-if="participant.certificate"
+                            :href="`${apiBaseUrl}/api/certificates/download/${participant.certificate.id_certificate}`"
+                            target="_blank"
+                            class="btn btn-sm btn-light-primary"
+                            title="Download"
+                          >
+                            <i class="ti ti-download"></i>
+                          </a>
+                          <span v-else class="text-muted small">No File</span>
                       </div>
                     </td>
                   </tr>
                   <tr v-if="participants.length === 0">
-                    <td colspan="6" class="text-center text-muted py-5">
+                    <td colspan="7" class="text-center text-muted py-5">
                       No participants found for this order.
                     </td>
                   </tr>
@@ -115,43 +145,64 @@
         </div>
       </div>
     </div>
-    <!-- [ Main Content ] end -->
   </div>
 </template>
 
 <script setup lang="ts">
-import { ref, onMounted } from 'vue'
+import { ref, computed, onMounted } from 'vue'
 import axios from 'axios'
 import Swal from 'sweetalert2'
 import { useAuthStore } from '../../stores/auth'
 
 const props = defineProps({
-  id: {
-    type: String,
-    required: true
-  }
+  id: { type: String, required: true }
 })
 
-const authStore = useAuthStore()
-const participants = ref<any[]>([])
-const isGenerating = ref(false)
-
+const authStore  = useAuthStore()
 const apiBaseUrl = import.meta.env.VITE_API_BASE_URL || 'http://localhost:8000'
 const axiosConfig = {
-  headers: {
-    Authorization: `Bearer ${authStore.token}`
-  }
+  headers: { Authorization: `Bearer ${authStore.token}` }
 }
+
+const participants = ref<any[]>([])
+const selectedIds  = ref<number[]>([])
+const isGenerating = ref(false)
+const isBlasting   = ref(false)
+
+
+const participantsWithCert = computed(() =>
+  participants.value.filter(p => p.certificate)
+)
+
+const isAllSelected = computed(() =>
+  participantsWithCert.value.length > 0 &&
+  selectedIds.value.length === participantsWithCert.value.length
+)
+
+const isIndeterminate = computed(() =>
+  selectedIds.value.length > 0 &&
+  selectedIds.value.length < participantsWithCert.value.length
+)
 
 const fetchParticipants = async () => {
   try {
-    const response = await axios.get(`${apiBaseUrl}/api/certificates/order/${props.id}/participants`, axiosConfig)
+    const response = await axios.get(
+      `${apiBaseUrl}/api/certificates/order/${props.id}/participants`,
+      axiosConfig
+    )
     if (response.data.success) {
       participants.value = response.data.data
+      selectedIds.value  = []
     }
   } catch (error) {
     console.error('Error fetching participants:', error)
   }
+}
+
+const toggleSelectAll = () => {
+  selectedIds.value = isAllSelected.value
+    ? []
+    : participantsWithCert.value.map(p => p.id_participant)
 }
 
 const generateBulk = async () => {
@@ -169,10 +220,14 @@ const generateBulk = async () => {
 
   isGenerating.value = true
   try {
-    const response = await axios.post(`${apiBaseUrl}/api/certificates/order/${props.id}/generate-bulk`, {}, axiosConfig)
+    const response = await axios.post(
+      `${apiBaseUrl}/api/certificates/order/${props.id}/generate-bulk`,
+      {},
+      axiosConfig
+    )
     if (response.data.success) {
-      Swal.fire('Berhasil!', response.data.message, 'success')
-      fetchParticipants() // Refresh list
+      await Swal.fire('Berhasil!', response.data.message, 'success')
+      fetchParticipants()
     }
   } catch (error: any) {
     Swal.fire('Gagal', error.response?.data?.message || 'Gagal generate sertifikat', 'error')
@@ -181,71 +236,70 @@ const generateBulk = async () => {
   }
 }
 
-onMounted(() => {
-  fetchParticipants()
-})
-
-
-// Fungsi untuk memformat pesan WA
-const generateWAMessage = (participant: any) => {
-  const downloadLink = `${apiBaseUrl}/api/certificates/public/download/${participant.id_participant}`
-  
-  return `Terima Kasih Pejuang Qurban! \u{1F402}\u{2728}
-
-Halo Bapak/Ibu *${participant.qurban_name}*, laporan qurban Anda sudah selesai. Amanah telah kami salurkan kepada yang berhak menerima.
-
-Yuk, cek dan unduh sertifikat qurban Anda di sini:
-🔗 ${downloadLink}
-
-Semoga berkah dan menjadi pahala jariyah. Sampai jumpa di tahun depan!
-
-Salam hangat,
-*QurbanHub*`
+const callBlastAPI = async (participantIds: number[]) => {
+  const response = await axios.post(
+    `${apiBaseUrl}/api/certificates/order/${props.id}/blast-wa`,
+    { participant_ids: participantIds },
+    axiosConfig
+  )
+  return response.data
 }
 
-const sendSingleWA = (participant: any) => {
-  if (!participant.phone_number) return
-  
-  let phone = participant.phone_number.replace(/\D/g, '')
-  
-  if (phone.startsWith('0')) {
-    phone = '62' + phone.substring(1)
+const blastSingleWA = async (participant: any) => {
+  isBlasting.value = true
+  try {
+    await callBlastAPI([participant.id_participant])
+    Swal.fire({
+      title: 'Terkirim!',
+      text: `WA berhasil dikirim ke ${participant.qurban_name}.`,
+      icon: 'success',
+      timer: 2000,
+      showConfirmButton: false
+    })
+  } catch (error: any) {
+    Swal.fire('Gagal', error.response?.data?.message || 'Gagal kirim WA', 'error')
+  } finally {
+    isBlasting.value = false
   }
-
-  const message = encodeURIComponent(generateWAMessage(participant))
-  const waUrl = `https://api.whatsapp.com/send?phone=${phone}&text=${message}`
-  
-  window.open(waUrl, '_blank')
 }
 
-const broadcastWA = async () => {
-  const hasCertificates = participants.value.filter(p => p.certificate)
-  
-  if (hasCertificates.length === 0) {
-    Swal.fire('Info', 'Belum ada sertifikat yang di-generate.', 'info')
-    return
-  }
+const blastSelectedWA = async () => {
+  if (selectedIds.value.length === 0) return
 
   const result = await Swal.fire({
-    title: 'Kirim Semua WA?',
-    text: `Akan membuka ${hasCertificates.length} tab WhatsApp. Pastikan browser Anda mengizinkan 'Pop-ups'.`,
+    title: 'Blast WhatsApp?',
+    text: `Mengirim sertifikat ke ${selectedIds.value.length} peserta via WhatsApp.`,
     icon: 'question',
     showCancelButton: true,
     confirmButtonText: 'Ya, Kirim!',
     cancelButtonText: 'Batal'
   })
 
-  if (result.isConfirmed) {
-    hasCertificates.forEach((p, index) => {
-      setTimeout(() => {
-        sendSingleWA(p)
-      }, index * 2000) 
-    })
+  if (!result.isConfirmed) return
+
+  isBlasting.value = true
+  try {
+    const data = await callBlastAPI(selectedIds.value)
+
+    let msg = data.message
+    if (data.failed?.length > 0) {
+      const failedNames = data.failed.map((f: any) => `• ${f.name} (${f.reason})`).join('\n')
+      msg += `\n\nGagal:\n${failedNames}`
+    }
+
+    await Swal.fire('Selesai!', msg, data.failed?.length > 0 ? 'warning' : 'success')
+    selectedIds.value = []
+  } catch (error: any) {
+    Swal.fire('Gagal', error.response?.data?.message || 'Gagal blast WA', 'error')
+  } finally {
+    isBlasting.value = false
   }
 }
-
+onMounted(() => fetchParticipants())
 </script>
 
 <style scoped>
-/* Specific styles for participant view */
+.table tbody tr.table-active {
+  background-color: rgba(26, 77, 46, 0.06);
+}
 </style>
