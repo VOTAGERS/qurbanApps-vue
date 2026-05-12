@@ -125,6 +125,9 @@
 <script setup lang="ts">
 import { ref, onMounted } from 'vue'
 import Swal from 'sweetalert2'
+import { useAuthStore } from '@/stores/auth'
+
+const authStore = useAuthStore()
 
 const roles = ref<any[]>([])
 const loading = ref(true)
@@ -143,7 +146,12 @@ const API_URL = import.meta.env.VITE_API_BASE_URL
 const fetchRoles = async () => {
   loading.value = true
   try {
-    const response = await fetch(`${API_URL}/api/role-access`)
+    const response = await fetch(`${API_URL}/api/role-access`, {
+      headers: {
+        'Accept': 'application/json',
+        'Authorization': `Bearer ${authStore.token}`
+      }
+    })
     const result = await response.json()
     if (result.success) {
       roles.value = result.data.filter((r: any) => r.status !== 'deleted')
@@ -186,7 +194,11 @@ const saveRole = async () => {
     
     const response = await fetch(url, {
       method,
-      headers: { 'Content-Type': 'application/json' },
+      headers: { 
+        'Content-Type': 'application/json',
+        'Accept': 'application/json',
+        'Authorization': `Bearer ${authStore.token}`
+      },
       body: JSON.stringify(form.value)
     })
     
@@ -225,7 +237,11 @@ const deleteRole = async (id: number) => {
   if (result.isConfirmed) {
     try {
       const response = await fetch(`${API_URL}/api/role-access/${id}`, {
-        method: 'DELETE'
+        method: 'DELETE',
+        headers: {
+          'Accept': 'application/json',
+          'Authorization': `Bearer ${authStore.token}`
+        }
       })
       if (response.ok) {
         Swal.fire('Deleted!', 'Role has been deleted.', 'success')

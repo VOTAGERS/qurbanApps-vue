@@ -135,6 +135,9 @@
 <script setup lang="ts">
 import { ref, onMounted, computed } from 'vue'
 import Swal from 'sweetalert2'
+import { useAuthStore } from '@/stores/auth'
+
+const authStore = useAuthStore()
 
 const userRolesRaw = ref<any[]>([])
 const availableUsers = ref<any[]>([])
@@ -180,9 +183,24 @@ const fetchData = async () => {
   loading.value = true
   try {
     const [urRes, userRes, roleRes] = await Promise.all([
-      fetch(`${API_URL}/api/user-access`),
-      fetch(`${API_URL}/api/users`),
-      fetch(`${API_URL}/api/role-access`)
+      fetch(`${API_URL}/api/user-access`, {
+        headers: {
+          'Accept': 'application/json',
+          'Authorization': `Bearer ${authStore.token}`
+        }
+      }),
+      fetch(`${API_URL}/api/users`, {
+        headers: {
+          'Accept': 'application/json',
+          'Authorization': `Bearer ${authStore.token}`
+        }
+      }),
+      fetch(`${API_URL}/api/role-access`, {
+        headers: {
+          'Accept': 'application/json',
+          'Authorization': `Bearer ${authStore.token}`
+        }
+      })
     ])
 
     const urResult = await urRes.json()
@@ -227,7 +245,11 @@ const saveAssignment = async () => {
   try {
     const response = await fetch(`${API_URL}/api/user-access`, {
       method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
+      headers: { 
+        'Content-Type': 'application/json',
+        'Accept': 'application/json',
+        'Authorization': `Bearer ${authStore.token}`
+      },
       body: JSON.stringify(form.value)
     })
     
@@ -267,7 +289,11 @@ const removeAllAccess = async (userId: number) => {
     try {
       const response = await fetch(`${API_URL}/api/user-access`, {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
+        headers: { 
+          'Content-Type': 'application/json',
+          'Accept': 'application/json',
+          'Authorization': `Bearer ${authStore.token}`
+        },
         body: JSON.stringify({
           id_user: userId,
           role_codes: []
