@@ -64,13 +64,26 @@
                    <option v-for="val in dynamicFilterOptions" :key="val" :value="val">{{ val }}</option>
                  </select>
                </div>
-               <div class="col-md-6">
-                 <label class="form-label small fw-bold">Search</label>
-                 <div class="input-group">
-                   <span class="input-group-text bg-transparent border-end-0"><i class="ti ti-search"></i></span>
-                   <input type="text" class="form-control border-start-0" v-model="filterConfig.search" placeholder="Search Order Code, Customer, or Product...">
-                 </div>
-               </div>
+                <div class="col-md-6">
+                  <label class="form-label small fw-bold">Search</label>
+                  <div class="input-group">
+                    <span class="input-group-text bg-transparent border-end-0"><i class="ti ti-search"></i></span>
+                    <input type="text" class="form-control border-start-0" v-model="filterConfig.search" placeholder="Search Order Code, Customer, or Product...">
+                  </div>
+                </div>
+                <div class="col-md-3">
+                  <label class="form-label small fw-bold">Start Date</label>
+                  <input type="date" class="form-control" v-model="filterConfig.startDate">
+                </div>
+                <div class="col-md-3">
+                  <label class="form-label small fw-bold">End Date</label>
+                  <input type="date" class="form-control" v-model="filterConfig.endDate">
+                </div>
+                <div class="col-md-6">
+                  <button class="btn btn-outline-secondary w-100" @click="resetFilters">
+                    <i class="ti ti-rotate me-1"></i> Reset Filters
+                  </button>
+                </div>
              </div>
            </div>
            <div class="card-body">
@@ -188,11 +201,18 @@ const formatCurrency = (value: string | number) => {
 
 const formatDate = (dateString: string) => {
   if (!dateString) return '-'
-  return new Date(dateString).toLocaleDateString('id-ID', {
-    day: '2-digit',
-    month: 'short',
-    year: 'numeric'
-  })
+  try {
+    const date = new Date(dateString)
+    if (isNaN(date.getTime())) return dateString // Jika bukan format tanggal yang valid, kembalikan string aslinya
+    
+    return date.toLocaleDateString('id-ID', {
+      day: '2-digit',
+      month: 'short',
+      year: 'numeric'
+    })
+  } catch (e) {
+    return dateString
+  }
 }
 
 interface OrderData {
@@ -227,7 +247,19 @@ const filterConfig = ref({
   category: '',
   value: '',
   search: '',
+  startDate: '',
+  endDate: '',
 })
+
+const resetFilters = () => {
+  filterConfig.value = {
+    category: '',
+    value: '',
+    search: '',
+    startDate: '',
+    endDate: '',
+  }
+}
 
 // Dynamic Options for the second dropdown
 const dynamicFilterOptions = computed(() => {
@@ -281,7 +313,23 @@ const filteredOrders = computed(() => {
       searchMatch = orderCode.includes(q) || customerName.includes(q) || productName.includes(q) || country.includes(q)
     }
 
-    return categoryMatch && searchMatch
+    // 3. Date Range Filter
+    let dateMatch = true
+    const startDate = filterConfig.value.startDate
+    const endDate = filterConfig.value.endDate
+
+    if (startDate || endDate) {
+      const orderDate = order.created_at ? order.created_at.split(' ')[0] : ''
+      if (orderDate) {
+        if (startDate && orderDate < startDate) dateMatch = false
+        if (endDate && orderDate > endDate) dateMatch = false
+      } else {
+        // Jika tidak ada tanggal order, anggap tidak cocok jika filter tanggal aktif
+        dateMatch = false
+      }
+    }
+
+    return categoryMatch && searchMatch && dateMatch
   })
 })
 
@@ -294,7 +342,11 @@ const isLoadingExport = ref(false)
 const exportToExcel = async () => {
   isLoadingExport.value = true
   try {
-    const response = await fetch(`${API_URL}/api/orders/export-excel`, {
+    const params = new URLSearchParams()
+    if (filterConfig.value.startDate) params.append('start_date', filterConfig.value.startDate)
+    if (filterConfig.value.endDate) params.append('end_date', filterConfig.value.endDate)
+
+    const response = await fetch(`${API_URL}/api/orders/export-excel?${params.toString()}`, {
       method: 'GET',
       headers: {
         'Accept': 'application/json',
