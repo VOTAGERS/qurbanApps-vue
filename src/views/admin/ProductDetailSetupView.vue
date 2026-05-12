@@ -170,6 +170,9 @@
 <script setup lang="ts">
 import { ref, onMounted, computed } from 'vue'
 import Swal from 'sweetalert2'
+import { useAuthStore } from '@/stores/auth'
+
+const authStore = useAuthStore()
 
 const defaultCurrency = import.meta.env.VITE_DEFAULT_CURRENCY || 'IDR'
 const currencySymbol = defaultCurrency === 'IDR' ? 'Rp' : (defaultCurrency === 'SGD' ? 'S$' : (defaultCurrency === 'MYR' ? 'RM' : '$'))
@@ -223,7 +226,12 @@ let modalInstance: any = null
 
 const fetchProductDetails = async () => {
   try {
-    const response = await fetch(`${import.meta.env.VITE_API_BASE_URL}/api/products-detail`)
+    const response = await fetch(`${import.meta.env.VITE_API_BASE_URL}/api/products-detail`, {
+      headers: {
+        'Accept': 'application/json',
+        'Authorization': `Bearer ${authStore.token}`
+      }
+    })
     const result = await response.json()
     if (result.success) {
       productDetails.value = result.data
@@ -298,6 +306,10 @@ const uploadImage = async () => {
   try {
     const response = await fetch(`${import.meta.env.VITE_API_BASE_URL}/api/upload`, {
       method: 'POST',
+      headers: {
+        'Accept': 'application/json',
+        'Authorization': `Bearer ${authStore.token}`
+      },
       body: formData
     })
     
@@ -337,7 +349,8 @@ const saveDetail = async () => {
       method: method,
       headers: {
         'Content-Type': 'application/json',
-        'Accept': 'application/json'
+        'Accept': 'application/json',
+        'Authorization': `Bearer ${authStore.token}`
       },
       body: JSON.stringify(form.value)
     })
@@ -392,7 +405,8 @@ const deleteDetail = async (id: number) => {
     const response = await fetch(`${import.meta.env.VITE_API_BASE_URL}/api/products-detail/${id}`, {
       method: 'DELETE',
       headers: {
-        'Accept': 'application/json'
+        'Accept': 'application/json',
+        'Authorization': `Bearer ${authStore.token}`
       }
     })
     

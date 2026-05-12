@@ -481,7 +481,7 @@ body {
 
 .hero-badge-float {
     position: absolute;
-    top: 1.8rem;
+    top: 6.5rem;
     right: 5rem;
     z-index: 4;
     display: flex;

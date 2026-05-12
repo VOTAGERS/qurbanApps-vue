@@ -10,18 +10,18 @@ function formatPrice(value) {
 
 function mapItem(item, index) {
   return {
-    id:       item.idproduct_woo,
-    featured: index === 0,
-    title:    item.product_woo?.name ?? 'Qurbani Products',
-    for:      `Maks. ${item.max_share} people`,
-    price:    formatPrice(item.product_woo?.price),
+    id: item.idproduct_woo,
+    featured: false,
+    title: item.product_woo?.name ?? 'Qurbani Products',
+    for: `Maks. ${item.max_share} people`,
+    price: formatPrice(item.product_woo?.price),
     priceSup: '/ekor',
-    desc:     `${item.status === 'A' ? '✓ Tersedia' : '✗ Tidak Tersedia'} · Maks. ${item.max_share} people`,
-    img:      (() => {
-                const url = item.product_woo?.file_upload?.url ?? item.product_woo?.image ?? null;
-                return (url && !url.startsWith('http')) ? `${import.meta.env.VITE_API_BASE_URL}${url}` : url;
-              })(),
-    status:   item.status,
+    desc: `${item.status === 'active' ? '✓ Tersedia' : '✗ Tidak Tersedia'} · Maks. ${item.max_share} people`,
+    img: (() => {
+      const url = item.product_woo?.file_upload?.url ?? item.product_woo?.image ?? null;
+      return (url && !url.startsWith('http')) ? `${import.meta.env.VITE_API_BASE_URL}${url}` : url;
+    })(),
+    status: item.status,
     rawPrice: Number(item.product_woo?.price ?? 0),
     maxShare: item.max_share,
   }
@@ -29,12 +29,12 @@ function mapItem(item, index) {
 
 export function useCategories() {
   const categories = ref([])
-  const loading    = ref(true)
-  const error      = ref(null)
+  const loading = ref(true)
+  const error = ref(null)
 
   async function fetchCategories() {
     try {
-      const res  = await fetch(API_URL)
+      const res = await fetch(API_URL)
       if (!res.ok) throw new Error(`HTTP ${res.status}`)
       const json = await res.json()
       if (json.success && json.data) {
