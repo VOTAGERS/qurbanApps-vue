@@ -71,6 +71,9 @@
 import { ref } from 'vue';
 import { useRouter } from 'vue-router';
 import axios from 'axios';
+import { useAuthStore } from '@/stores/auth';
+
+const authStore = useAuthStore();
 
 const step = ref(1);
 const loginMethod = ref('otp');
@@ -111,11 +114,7 @@ const loginWithPassword = async () => {
 
     if (response.data.success) {
       const { token, user, roles } = response.data.data;
-      localStorage.setItem('token', token);
-      localStorage.setItem('user', JSON.stringify(user));
-      localStorage.setItem('roles', JSON.stringify(roles));
-      
-      
+      authStore.setAuthData(user, roles, token);
       window.location.href = '/admin';
     }
   } catch (error: any) {
@@ -137,11 +136,7 @@ const verifyOtp = async () => {
 
     if (response.data.success) {
       const { token, user, roles } = response.data.data;
-      localStorage.setItem('token', token);
-      localStorage.setItem('user', JSON.stringify(user));
-      localStorage.setItem('roles', JSON.stringify(roles));
-      
-      
+      authStore.setAuthData(user, roles, token);
       window.location.href = '/admin';
     }
   } catch (error: any) {

@@ -57,26 +57,28 @@
 import { computed } from 'vue';
 import axios from 'axios';
 import Swal from 'sweetalert2';
+import { useAuthStore } from '@/stores/auth';
+
+const authStore = useAuthStore();
 
 const emit = defineEmits(['toggle-sidebar', 'toggle-mobile-sidebar']);
 
-const user = JSON.parse(localStorage.getItem('user') || '{}');
-const roles = JSON.parse(localStorage.getItem('roles') || '[]');
-console.log('Current User Roles:', roles);
+const user = computed(() => authStore.user);
+const roles = computed(() => authStore.roles);
 const appName = import.meta.env.VITE_APP_NAME || 'QurbanHub';
 
 const userName = computed(() => {
-  if (user.first_name) return `${user.first_name} ${user.last_name || ''}`;
+  if (user.value?.first_name) return `${user.value.first_name} ${user.value.last_name || ''}`;
   return 'User';
 });
 
 const userRole = computed(() => {
-  if (roles.length > 0) {
+  if (roles.value?.length > 0) {
     // Prioritaskan tampilan role SuperAdmin jika ada
-    const superAdmin = roles.find((r: any) => r.role_code === 'eQurban-SuperAdmin');
+    const superAdmin = roles.value.find((r: any) => r.role_code === 'eQurban-SuperAdmin');
     if (superAdmin) return superAdmin.role_name;
     
-    return roles[0].role_name;
+    return roles.value[0].role_name;
   }
   return 'Customer';
 });
@@ -106,9 +108,7 @@ const handleLogout = async () => {
     } catch (error) {
       console.error('Logout failed:', error);
     } finally {
-      localStorage.removeItem('token');
-      localStorage.removeItem('user');
-      localStorage.removeItem('roles');
+      authStore.clearAuth();
       window.location.href = '/login';
     }
   }

@@ -16,20 +16,31 @@
     --border: #e8d5d5;
 
     /* Dashboard Template Overrides */
-    --pc-sidebar-background: #7A1B2E;
-    --pc-sidebar-color: rgba(255, 255, 255, 0.7);
-    --pc-sidebar-caption-color: rgba(255, 255, 255, 0.4);
-    --pc-sidebar-active-color: #ffffff;
-    --pc-active-background: rgba(255, 255, 255, 0.1);
+    --pc-sidebar-background: #ffffff;
+    --pc-sidebar-color: #4e5969;
+    --pc-sidebar-caption-color: #86909c;
+    --pc-sidebar-active-color: #7A1B2E;
+    --pc-active-background: rgba(122, 27, 46, 0.05);
     
     --bs-primary: #7A1B2E;
     --bs-primary-rgb: 122, 27, 46;
+}
+
+/* Force Burgundy Branding over Berry Presets */
+body[data-pc-preset] {
+    --bs-primary: #7A1B2E !important;
+    --bs-primary-rgb: 122, 27, 46 !important;
 }
 
 /* Sidebar Overrides */
 .pc-sidebar {
     background: var(--pc-sidebar-background) !important;
     box-shadow: none !important;
+}
+
+.pc-sidebar .m-header {
+    background: #ffffff !important;
+    border-bottom: 1px solid rgba(0, 0, 0, 0.05) !important;
 }
 
 .pc-sidebar .pc-link {
