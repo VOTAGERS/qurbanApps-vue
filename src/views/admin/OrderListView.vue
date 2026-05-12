@@ -80,6 +80,7 @@
                   <tr>
                     <th>No</th>
                     <th>Order Code</th>
+                    <th>Date</th>
                     <th>Customer</th>
                     <th>Country</th>
                     <th>Qurban Product</th>
@@ -94,6 +95,7 @@
                   <tr v-for="(order, index) in paginatedOrders" :key="order.id_order">
                     <td>{{ (currentPage - 1) * itemsPerPage + index + 1 }}</td>
                     <td><strong>{{ order.order_code }}</strong></td>
+                    <td class="small">{{ formatDate(order.created_at) }}</td>
                     <td>{{ order.user ? (order.user.first_name + ' ' + (order.user.last_name || '')).trim() : 'Unknown User' }}</td>
                     <td>
                       <span v-if="order.product_woo?.product_detail">
@@ -184,6 +186,15 @@ const formatCurrency = (value: string | number) => {
   return new Intl.NumberFormat(locale, { style: 'currency', currency: defaultCurrency }).format(Number(value))
 }
 
+const formatDate = (dateString: string) => {
+  if (!dateString) return '-'
+  return new Date(dateString).toLocaleDateString('id-ID', {
+    day: '2-digit',
+    month: 'short',
+    year: 'numeric'
+  })
+}
+
 interface OrderData {
   id_order: number;
   order_code: string;
@@ -194,6 +205,7 @@ interface OrderData {
   payment_status: string;
   qurban_status: string;
   status: string;
+  created_at: string;
   user?: {
     id_user: number;
     first_name: string;
