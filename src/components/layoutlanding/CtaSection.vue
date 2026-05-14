@@ -2,7 +2,7 @@
   <section class="cta-section section" id="pemesanan">
     <div class="container">
       <div class="cta-inner">
-        <div class="sec-label">From now on</div>
+        <!-- <div class="sec-label">From now on</div> -->
         <h2 class="sec-title">
           Perform the Qurban Worship<br /><em>with Peace & Trust</em>
         </h2>

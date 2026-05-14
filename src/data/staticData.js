@@ -38,9 +38,11 @@ export const clientAvatars = [
 ]
 
 export const aboutChecks = [
-  'Healthy animals certified by a veterinarian',
-  'Slaughtered by trained slaughterers',
-  'Transparent distribution reports with photos',
+  'Healthy livestock carefully selected',
+  'Slaughter conducted by experienced personnel',
+  'Full transparency with photo reports',
+  'E-certificate provided upon completion of Qurban',
+  'Managed in accordance with Islamic Shariah guidelines',
 ]
 
 export const whyItems = [

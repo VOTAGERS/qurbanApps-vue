@@ -49,14 +49,42 @@
                     <p>How many animals would you like to order?</p>
                   </div>
                 </div>
+                <div v-if="maxShare > 1" class="purchase-type-selector">
+                  <div
+                    class="type-option"
+                    :class="{ active: purchaseType === 'full' }"
+                    @click="purchaseType = 'full'"
+                  >
+                    <div class="option-check"></div>
+                    <div class="option-info">
+                      <div class="option-title">Full Animal</div>
+                      <div class="option-desc">Order the entire animal ({{ maxShare }} shares)</div>
+                    </div>
+                  </div>
+                  <div
+                    class="type-option"
+                    :class="{ active: purchaseType === 'share' }"
+                    @click="purchaseType = 'share'"
+                  >
+                    <div class="option-check"></div>
+                    <div class="option-info">
+                      <div class="option-title">Per Part</div>
+                      <div class="option-desc">Order a portion of the animal (1 part)</div>
+                    </div>
+                  </div>
+                </div>
 
                 <div class="quantity-wrapper">
                   <div class="quantity-product-preview">
-                    <div class="qty-product-name">{{ productName }}</div>
-                    <div class="qty-product-price">{{ formatPrice(productPrice) }} / animal</div>
+                    <div class="qty-product-name">
+                      {{ productName }} {{ isPerShare ? '(Per Share)' : '(Full Animal)' }}
+                    </div>
+                    <div class="qty-product-price">
+                      {{ formatPrice(currentUnitPrice) }} / {{ isPerShare ? 'share' : 'animal' }}
+                    </div>
                   </div>
                   <div class="quantity-control">
-                    <button class="qty-btn" @click="decreaseQty" :disabled="quantity <= 1">
+                    <button class="qty-btn" @click="decreaseQty" :disabled="quantity <= 1 || isPerShare">
                       <svg
                         width="16"
                         height="16"
@@ -71,9 +99,11 @@
                     </button>
                     <div class="qty-display">
                       <span class="qty-number">{{ quantity }}</span>
-                      <span class="qty-label">animal{{ quantity > 1 ? 's' : '' }}</span>
+                      <span class="qty-label"
+                        >{{ isPerShare ? 'share' : 'animal' }}{{ quantity > 1 ? 's' : '' }}</span
+                      >
                     </div>
-                    <button class="qty-btn" @click="increaseQty" :disabled="quantity >= 10">
+                    <button class="qty-btn" @click="increaseQty" :disabled="quantity >= 10 || isPerShare">
                       <svg
                         width="16"
                         height="16"
@@ -763,6 +793,9 @@
               </div>
               <div class="product-info">
                 <div class="product-name">{{ productName }}</div>
+                <div class="purchase-type-badge" v-if="maxShare > 1">
+                  {{ isPerShare ? 'Per Share' : 'Full Animal' }}
+                </div>
                 <div class="product-desc">{{ description }}</div>
                 <div class="product-share">
                   <svg
@@ -787,16 +820,16 @@
             </div>
             <div class="price-breakdown">
               <div class="price-row">
-                <span>Unit price</span><span>{{ formatPrice(productPrice) }}</span>
+                <span>Unit price</span><span>{{ formatPrice(currentUnitPrice) }}</span>
               </div>
               <div class="price-row quantity-row">
                 <span>Quantity</span>
                 <div class="inline-qty-ctrl">
-                  <button class="inline-qty-btn" @click="decreaseQty" :disabled="quantity <= 1">
+                  <button class="inline-qty-btn" @click="decreaseQty" :disabled="quantity <= 1 || isPerShare">
                     −
                   </button>
                   <span class="inline-qty-num">{{ quantity }}</span>
-                  <button class="inline-qty-btn" @click="increaseQty" :disabled="quantity >= 10">
+                  <button class="inline-qty-btn" @click="increaseQty" :disabled="quantity >= 10 || isPerShare">
                     +
                   </button>
                 </div>
@@ -964,6 +997,13 @@ const productName = computed(() => parsedParams.value.name)
 const productPrice = computed(() => parsedParams.value.price)
 const maxShare = computed(() => parsedParams.value.share)
 const description = computed(() => parsedParams.value.desc)
+
+const purchaseType = ref('full')
+const isPerShare = computed(() => purchaseType.value === 'share' && maxShare.value > 1)
+const currentUnitPrice = computed(() => {
+  return isPerShare.value ? productPrice.value / maxShare.value : productPrice.value
+})
+
 const quantity = ref(1)
 
 function increaseQty() {
@@ -972,8 +1012,10 @@ function increaseQty() {
 function decreaseQty() {
   if (quantity.value > 1) quantity.value--
 }
-const totalPrice = computed(() => productPrice.value * quantity.value)
-const totalRecipients = computed(() => maxShare.value * quantity.value)
+const totalPrice = computed(() => currentUnitPrice.value * quantity.value)
+const totalRecipients = computed(() => {
+  return isPerShare.value ? quantity.value : maxShare.value * quantity.value
+})
 
 const currentStep = ref(1)
 const buyer = ref({
@@ -1025,6 +1067,10 @@ function selectDialCode(c) {
   isPhoneDropdownOpen.value = false
   dialSearch.value = ''
 }
+
+watch(purchaseType, (val) => {
+  if (val === 'share') quantity.value = 1
+})
 
 watch([() => buyer.value.phoneLocal, selectedDialCode], () => {
   const local = buyer.value.phoneLocal.trim()
@@ -1341,6 +1387,7 @@ async function handlePayment() {
         {
           product_id: productId.value,
           quantity: quantity.value,
+          purchase_type: purchaseType.value,
           total_price: totalPrice.value,
           bank_id: selectedBank.value,
           billing: {
@@ -1385,6 +1432,7 @@ async function handlePayment() {
       {
         product_id: productId.value,
         quantity: quantity.value,
+        purchase_type: purchaseType.value,
         total_price: totalPrice.value,
         billing: {
           first_name: buyer.value.firstName,
@@ -1609,6 +1657,80 @@ function formatPrice(val) {
 .phone-number-input:focus {
   border: none !important;
   box-shadow: none !important;
+}
+
+.purchase-type-selector {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+  margin-bottom: 24px;
+}
+.type-option {
+  padding: 14px 16px;
+  border: 1.5px solid var(--gr200);
+  border-radius: 12px;
+  cursor: pointer;
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+  transition: all 0.2s;
+  background: white;
+}
+.type-option:hover {
+  border-color: var(--g600);
+  background: var(--gr100);
+}
+.type-option.active {
+  border-color: var(--g700);
+  background: rgba(122, 28, 46, 0.04);
+  box-shadow: 0 4px 12px rgba(122, 28, 46, 0.08);
+}
+.option-check {
+  width: 18px;
+  height: 18px;
+  border-radius: 50%;
+  border: 2px solid var(--gr300, #ccc);
+  margin-top: 2px;
+  position: relative;
+  flex-shrink: 0;
+}
+.type-option.active .option-check {
+  border-color: var(--g700);
+  background: var(--g700);
+}
+.type-option.active .option-check::after {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: white;
+}
+.option-title {
+  font-weight: 600;
+  font-size: 14px;
+  color: var(--g800);
+  margin-bottom: 2px;
+}
+.option-desc {
+  font-size: 12px;
+  color: var(--gr400);
+  line-height: 1.4;
+}
+
+.purchase-type-badge {
+  display: inline-block;
+  font-size: 11px;
+  font-weight: 600;
+  background: var(--gold-p);
+  color: var(--g800);
+  padding: 2px 8px;
+  border-radius: 4px;
+  margin: 4px 0;
+  border: 1px solid var(--gold);
 }
 
 .recipients-list-container {

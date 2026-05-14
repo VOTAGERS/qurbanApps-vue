@@ -4,21 +4,21 @@
       <div class="about-grid">
         <div class="about-img-wrap reveal">
           <div class="about-img-main">
-            <img src="@/assets/image/about_img.png" alt="Hewan Qurban Pilihan" />
+            <img src="@/assets/image/ternak.jpeg" alt="Hewan Qurban Pilihan" />
           </div>
-          <div class="about-badge">✦ &nbsp;Halal Certified</div>
         </div>
         <div class="about-text reveal">
-          <div class="sec-label">About Us</div>
-          <h2 class="sec-title">Qurban Service <em>Trustworthy</em> & Profesional</h2>
+          <div class="sec-label">Why Us</div>
+          <h2 class="sec-title">Trustworthy & Professional <em>Qurban Services</em></h2>
           <p>
-            We are here to make your Qurbani ritual easier by providing selected, healthy livestock
-            that meet Islamic sharia standards and are managed by a team of experienced
-            professionals.
+            We are here to make your Qurban experience smooth and worry-free by providing carefully
+            selected, healthy livestock that fulfil Islamic Shariah requirements, managed by an
+            experienced and trusted partners around the world.
           </p>
           <p>
-            Each animal is curated directly from trusted breeders, checked by a veterinarian, and
-            distributed transparently to those entitled to receive it.
+            Every animal is sourced directly from reliable partners, examined to ensure its health and
+            quality, and distributed transparently to eligible beneficiaries with proper
+            documentation and updates throughout the process.
           </p>
           <div class="about-checks">
             <div v-for="item in aboutChecks" :key="item" class="check-item">
@@ -42,7 +42,7 @@
   overflow: hidden;
 }
 .about .container {
-  max-width: 1200px;
+  max-width: 1300px;
   margin: 0 auto;
   padding: 0 80px;
 }
@@ -63,8 +63,8 @@
 .about-img-wrap::before {
   content: '';
   position: absolute;
-  width: 420px;
-  height: 420px;
+  width: 510px;
+  height: 510px;
   border-radius: 50%;
   border: 1px solid rgba(220, 38, 38, 0.2);
   animation: rotateBorder 12s linear infinite;
@@ -72,8 +72,8 @@
 .about-img-wrap::after {
   content: '';
   position: absolute;
-  width: 340px;
-  height: 340px;
+  width: 420px;
+  height: 420px;
   border-radius: 50%;
   border: 1px dashed rgba(220, 38, 38, 0.12);
   animation: rotateBorder 8s linear infinite reverse;
@@ -83,8 +83,8 @@
   to   { transform: rotate(360deg); }
 }
 .about-img-main {
-  width: 380px;
-  height: 380px;
+  width: 460px;
+  height: 460px;
   border-radius: 50%;
   overflow: hidden;
   border: 3px solid rgba(220, 38, 38, 0.4);

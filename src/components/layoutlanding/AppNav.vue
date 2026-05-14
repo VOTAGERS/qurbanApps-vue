@@ -3,12 +3,6 @@
     <a href="#" class="nav-logo">
       <img src="@/assets/image/llmqurban.png" alt="ILM Qurban" class="nav-logo-img" />
     </a>
-    <ul class="nav-links">
-      <li v-for="link in navLinks" :key="link.href">
-        <a :href="link.href" :class="{ active: activeSection === link.id }">{{ link.label }}</a>
-      </li>
-    </ul>
-    <a href="#hewan" class="nav-cta">Order Qurban</a>
   </nav>
 </template>
 
@@ -29,24 +23,32 @@ defineProps({
   left: 0;
   right: 0;
   z-index: 999;
-  height: 70px;
+  height: 90px;
   display: flex;
   align-items: center;
-  justify-content: space-between;
+  justify-content: flex-start;
   padding: 0 3rem;
   background: #ffffff;
   border-bottom: 1px solid rgba(0, 0, 0, 0.08);
   box-shadow: 0 2px 12px rgba(0, 0, 0, 0.06);
-  transition: box-shadow 0.3s;
+  transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 .nav.scrolled {
-  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+  top: 15px;
+  left: 30px;
+  right: 30px;
+  height: 100px;
+  background: rgba(255, 255, 255, 0.8);
+  backdrop-filter: blur(12px);
+  border: 1px solid rgba(56, 56, 56, 0.3);
+  border-radius: 100px;
+  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.08);
 }
 
 /* Logo image */
 .nav-logo-img {
-  height: 38px;
+  height: 60px;
   width: auto;
   object-fit: contain;
   display: block;
@@ -98,6 +100,6 @@ defineProps({
   .nav { padding: 0 20px; }
   .nav-links { display: none; }
   .nav-cta { font-size: 13px; padding: 0.5rem 1.1rem; }
-  .nav-logo-img { height: 32px; }
+  .nav-logo-img { height: 45px; }
 }
 </style>
