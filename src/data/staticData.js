@@ -1,7 +1,7 @@
 
 export const navLinks = [
   { href: '#home',      id: 'home',      label: 'Home' },
-  { href: '#hewan',     id: 'hewan',     label: 'Hewan' },
+  { href: '#hewan',     id: 'hewan',     label: 'Packages' },
   { href: '#pemesanan', id: 'Booking', label: 'Booking' },
 ]
 
@@ -45,9 +45,8 @@ export const aboutChecks = [
 
 export const whyItems = [
 { num: '01', title: 'Strict Animal Selection', desc: 'Every animal is personally inspected by a certified veterinarian before being accepted.' },
-{ num: '02', title: 'Sharia-Compliant Slaughtering', desc: 'A team of trained and MUI-certified slaughterers ensures the correct process.' },
+{ num: '02', title: 'Sharia-Compliant Slaughtering', desc: 'A team of trained and certified slaughterers ensures the correct process.' },
 { num: '03', title: 'Transparent Report', desc: 'You receive complete photos, videos, and reports of meat distribution.' },
-{ num: '04', title: 'Reaching Throughout Indonesia', desc: 'Distribution to remote areas and beneficiaries who truly need it.' },
 ]
 
 export const socials = [
