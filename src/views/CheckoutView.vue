@@ -321,7 +321,7 @@
                         <input
                           v-model="recipient.phone"
                           type="tel"
-                          placeholder="08xxxxxxxxxx"
+                          placeholder="enter your mobile number"
                           :class="{ error: allRecipientErrors[index]?.phone }"
                         />
                         <span class="err-msg" v-if="allRecipientErrors[index]?.phone">{{

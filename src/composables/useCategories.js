@@ -16,7 +16,7 @@ function mapItem(item, index) {
     for: `Maks. ${item.max_share} people`,
     price: formatPrice(item.product_woo?.price),
     priceSup: '/ekor',
-    desc: `${item.status === 'active' ? '✓ Tersedia' : '✗ Tidak Tersedia'} · Maks. ${item.max_share} people`,
+    desc: `Maks. ${item.max_share} people`,
     img: (() => {
       const url = item.product_woo?.file_upload?.url ?? item.product_woo?.image ?? null;
       return (url && !url.startsWith('http')) ? `${import.meta.env.VITE_API_BASE_URL}${url}` : url;
