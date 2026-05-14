@@ -26,14 +26,13 @@
               <span>{{ item }}</span>
             </div>
           </div>
-          <!-- <a href="#" class="btn-gold">Sejarah Kami</a> -->
         </div>
       </div>
     </div>
   </section>
 </template>
 
-<style>
+<style scoped>
 .about {
   padding: 100px 0;
   background: linear-gradient(180deg, #000000 0%, #0a0a0a 100%);
@@ -52,6 +51,7 @@
   gap: 80px;
   align-items: center;
 }
+
 .about-img-wrap {
   position: relative;
   display: flex;
@@ -67,7 +67,6 @@
   border: 1px solid rgba(220, 38, 38, 0.15);
   animation: rotateBorder 12s linear infinite;
 }
-
 .about-img-wrap::after {
   content: '';
   position: absolute;
@@ -77,14 +76,9 @@
   border: 1px dashed rgba(220, 38, 38, 0.1);
   animation: rotateBorder 8s linear infinite reverse;
 }
-
 @keyframes rotateBorder {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
+  from { transform: rotate(0deg); }
+  to   { transform: rotate(360deg); }
 }
 
 .about-img-main {
@@ -101,7 +95,6 @@
   z-index: 2;
   position: relative;
 }
-
 .about-img-main img {
   width: 100%;
   height: 100%;
@@ -109,14 +102,11 @@
   filter: contrast(1.15) saturate(1.2) brightness(1.05);
   transition: transform 0.6s ease;
 }
-
 .about-img-main:hover img {
   transform: scale(1.05);
 }
-
 @keyframes glowPulseAbout {
-  0%,
-  100% {
+  0%, 100% {
     box-shadow:
       0 0 30px rgba(220, 38, 38, 0.15),
       0 0 60px rgba(220, 38, 38, 0.08),
@@ -129,6 +119,7 @@
       0 20px 60px rgba(0, 0, 0, 0.5);
   }
 }
+
 .about-badge {
   position: absolute;
   bottom: 10px;
@@ -144,22 +135,16 @@
   box-shadow: 0 8px 24px rgba(220, 38, 38, 0.4);
   animation: floatBadge 3s ease-in-out infinite;
 }
-
 @keyframes floatBadge {
-  0%,
-  100% {
-    transform: translateY(0);
-  }
-  50% {
-    transform: translateY(-8px);
-  }
+  0%, 100% { transform: translateY(0); }
+  50%       { transform: translateY(-8px); }
 }
+
 .about-text {
   display: flex;
   flex-direction: column;
   gap: 16px;
 }
-
 .sec-label {
   display: inline-flex;
   align-items: center;
@@ -170,7 +155,6 @@
   letter-spacing: 3px;
   text-transform: uppercase;
 }
-
 .sec-label::before {
   content: '';
   width: 30px;
@@ -178,19 +162,16 @@
   background: #dc2626;
   border-radius: 2px;
 }
-
 .sec-title {
   font-size: 40px;
   color: white;
   line-height: 1.2;
   margin: 0;
 }
-
 .sec-title em {
   color: #dc2626;
   font-style: italic;
 }
-
 .about-text p {
   color: rgba(255, 255, 255, 0.65);
   line-height: 1.8;
@@ -202,7 +183,6 @@
   gap: 14px;
   margin-top: 8px;
 }
-
 .check-item {
   display: flex;
   align-items: center;
@@ -215,13 +195,11 @@
   font-size: 14px;
   transition: all 0.3s ease;
 }
-
 .check-item:hover {
   background: rgba(220, 38, 38, 0.08);
   border-color: rgba(220, 38, 38, 0.35);
   transform: translateX(6px);
 }
-
 .check-ic {
   width: 32px;
   height: 32px;
@@ -239,31 +217,125 @@
 .reveal {
   opacity: 0;
   transform: translateY(40px);
-  transition:
-    opacity 0.8s ease,
-    transform 0.8s ease;
+  transition: opacity 0.8s ease, transform 0.8s ease;
 }
-
 .reveal.visible {
   opacity: 1;
   transform: translateY(0);
 }
+@media (max-width: 1024px) {
+  .about .container {
+    padding: 0 40px;
+  }
+  .about-grid {
+    gap: 48px;
+  }
+  .about-img-main {
+    width: 300px;
+    height: 300px;
+  }
+  .about-img-wrap::before {
+    width: 340px;
+    height: 340px;
+  }
+  .about-img-wrap::after {
+    width: 270px;
+    height: 270px;
+  }
+  .sec-title {
+    font-size: 32px;
+  }
+}
+
+@media (max-width: 768px) {
+  .about {
+    padding: 60px 0;
+  }
+  .about .container {
+    padding: 0 20px;
+  }
+  .about-grid {
+    grid-template-columns: 1fr;
+    gap: 40px;
+    text-align: center;
+  }
+  .about-img-wrap {
+    justify-content: center;
+  }
+  .about-img-main {
+    width: 260px;
+    height: 260px;
+  }
+  .about-img-wrap::before {
+    width: 300px;
+    height: 300px;
+  }
+  .about-img-wrap::after {
+    width: 240px;
+    height: 240px;
+  }
+  .about-badge {
+    right: auto;
+    left: 50%;
+    transform: translateX(-50%);
+    bottom: -14px;
+    white-space: nowrap;
+    animation: floatBadgeMobile 3s ease-in-out infinite;
+  }
+  @keyframes floatBadgeMobile {
+    0%, 100% { transform: translateX(-50%) translateY(0); }
+    50%       { transform: translateX(-50%) translateY(-8px); }
+  }
+  .about-text {
+    align-items: center;
+  }
+  .about-checks {
+    width: 100%;
+    text-align: left;
+  }
+  .sec-label {
+    justify-content: center;
+  }
+  .sec-title {
+    font-size: clamp(24px, 7vw, 36px);
+  }
+  .check-item:hover {
+    transform: translateX(0) translateY(-2px);
+  }
+}
+@media (max-width: 480px) {
+  .about-img-main {
+    width: 210px;
+    height: 210px;
+  }
+  .about-img-wrap::before {
+    width: 250px;
+    height: 250px;
+  }
+  .about-img-wrap::after {
+    width: 195px;
+    height: 195px;
+  }
+  .check-item {
+    padding: 12px 14px;
+    font-size: 13px;
+  }
+}
 </style>
+
 <script setup>
 import { aboutChecks } from '@/data/staticData.js'
 import { onMounted } from 'vue'
+
 onMounted(() => {
   const observer = new IntersectionObserver(
     (entries) => {
       entries.forEach((el) => {
-        if (el.isIntersecting) {
-          el.target.classList.add('visible')
-        }
+        if (el.isIntersecting) el.target.classList.add('visible')
       })
     },
     { threshold: 0.2 },
   )
-
   document.querySelectorAll('.reveal').forEach((el) => observer.observe(el))
 })
 </script>

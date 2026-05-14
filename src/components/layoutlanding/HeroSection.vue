@@ -38,11 +38,11 @@
     <div class="hero-card gold-card">
       <img src="@/assets/image/bg_qurban.png" alt="Qurban" />
     </div>
-    <div class="hero-card-label">
+    <!-- <div class="hero-card-label">
       <span class="label-dot"></span>
       Hewan Pilihan Terbaik · Bersertifikat Halal
       <span class="label-dot"></span>
-    </div>
+    </div> -->
 
     <div class="hero-clients">
       <div class="client-avatars">

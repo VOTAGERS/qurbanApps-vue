@@ -5,7 +5,7 @@
     <header class="checkout-header">
       <div class="header-inner">
         <router-link to="/" class="logo">
-          <span class="logo-qurban">Qurban</span><span class="logo-hub">Hub</span>
+          <span class="logo-qurban">ILM</span><span class="logo-hub">Qurban</span>
         </router-link>
         <div class="header-steps">
           <div class="step" :class="{ active: currentStep >= 1, done: currentStep > 1 }">
@@ -150,14 +150,58 @@
                   </div>
                   <div class="field">
                     <label>Phone Number <span class="req">*</span></label>
-                    <input
-                      v-model="buyer.phone"
-                      type="tel"
-                      placeholder="08xxxxxxxxxx"
-                      :class="{ error: errors.phone }"
-                    />
+                    <div
+                      class="phone-input-wrapper"
+                      :class="{ 'phone-input-error': errors.phone }"
+                    >
+                      <div
+                        class="phone-dial-selector"
+                        @click="isPhoneDropdownOpen = !isPhoneDropdownOpen"
+                        ref="phoneDropdownRef"
+                      >
+                        <img
+                          v-if="selectedDialCode?.flags?.png"
+                          :src="selectedDialCode.flags.png"
+                          class="flag-icon"
+                        />
+                        <span class="dial-code-text">{{ selectedDialCode?.iddFull }}</span>
+                        <span class="chevron">▼</span>
+                        <div
+                          v-if="isPhoneDropdownOpen"
+                          class="dropdown-list phone-dropdown"
+                          @click.stop
+                        >
+                          <input
+                            v-model="dialSearch"
+                            type="text"
+                            class="search-input"
+                            placeholder="Search country..."
+                            @click.stop
+                          />
+                          <div class="options-container">
+                            <div
+                              v-for="c in filteredDialCountries"
+                              :key="c.cca2"
+                              class="option-item"
+                              @click.stop="selectDialCode(c)"
+                            >
+                              <img :src="c.flags.png" class="flag-icon" />
+                              <span>{{ c.name.common }}</span>
+                              <span class="dial-badge">{{ c.iddFull }}</span>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                      <input
+                        v-model="buyer.phoneLocal"
+                        type="tel"
+                        class="phone-number-input"
+                        placeholder="8802 0744"
+                      />
+                    </div>
                     <span class="err-msg" v-if="errors.phone">{{ errors.phone }}</span>
                   </div>
+
                   <div class="field country-field">
                     <label>Country <span class="req">*</span></label>
                     <div class="custom-select-container" ref="countryDropdown">
@@ -229,9 +273,9 @@
               <div class="section-block">
                 <div class="recipients-intro">
                   <p>Enter the name(s) on whose behalf the qurban will be performed</p>
-                  <span class="quota-badge"
+                  <!-- <span class="quota-badge"
                     >Max. {{ totalRecipients }} recipient{{ totalShares > 1 ? 's' : '' }}</span
-                  >
+                  > -->
                 </div>
 
                 <div class="recipients-list-container">
@@ -241,8 +285,8 @@
                     class="recipient-block"
                   >
                     <div class="recipient-label">
-                      <div class="recipient-num">{{ index + 1 }}</div>
-                      <span>Recipient {{ index + 1 }}</span>
+                      <!-- <div class="recipient-num">{{ index + 1 }}</div> -->
+                      <!-- <span>Recipient {{ index + 1 }}</span> -->
                       <span class="recipient-animal-tag" v-if="quantity > 1">
                         Animal {{ Math.ceil((index + 1) / maxShare) }}
                       </span>
@@ -261,16 +305,28 @@
                         }}</span>
                       </div>
                       <div class="field">
-                        <label>Email <span class="opt">(optional)</span></label>
+                        <label>Email <span class="req">*</span></label>
                         <input
                           v-model="recipient.email"
                           type="email"
                           placeholder="email@example.com"
+                          :class="{ error: allRecipientErrors[index]?.email }"
                         />
+                        <span class="err-msg" v-if="allRecipientErrors[index]?.email">{{
+                          allRecipientErrors[index].email
+                        }}</span>
                       </div>
                       <div class="field">
-                        <label>Phone Number <span class="opt">(optional)</span></label>
-                        <input v-model="recipient.phone" type="tel" placeholder="08xxxxxxxxxx" />
+                        <label>Phone Number <span class="req">*</span></label>
+                        <input
+                          v-model="recipient.phone"
+                          type="tel"
+                          placeholder="08xxxxxxxxxx"
+                          :class="{ error: allRecipientErrors[index]?.phone }"
+                        />
+                        <span class="err-msg" v-if="allRecipientErrors[index]?.phone">{{
+                          allRecipientErrors[index].phone
+                        }}</span>
                       </div>
                     </div>
                   </div>
@@ -478,7 +534,7 @@
                   WhatsApp after transferring.
                 </p>
 
-                <div class="bank-list">
+                <!-- <div class="bank-list">
                   <div
                     v-for="bank in bankList"
                     :key="bank.id"
@@ -534,8 +590,44 @@
                       <div class="bank-holder">a/n {{ bank.accountHolder }}</div>
                     </div>
                   </div>
-                </div>
+                </div> -->
 
+                <div class="payment-method-wrapper">
+                  <div class="payment-info-box">
+                    <div class="info-item">
+                      <i class="ti ti-credit-card info-icon text-warning"></i>
+                      <p>
+                        Manual payment via Paynow to UEN:
+                        <strong>53439168X</strong>
+                        (ILMHUB by Shameem Sultanah)
+                      </p>
+                    </div>
+
+                    <div class="info-item">
+                      <i class="ti ti-brand-whatsapp info-icon text-warning"></i>
+                      <p>
+                        Whatsapp the payment screenshot to
+                        <strong>88020744</strong>
+                        for us to verify your payment. Please include your
+                        ticket/order number as well.
+                      </p>
+                    </div>
+
+                    <div class="info-item">
+                      <i class="ti ti-check info-icon text-warning"></i>
+                      <p>
+                        Do click on the <strong>'Place Order'</strong>
+                        button below to submit your registration*
+                      </p>
+                    </div>
+
+                    <div class="info-item">
+                      <i class="ti ti-check info-icon text-success"></i>
+                      <p>Thank you.</p>
+                    </div>
+                  </div>
+
+                </div>
                 <div
                   v-if="transferErrors.bank"
                   class="stripe-general-error"
@@ -756,7 +848,7 @@
                 <strong>Need help?</strong>
                 <p>
                   Phone:
-                  <span>(+65) 8802 0744</span>
+                  <span>+65 60444555</span>
                 </p>
               </div>
             </div>
@@ -799,11 +891,11 @@
           <div v-if="paymentMethod === 'transfer'" class="modal-transfer-info">
             <div class="modal-transfer-row">
               <span>Transfer to</span>
-              <strong>{{ selectedBankData?.name }}</strong>
+              <strong>Shameem Sultanah</strong>
             </div>
             <div class="modal-transfer-row">
               <span>Account No.</span>
-              <strong>{{ selectedBankData?.accountNumber }}</strong>
+              <strong>53439168X</strong>
             </div>
             <div class="modal-transfer-row">
               <span>Amount</span>
@@ -863,7 +955,7 @@ const parsedParams = computed(() => {
     id: decoded?.id || 1,
     name: decoded?.name || 'Kambing Qurban',
     price: decoded?.price || 2800000,
-    share: decoded?.share || 1, 
+    share: decoded?.share || 1,
     desc: decoded?.desc || '',
   }
 })
@@ -873,9 +965,6 @@ const productPrice = computed(() => parsedParams.value.price)
 const maxShare = computed(() => parsedParams.value.share)
 const description = computed(() => parsedParams.value.desc)
 const quantity = ref(1)
-// const totalPrice = computed(() => productPrice.value * quantity.value)
-
-// const totalShares = computed(() => maxShare.value * quantity.value)
 
 function increaseQty() {
   if (quantity.value < 10) quantity.value++
@@ -891,7 +980,8 @@ const buyer = ref({
   firstName: '',
   lastName: '',
   email: '',
-  phone: '',
+  phone: '',      
+  phoneLocal: '',   
   country: '',
   countryCode: '',
   notes: '',
@@ -904,25 +994,79 @@ const isDropdownOpen = ref(false)
 const selectedCountryData = ref(null)
 const countryDropdown = ref(null)
 
+
+const isPhoneDropdownOpen = ref(false)
+const dialSearch = ref('')
+const phoneDropdownRef = ref(null)
+const selectedDialCode = ref(null)
+
+const dialCountries = computed(() =>
+  countries.value
+    .map((c) => {
+      const root = c.idd?.root || ''
+      const suffix = c.idd?.suffixes?.length === 1 ? c.idd.suffixes[0] : ''
+      const iddFull = root + suffix
+      return { ...c, iddFull }
+    })
+    .filter((c) => c.iddFull && c.iddFull !== '')
+    .sort((a, b) => a.name.common.localeCompare(b.name.common))
+)
+
+const filteredDialCountries = computed(() => {
+  if (!dialSearch.value) return dialCountries.value
+  const q = dialSearch.value.toLowerCase()
+  return dialCountries.value.filter(
+    (c) => c.name.common.toLowerCase().includes(q) || c.iddFull.includes(dialSearch.value),
+  )
+})
+
+function selectDialCode(c) {
+  selectedDialCode.value = c
+  isPhoneDropdownOpen.value = false
+  dialSearch.value = ''
+}
+
+watch([() => buyer.value.phoneLocal, selectedDialCode], () => {
+  const local = buyer.value.phoneLocal.trim()
+  const code = selectedDialCode.value?.iddFull || ''
+  if (code && local) {
+    const normalized = local.startsWith('0') ? local.slice(1) : local
+    buyer.value.phone = code + normalized
+  } else if (local) {
+    buyer.value.phone = local
+  } else {
+    buyer.value.phone = ''
+  }
+})
+
+
 onMounted(async () => {
-  // Existing mount logic...
   if (totalRecipients.value) rebuildRecipients(totalRecipients.value)
-  
+
   // Fetch Countries
   try {
-    const { data } = await axios.get('https://restcountries.com/v3.1/all?fields=name,flags,cca2')
+    const { data } = await axios.get('https://restcountries.com/v3.1/all?fields=name,flags,cca2,idd')
     countries.value = data.sort((a, b) => a.name.common.localeCompare(b.name.common))
-    // Default Singapore
+
     const sg = countries.value.find((c) => c.cca2 === 'SG')
     if (sg) selectCountry(sg)
+
+    const sgDial = countries.value.find((c) => c.cca2 === 'SG')
+    if (sgDial) {
+      const root = sgDial.idd?.root || ''
+      const suffix = sgDial.idd?.suffixes?.length === 1 ? sgDial.idd.suffixes[0] : ''
+      selectedDialCode.value = { ...sgDial, iddFull: root + suffix }
+    }
   } catch (err) {
     console.error('Failed to fetch countries', err)
   }
 
-  // Click outside listener
   window.addEventListener('click', (e) => {
     if (countryDropdown.value && !countryDropdown.value.contains(e.target)) {
       isDropdownOpen.value = false
+    }
+    if (phoneDropdownRef.value && !phoneDropdownRef.value.contains(e.target)) {
+      isPhoneDropdownOpen.value = false
     }
   })
 })
@@ -949,8 +1093,8 @@ function validateBuyer() {
   if (!buyer.value.lastName.trim()) e.lastName = 'Last name is required'
   if (!buyer.value.email.trim() || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(buyer.value.email))
     e.email = 'Invalid email address'
-  if (!buyer.value.phone.trim() || !/^08\d{8,12}$/.test(buyer.value.phone))
-    e.phone = 'Invalid phone number (08xx)'
+  if (!buyer.value.phoneLocal.trim() || buyer.value.phoneLocal.replace(/\D/g, '').length < 5)
+    e.phone = 'Please enter a valid phone number'
   if (!buyer.value.country.trim()) e.country = 'Country is required'
   errors.value = e
   return Object.keys(e).length === 0
@@ -967,12 +1111,6 @@ function rebuildRecipients(count) {
   allRecipientErrors.value = Array.from({ length: count }, () => ({}))
 }
 
-// onMounted(() => rebuildRecipients(totalShares.value))
-// watch(totalShares, (n) => rebuildRecipients(n))
-
-// const totalRecipients = computed(() => maxShare.value)
-
-// generate awal dan setiap kali quantity (dan otomatis totalRecipients) berubah
 onMounted(() => rebuildRecipients(totalRecipients.value))
 watch(totalRecipients, (n) => rebuildRecipients(n))
 
@@ -982,6 +1120,14 @@ function validateRecipients() {
     const e = {}
     if (!r.name.trim()) {
       e.name = 'Recipient name is required'
+      valid = false
+    }
+    if (!r.email.trim() || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(r.email)) {
+      e.email = 'Invalid email address'
+      valid = false
+    }
+    if (!r.phone.trim() || r.phone.replace(/\D/g, '').length < 5) {
+      e.phone = 'Phone number is required'
       valid = false
     }
     return e
@@ -1184,10 +1330,10 @@ async function handlePayment() {
 
   if (paymentMethod.value === 'transfer') {
     transferErrors.value.bank = ''
-    if (!selectedBank.value) {
-      transferErrors.value.bank = 'Please select a bank account to transfer to'
-      return
-    }
+    // if (!selectedBank.value) {
+    //   transferErrors.value.bank = 'Please select a bank account to transfer to'
+    //   return
+    // }
     isProcessing.value = true
     try {
       const { data } = await axios.post(
@@ -1364,6 +1510,7 @@ function formatPrice(val) {
   margin-bottom: 8px;
   font-size: 14px;
   outline: none;
+  box-sizing: border-box;
 }
 .search-input:focus {
   border-color: var(--g600);
@@ -1391,6 +1538,77 @@ function formatPrice(val) {
 }
 .option-item:hover {
   background: #f5f8f5;
+}
+
+
+.phone-input-wrapper {
+  display: flex;
+  align-items: stretch;
+  border: 1.5px solid var(--gr200);
+  border-radius: 10px;
+  background: white;
+  transition: border-color 0.2s, box-shadow 0.2s;
+  overflow: visible;
+  position: relative;
+}
+.phone-input-wrapper:focus-within {
+  border-color: var(--g600);
+  box-shadow: 0 0 0 3px rgba(122, 28, 46, 0.08);
+}
+.phone-input-wrapper.phone-input-error {
+  border-color: var(--err);
+  box-shadow: 0 0 0 3px rgba(220, 38, 38, 0.06);
+}
+.phone-dial-selector {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  padding: 0 10px 0 12px;
+  border-right: 1.5px solid var(--gr200);
+  cursor: pointer;
+  min-width: 86px;
+  flex-shrink: 0;
+  position: relative;
+  user-select: none;
+  border-radius: 8px 0 0 8px;
+  transition: background 0.15s;
+}
+.phone-dial-selector:hover {
+  background: var(--gr100);
+}
+.dial-code-text {
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--g800);
+  white-space: nowrap;
+}
+.dial-badge {
+  margin-left: auto;
+  font-size: 11px;
+  color: var(--gr400);
+  flex-shrink: 0;
+}
+.phone-dropdown {
+  left: 0;
+  min-width: 280px;
+  right: auto;
+}
+.phone-number-input {
+  flex: 1;
+  height: 44px;
+  border: none !important;
+  border-radius: 0 10px 10px 0 !important;
+  padding: 0 14px !important;
+  outline: none !important;
+  box-shadow: none !important;
+  font-size: 14px;
+  font-family: 'DM Sans', sans-serif;
+  color: var(--gr700);
+  background: transparent;
+}
+.phone-number-input:focus {
+  border: none !important;
+  box-shadow: none !important;
 }
 
 .recipients-list-container {
@@ -2441,6 +2659,82 @@ input.error {
   text-align: center;
   box-shadow: 0 24px 80px rgba(0, 0, 0, 0.2);
 }
+.payment-method-wrapper {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+
+.payment-info-box {
+  background: #f8f8f7;
+  border: 1px solid #e5e2dc;
+  border-radius: 16px;
+  padding: 24px;
+}
+
+.info-item {
+  display: flex;
+  align-items: flex-start;
+  gap: 14px;
+  margin-bottom: 18px;
+}
+
+.info-item:last-child {
+  margin-bottom: 0;
+}
+
+.info-item p {
+  margin: 0;
+  color: #555;
+  line-height: 1.7;
+}
+
+.info-icon {
+  font-size: 20px;
+  margin-top: 2px;
+}
+
+.payment-total-box {
+  background: #fff6db;
+  border: 1px solid #f1d98c;
+  border-radius: 14px;
+  padding: 18px 20px;
+  display: flex;
+  align-items: flex-start;
+  color: #6b5a2b;
+  line-height: 1.7;
+}
+
+.payment-agreement {
+  background: #f8f8f7;
+  border-radius: 14px;
+  padding: 18px 20px;
+}
+
+.payment-agreement a {
+  color: #c59d1a;
+  text-decoration: none;
+  font-weight: 600;
+}
+
+.payment-actions {
+  display: flex;
+  gap: 16px;
+}
+
+.place-order-btn {
+  flex: 1;
+  background: #c9a227;
+  border: none;
+  color: #2d1600;
+  font-weight: 600;
+  padding: 14px;
+  border-radius: 12px;
+}
+
+.place-order-btn:hover {
+  background: #b8921f;
+}
 .modal-icon-wrap {
   width: 72px;
   height: 72px;
@@ -2599,6 +2893,9 @@ input.error {
   .pay-tab {
     font-size: 12px;
     gap: 5px;
+  }
+  .phone-dropdown {
+    min-width: 240px;
   }
 }
 </style>
