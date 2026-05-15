@@ -12,32 +12,28 @@
         <img src="@/assets/image/llmqurban.png" alt="ILM Qurban" />
       </div>
         
-      <h1>Qurban Premium<em>Sharia compliant</em></h1>
+      <!-- <h1>Qurban Premium<em>Sharia compliant</em></h1>
       <p class="hero-sub">
         We provide healthy, carefully selected cows and goats with transparent pricing and seamless
         distribution.
-      </p>
+      </p> -->
       <div class="hero-btns">
         <a href="#pemesanan" class="btn-gold">Order Qurban</a>
       </div>
       <div class="hero-stats">
-        <div v-for="(stat, i) in heroStats" :key="i" class="hero-stats-item">
+        <!-- <div v-for="(stat, i) in heroStats" :key="i" class="hero-stats-item">
           <div v-if="i > 0" class="stat-sep"></div>
           <div class="stat">
             <strong>{{ stat.value }}</strong>
             <span>{{ stat.label }}</span>
           </div>
-        </div>
+        </div> -->
       </div>
     </div>
 
+    
     <div class="hero-card">
       <img src="@/assets/image/saheem.jpeg" alt="Qurban" />
-    </div>
-    <div class="hero-contact-footer">
-      <p>(+65) 8802 0744</p>
-      <p>UEN: 53439168X</p>
-      <p>admin@shameemsultanah.com</p>
     </div>
   </header>
 </template>
