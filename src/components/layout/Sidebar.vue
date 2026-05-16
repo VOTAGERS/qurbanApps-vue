@@ -4,7 +4,7 @@
     <div class="navbar-wrapper">
       <div class="m-header" style="background: #ffffff; border-bottom: 1px solid rgba(0,0,0,0.05);">
         <router-link to="/admin" class="b-brand d-flex align-items-center text-decoration-none">
-          <img src="/assets/images/logos/ILM-Logo-white.jpeg?v=1.0" alt="logo" class="logo logo-lg me-2 rounded-circle" style="width: 45px; height: 45px; object-fit: cover; border: 1px solid rgba(0,0,0,0.1);" />
+          <img src="/assets/images/llmqurban.png" alt="logo" class="logo logo-lg me-2 rounded-circle" style="width: 45px; height: 45px; object-fit: cover; border: 1px solid rgba(0,0,0,0.1);" />
           <span class="fw-bold fs-3" style="color: #7A1B2E; font-family: 'Playfair Display', serif;">{{ appName }}</span>
         </router-link>
       </div>
