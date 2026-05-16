@@ -11,16 +11,18 @@ const router = createRouter({
       path: '/login',
       name: 'login',
       component: () => import('@/views/LoginView.vue'),
+      meta: { title: 'Login' }
     },
     {
       path: '/',
       component: LandingPage,
+      meta: { title: 'Home' }
     },
     {
       path: '/checkout',
       name: 'checkout',
       component: CheckoutView,
-      // Data produk dikirim via query params atau state
+      meta: { title: 'Checkout' },
       props: (route) => ({
         productId: Number(route.query.id) || 1,
         productName: route.query.name || 'Kambing Qurban',
@@ -29,7 +31,6 @@ const router = createRouter({
         description: route.query.desc || 'Untuk 1 orang · Sesuai syariah',
       }),
     },
-
     {
       path: '/admin',
       component: AdminLayout,
@@ -37,58 +38,57 @@ const router = createRouter({
       children: [
         ...adminRoutes.map(route => ({
           ...route,
-          meta: { 
+          meta: {
+            ...route.meta, // ← spread meta dari adminRoutes (termasuk title)
             requiresAuth: true,
-            // Menandai rute khusus SuperAdmin berdasarkan nama/path
             superAdminOnly: ['users', 'role-access', 'user-access'].includes(route.name as string)
           }
         }))
       ]
     },
-    // Error Routes
     {
       path: '/error/:code',
       name: 'error',
       component: () => import('@/views/ErrorView.vue'),
+      meta: { title: 'Error' },
       props: true
     },
-    // Catch-all route for 404
     {
       path: '/:pathMatch(.*)*',
       name: 'not-found',
       component: () => import('@/views/ErrorView.vue'),
+      meta: { title: 'Page Not Found' },
       props: { code: '404' }
     }
   ],
 })
 
-// Navigation Guard (Security Middleware)
+// Navigation Guard
 import { useAuthStore } from '../stores/auth'
 
 router.beforeEach((to, from, next) => {
   const authStore = useAuthStore()
 
-  // 1. Cek apakah rute memerlukan autentikasi
   if (to.matched.some(record => record.meta.requiresAuth)) {
     if (!authStore.isAuthenticated) {
-      // Jika tidak login, tendang ke login
       return next({ name: 'login' })
     }
-
-    // 2. Cek Role (Authorization)
-    // Jika rute hanya untuk SuperAdmin
     if (to.meta.superAdminOnly && !authStore.isSuperAdmin) {
-      // Jika bukan SuperAdmin, tendang ke Error 403 (Forbidden)
       return next({ name: 'error', params: { code: '403' } })
     }
   }
 
-  // 3. Jika sudah login tapi mencoba akses halaman login lagi
   if (to.name === 'login' && authStore.isAuthenticated) {
     return next({ name: 'dashboard-home' })
   }
 
   next()
+})
+
+const titleName = import.meta.env.VITE_APP_NAME || 'ILM Qurban'
+router.afterEach((to) => {
+  const pageTitle = to.meta?.title as string
+  document.title = pageTitle ? `${pageTitle} | ${titleName}` : appName
 })
 
 export default router
