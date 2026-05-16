@@ -21,7 +21,7 @@
     --pc-sidebar-caption-color: #86909c;
     --pc-sidebar-active-color: #7A1B2E;
     --pc-active-background: rgba(122, 27, 46, 0.05);
-    
+
     --bs-primary: #7A1B2E;
     --bs-primary-rgb: 122, 27, 46;
 }
@@ -47,9 +47,9 @@ body[data-pc-preset] {
     color: var(--pc-sidebar-color) !important;
 }
 
-.pc-sidebar .pc-link:hover, 
-.pc-sidebar .pc-item.active > .pc-link,
-.pc-sidebar .pc-item.pc-trigger > .pc-link {
+.pc-sidebar .pc-link:hover,
+.pc-sidebar .pc-item.active>.pc-link,
+.pc-sidebar .pc-item.pc-trigger>.pc-link {
     background: var(--pc-active-background) !important;
     color: var(--pc-sidebar-active-color) !important;
 }
@@ -103,18 +103,24 @@ body[data-pc-preset] {
     box-shadow: 0 2px 6px rgba(122, 27, 46, 0.3) !important;
 }
 
-.btn-primary:hover, .btn-primary:focus, .btn-primary:active {
+.btn-primary:hover,
+.btn-primary:focus,
+.btn-primary:active {
     background-color: #5d1423 !important;
     border-color: #5d1423 !important;
 }
 
-.btn-light-primary, .btn-light-info, .btn-light-success {
+.btn-light-primary,
+.btn-light-info,
+.btn-light-success {
     background-color: rgba(122, 27, 46, 0.08) !important;
     color: #7A1B2E !important;
     border: none !important;
 }
 
-.btn-light-primary:hover, .btn-light-info:hover, .btn-light-success:hover {
+.btn-light-primary:hover,
+.btn-light-info:hover,
+.btn-light-success:hover {
     background-color: #7A1B2E !important;
     color: #fff !important;
 }
@@ -130,7 +136,8 @@ body[data-pc-preset] {
 }
 
 /* UI Elements */
-.text-primary, .text-info {
+.text-primary,
+.text-info {
     color: #7A1B2E !important;
 }
 
@@ -626,13 +633,31 @@ body {
 .hero-card {
     background: rgba(255, 255, 255, .07);
     border: 1px solid rgba(255, 255, 255, .12);
+    width: 380px;
+    max-width: 90%;
     border-radius: 20px;
     padding: 1.8rem;
     position: relative;
     overflow: hidden;
+    border-radius: 24px;
     cursor: pointer;
     transition: background .2s;
     width: 100%;
+}
+
+.logo-ilm img {
+    width: 30%;
+    height: auto;
+    display: block;
+    margin: 0 auto;
+}
+
+.hero-card img {
+    width: 100%;
+    height: 750px;
+    display: block;
+    object-fit: cover;
+    border-radius: 18px;
 }
 
 .hero-card:hover {

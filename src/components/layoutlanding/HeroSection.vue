@@ -3,50 +3,37 @@
     <div class="hero-overlay"></div>
     <div class="hero-geo"></div>
 
-    <div class="hero-badge-float">
-      <div class="badge-icon">☽</div>
-      <div>
-        <strong>Halal Certified</strong>
-        <span>Halal & Syariah</span>
-      </div>
+    <div class="">
+      
     </div>
 
     <div class="hero-left">
-      <div class="hero-tag">
-        <span class="tag-dot"></span>
-        Shameem Sultanah
+      <div class="ilm-logo">
+        <img src="@/assets/image/llmqurban.png" alt="ILM Qurban" />
       </div>
-      <h1>Qurban Premium<em>Sharia compliant</em></h1>
+        
+      <!-- <h1>Qurban Premium<em>Sharia compliant</em></h1>
       <p class="hero-sub">
         We provide healthy, carefully selected cows and goats with transparent pricing and seamless
         distribution.
-      </p>
+      </p> -->
       <div class="hero-btns">
         <a href="#pemesanan" class="btn-gold">Order Qurban</a>
-        <a href="#hewan" class="btn-ghost">See Animals</a>
       </div>
       <div class="hero-stats">
-        <div v-for="(stat, i) in heroStats" :key="i" class="hero-stats-item">
+        <!-- <div v-for="(stat, i) in heroStats" :key="i" class="hero-stats-item">
           <div v-if="i > 0" class="stat-sep"></div>
           <div class="stat">
             <strong>{{ stat.value }}</strong>
             <span>{{ stat.label }}</span>
           </div>
-        </div>
+        </div> -->
       </div>
     </div>
 
-    <div class="hero-card gold-card">
-      <img src="@/assets/image/bg_qurban.png" alt="Qurban" />
-    </div>
-
-    <div class="hero-clients">
-      <div class="client-avatars">
-        <span v-for="c in clientAvatars" :key="c.initials" :style="{ background: c.color }">{{
-          c.initials
-        }}</span>
-      </div>
-      <p><strong>205.000+</strong> satisfied customers from all over the world</p>
+    
+    <div class="hero-card">
+      <img src="@/assets/image/saheem.jpeg" alt="Qurban" />
     </div>
   </header>
 </template>
@@ -134,8 +121,11 @@
   flex: 1;
   display: flex;
   flex-direction: column;
+  align-items: center;
+  text-align: center;
   gap: 20px;
-  max-width: 580px;
+  max-width: 800px;
+  margin: 0 auto;
 }
 
 .hero-tag {
@@ -186,12 +176,13 @@
   color: rgba(255, 255, 255, 0.7);
   line-height: 1.8;
   margin: 0;
-  max-width: 460px;
+  max-width: 600px;
 }
 
 /* ── Buttons ── */
 .hero-btns {
   display: flex;
+  justify-content: center;
   gap: 16px;
   flex-wrap: wrap;
   margin-top: 4px;
@@ -234,92 +225,21 @@
   background: rgba(255, 255, 255, 0.15);
 }
 
-/* ── Hero card (hewan image, hidden on mobile via responsive.css) ── */
-.hero-card {
-  flex-shrink: 0;
-  width: 420px;
-  height: 420px;
-  border-radius: 50%;
-  overflow: hidden;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  background: rgba(255, 255, 255, 0.03);
-}
-.gold-card {
-  border: 1px solid rgba(220, 38, 38, 0.4);
-  animation:
-    slideIn 0.9s ease forwards,
-    glowPulse 3s ease-in-out infinite;
-  animation-delay: 0s, 0.9s;
-}
-@keyframes slideIn {
-  from { opacity: 0; transform: translateX(40px); }
-  to   { opacity: 1; transform: translateX(0); }
-}
-@keyframes glowPulse {
-  0%, 100% {
-    box-shadow:
-      0 30px 90px rgba(0, 0, 0, 0.5),
-      0 0 20px rgba(220, 38, 38, 0.2),
-      0 0 40px rgba(220, 38, 38, 0.1);
-  }
-  50% {
-    box-shadow:
-      0 30px 90px rgba(0, 0, 0, 0.5),
-      0 0 40px rgba(220, 38, 38, 0.6),
-      0 0 80px rgba(220, 38, 38, 0.3),
-      0 0 120px rgba(220, 38, 38, 0.15);
-  }
-}
-.hero-card img {
-  width: 90%;
-  height: auto;
-  object-fit: contain;
-  filter: contrast(1.15) saturate(1.2) brightness(1.05);
-  image-rendering: crisp-edges;
-}
+/* Unused styles removed */
 
 /* ── Clients ── */
-.hero-clients {
+.hero-contact-footer {
   position: absolute;
-  bottom: 48px;
+  bottom: 40px;
   left: 80px;
-  display: flex;
-  align-items: center;
-  gap: 14px;
   z-index: 2;
-}
-.client-avatars {
-  display: flex;
-}
-.client-avatars span {
-  width: 36px;
-  height: 36px;
-  border-radius: 50%;
-  border: 2px solid #000;
-  display: flex;
-  align-items: center;
-  justify-content: center;
+  color: rgba(255, 255, 255, 0.8);
   font-family: 'Poppins', sans-serif;
-  font-size: 11px;
-  font-weight: 600;
-  color: #fff;
-  margin-left: -10px;
+  font-size: 14px;
+  line-height: 1.6;
 }
-.client-avatars span:first-child {
-  margin-left: 0;
-}
-.hero-clients p {
-  font-family: 'Poppins', sans-serif;
-  font-size: 13px;
-  color: rgba(255, 255, 255, 0.65);
+.hero-contact-footer p {
   margin: 0;
-}
-.hero-clients p strong {
-  color: #fff;
-  font-weight: 600;
-  margin-right: 4px;
 }
 
 /* ── Responsive ── */
@@ -365,6 +285,12 @@
   .hero { padding: 90px 20px 80px; }
   .hero h1 { font-size: 34px; }
   .hero-badge-float { display: none; }
+}
+.ilm-logo img {
+  height: 150px;
+  width: auto;
+  object-fit: contain;
+  filter: brightness(0) invert(1);
 }
 </style>
 

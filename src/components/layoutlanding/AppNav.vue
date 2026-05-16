@@ -3,13 +3,27 @@
     <a href="#" class="nav-logo">
       <img src="@/assets/image/llmqurban.png" alt="ILM Qurban" class="nav-logo-img" />
     </a>
-    <ul class="nav-links">
-      <li v-for="link in navLinks" :key="link.href">
-        <a :href="link.href" :class="{ active: activeSection === link.id }">{{ link.label }}</a>
-      </li>
-    </ul>
-    <a href="#hewan" class="nav-cta">Order Qurban</a>
+    
+    <div class="hero-btns">
+      <a href="#pemesanan" class="btn-gold center-btn">Order Qurban</a>
+    </div>
+    
+    <div class="nav-info">
+      <div class="info-link">
+        <i class="ti ti-phone"></i>
+        <span>(+65) 8802 0744</span>
+      </div>
+      <div class="info-link">
+        <i class="ti ti-briefcase"></i>
+        <span>UEN: 53439168X</span>
+      </div>
+      <div class="info-link">
+        <i class="ti ti-mail"></i>
+        <span>admin@shameemsultanah.com</span>
+      </div>
+    </div>
   </nav>
+
 </template>
 
 <script setup>
@@ -29,7 +43,7 @@ defineProps({
   left: 0;
   right: 0;
   z-index: 999;
-  height: 70px;
+  height: 90px;
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -37,16 +51,24 @@ defineProps({
   background: #ffffff;
   border-bottom: 1px solid rgba(0, 0, 0, 0.08);
   box-shadow: 0 2px 12px rgba(0, 0, 0, 0.06);
-  transition: box-shadow 0.3s;
+  transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 .nav.scrolled {
-  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+  top: 15px;
+  left: 30px;
+  right: 30px;
+  height: 100px;
+  background: rgba(255, 255, 255, 0.8);
+  backdrop-filter: blur(12px);
+  border: 1px solid rgba(56, 56, 56, 0.3);
+  border-radius: 100px;
+  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.08);
 }
 
 /* Logo image */
 .nav-logo-img {
-  height: 38px;
+  height: 60px;
   width: auto;
   object-fit: contain;
   display: block;
@@ -76,28 +98,45 @@ defineProps({
   color: #7a1b2e;
   background: rgba(122, 27, 46, 0.06);
 }
-.nav-cta {
-  background: #7a1b2e;
-  color: #ffffff;
-  text-decoration: none;
-  font-family: 'Poppins', sans-serif;
-  font-size: 14px;
-  font-weight: 600;
-  padding: 0.55rem 1.4rem;
-  border-radius: 50px;
-  letter-spacing: 0.04em;
-  transition: background 0.2s, transform 0.15s;
+.center-btn {
+  position: absolute;
+  /* left: 50%; */
+  right: 45%;
+  white-space: nowrap;
 }
-.nav-cta:hover {
-  background: #5d1423;
-  transform: translateY(-1px);
+.nav-info {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  align-items: flex-end;
+}
+.info-link {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-family: 'Poppins', sans-serif;
+  font-size: 11px;
+  color: #555;
+  font-weight: 500;
+  line-height: 1.2;
+}
+.info-link i {
+  color: #7a1b2e;
+  font-size: 13px;
 }
 
 /* Responsive */
+@media (max-width: 1024px) {
+  .nav-info { display: none; }
+}
 @media (max-width: 768px) {
   .nav { padding: 0 20px; }
-  .nav-links { display: none; }
-  .nav-cta { font-size: 13px; padding: 0.5rem 1.1rem; }
-  .nav-logo-img { height: 32px; }
+  .nav-logo-img { height: 45px; }
+  .center-btn { 
+    position: static; 
+    transform: none; 
+    font-size: 12px; 
+    padding: 0.6rem 1.2rem; 
+  }
 }
 </style>

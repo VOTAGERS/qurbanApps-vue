@@ -4,7 +4,8 @@
       <div class="sec-head-center">
         <div class="sec-label">Sacrifice Choice</div>
         <h2 class="sec-title">Sacrificial Animal Category</h2>
-        <p class="sec-desc">Choose from premium beef and goat, all healthy and sharia compliant</p>
+        <p class="sec-desc">Choose from carefully selected cattle, sheep and goats, that are healthy, well-maintained and fully compliant with Islamic Sharia requirements
+        </p>
       </div>
 
       <div v-if="loading" class="cat-loading">
@@ -38,7 +39,7 @@
               :class="item.featured ? 'cat-btn-primary' : 'cat-btn-outline'"
               @click="pesanSekarang(item)"
             >
-              Pesan Sekarang
+              Order Now
             </button>
           </div>
         </div>

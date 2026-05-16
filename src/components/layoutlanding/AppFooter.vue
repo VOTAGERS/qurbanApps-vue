@@ -6,16 +6,19 @@
           <div class="footer-logo">
             <img src="@/assets/image/llmqurban.png" alt="ILM Qurban" />
           </div>
+          <div class="footer-logo-partner footer-logo">
+            by shameemsultanah
+          </div>
           <p>Your trusted, professional and Islamically-compliant qurban worship partner</p>
           <div class="footer-socials">
             <a v-for="s in socials" :key="s.label" :href="s.href" :title="s.label">{{ s.icon }}</a>
           </div>
         </div>
         <div class="footer-col footer-contact">
-          <h5>Kontak</h5>
+          <h5>Contact Us</h5>
           <ul>
             <li>ILM Tours Pte. Ltd.<br />Shameem Sultanah</li>
-            <li>80 Changi Road Centropod@Changi #04-01 Singapore 419715</li>
+            <li>80 Changi Road Centropod@Changi #04-02<br />Singapore 419715</li>
             <li><a href="tel:+6281234567890">(+65) 8802 0744</a></li>
             <li><a href="mailto:admin@shameemsultanah.com">admin@shameemsultanah.com</a></li>
           </ul>
