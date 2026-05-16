@@ -14,9 +14,9 @@
       @retry="fetchCategories"
     />
 
-    <WhySection />
+    <!-- <WhySection /> -->
 
-    <CtaSection />
+    <!-- <CtaSection /> -->
 
     <AppFooter />
 
@@ -26,25 +26,22 @@
 </template>
 
 <script setup>
-import { onMounted } from 'vue'
-import { useScroll }         from '@/composables/useScroll.js'
-import { useReveal }         from '@/composables/useReveal.js'
-import { useCategories }     from '@/composables/useCategories.js'
-import { useLandingStyles }  from '@/composables/useLandingStyles'
+import { useScroll }     from '@/composables/useScroll.js'
+import { useReveal }     from '@/composables/useReveal.js'
+import { useCategories } from '@/composables/useCategories.js'
+
 import AppNav            from '@/components/layoutlanding/AppNav.vue'
 import HeroSection       from '@/components/layoutlanding/HeroSection.vue'
 import AboutSection      from '@/components/layoutlanding/AboutSection.vue'
 import CategoriesSection from '@/components/layoutlanding/CategoriesSection.vue'
-// import WhySection        from '@/components/layoutlanding/WhySection.vue'
+import WhySection        from '@/components/layoutlanding/WhySection.vue'
 import CtaSection        from '@/components/layoutlanding/CtaSection.vue'
 import AppFooter         from '@/components/layoutlanding/AppFooter.vue'
 
-useLandingStyles()
-
+import { onMounted } from 'vue'
 const { isScrolled, activeSection, scrollTop } = useScroll()
 const { observeNew }                           = useReveal()
 const { categories, loading, error, fetchCategories } = useCategories()
-
 onMounted(() => {
   fetchCategories()
 })
