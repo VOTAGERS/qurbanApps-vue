@@ -1390,6 +1390,7 @@ async function handlePayment() {
           purchase_type: purchaseType.value,
           total_price: totalPrice.value,
           bank_id: selectedBank.value,
+          payment_method: 'bank_transfer',
           billing: {
             first_name: buyer.value.firstName,
             last_name: buyer.value.lastName,
@@ -1434,6 +1435,7 @@ async function handlePayment() {
         quantity: quantity.value,
         purchase_type: purchaseType.value,
         total_price: totalPrice.value,
+        payment_method: 'credit_card',
         billing: {
           first_name: buyer.value.firstName,
           last_name: buyer.value.lastName,
