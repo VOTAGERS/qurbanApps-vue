@@ -2,8 +2,7 @@
   <section class="categories section" id="hewan">
     <div class="container">
       <div class="sec-head-center">
-        <div class="sec-label">Sacrifice Choice</div>
-        <h2 class="sec-title">Sacrificial Animal Category</h2>
+        <h2 class="sec-title">Qurban Animal Category</h2>
         <p class="sec-desc">Choose from carefully selected cattle, sheep and goats, that are healthy, well-maintained and fully compliant with Islamic Sharia requirements
         </p>
       </div>

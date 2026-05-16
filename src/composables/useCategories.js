@@ -13,10 +13,10 @@ function mapItem(item, index) {
     id: item.idproduct_woo,
     featured: false,
     title: item.product_woo?.name ?? 'Qurbani Products',
-    for: `Maks. ${item.max_share} shares`,
+    // for: `Maks. ${item.max_share} shares`,
     price: formatPrice(item.product_woo?.price),
     priceSup: '/tail',
-    desc: `Maks. ${item.max_share} shares`,
+    // desc: `Maks. ${item.max_share} shares`,
     img: (() => {
       const url = item.product_woo?.file_upload?.url ?? item.product_woo?.image ?? null;
       return (url && !url.startsWith('http')) ? `${import.meta.env.VITE_API_BASE_URL}${url}` : url;

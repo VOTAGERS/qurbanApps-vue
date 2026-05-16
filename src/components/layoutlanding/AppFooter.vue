@@ -41,9 +41,17 @@ import { socials, footerCols } from '@/data/staticData.js'
 }
 
 .footer-logo img {
-  height: 150px;
-  width: auto;
+  width: 100%;
+  max-width: 180px;
+  height: auto;
   object-fit: contain;
   filter: brightness(0) invert(1);
+}
+
+@media (max-width: 768px) {
+  .footer-logo img {
+    max-width: 140px;
+    margin: 0 auto;
+  }
 }
 </style>

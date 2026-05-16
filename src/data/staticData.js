@@ -52,8 +52,8 @@ export const whyItems = [
 ]
 
 export const socials = [
-  { label: 'Instagram', href: 'https://www.instagram.com/shameemsultanah', icon: 'fa-instagram' },
-  { label: 'Facebook', href: 'https://www.facebook.com/shameemsultanah/', icon: 'fa-facebook' },
+  { label: 'Instagram', href: 'https://www.instagram.com/shameemsultanah', icon: '@' },
+  { label: 'Facebook', href: 'https://www.facebook.com/shameemsultanah/', icon: 'f' },
 ]
 
 export const footerCols = [

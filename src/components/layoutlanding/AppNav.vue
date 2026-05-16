@@ -4,7 +4,7 @@
       <img src="@/assets/image/llmqurban.png" alt="ILM Qurban" class="nav-logo-img" />
     </a>
     
-    <div class="hero-btns">
+    <div class="nav-btn-wrap">
       <a href="#pemesanan" class="btn-gold center-btn">Order Qurban</a>
     </div>
     
@@ -106,6 +106,12 @@ defineProps({
   color: #7a1b2e;
   background: rgba(122, 27, 46, 0.06);
 }
+.nav-btn-wrap {
+  display: flex;
+  align-items: center;
+  margin: 0;
+  padding: 0;
+}
 .center-btn {
   position: absolute;
   /* left: 50%; */
@@ -143,13 +149,29 @@ defineProps({
   .nav-info { display: none; }
 }
 @media (max-width: 768px) {
-  .nav { padding: 0 20px; }
-  .nav-logo-img { height: 45px; }
+  .nav { 
+    height: 70px;
+    padding: 0 16px; 
+  }
+  .nav.scrolled {
+    top: 8px;
+    left: 12px;
+    right: 12px;
+    height: 60px;
+    border-radius: 30px;
+    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.08);
+  }
+  .nav-logo-img { 
+    height: 38px; 
+  }
+  .nav.scrolled .nav-logo-img {
+    height: 32px;
+  }
   .center-btn { 
     position: static; 
     transform: none; 
-    font-size: 12px; 
-    padding: 0.6rem 1.2rem; 
+    font-size: 11px; 
+    padding: 0.5rem 1rem; 
   }
 }
 </style>

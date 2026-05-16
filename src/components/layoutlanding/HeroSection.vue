@@ -287,8 +287,9 @@
   .hero-badge-float { display: none; }
 }
 .ilm-logo img {
-  height: 600px;
-  width: auto;
+  width: 100%;
+  max-width: 480px;
+  height: auto;
   object-fit: contain;
   filter: brightness(0) invert(1);
   transition: transform 0.3s ease;
@@ -300,13 +301,19 @@
 
 @media (max-width: 1024px) {
   .ilm-logo img {
-    height: 700px;
+    max-width: 400px;
   }
 }
 
 @media (max-width: 768px) {
   .ilm-logo img {
-    height: 360px;
+    max-width: 280px;
+  }
+}
+
+@media (max-width: 480px) {
+  .ilm-logo img {
+    max-width: 220px;
   }
 }
 </style>

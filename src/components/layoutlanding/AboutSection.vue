@@ -8,7 +8,7 @@
           </div>
         </div>
         <div class="about-text reveal">
-          <div class="sec-label">Why Us</div>
+          <!-- <div class="sec-label">Why Us</div> -->
           <h2 class="sec-title">Trustworthy & Professional <em>Qurban Services</em></h2>
           <p>
             We are here to make your Qurban experience smooth and worry-free by providing carefully
