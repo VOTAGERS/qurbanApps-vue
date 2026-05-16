@@ -77,6 +77,12 @@
                 <span class="pc-mtext">User Access Menu</span>
               </router-link>
             </li>
+            <li class="pc-item" :class="{ active: isActive('/admin/konfigurasi') }">
+              <router-link to="/admin/konfigurasi" class="pc-link">
+                <span class="pc-micon"><i class="ti ti-shield-lock"></i></span>
+                <span class="pc-mtext">Konfigurasi WebHook</span>
+              </router-link>
+            </li>
             <!-- <li class="pc-item" :class="{ active: isActive('/admin/checkout-simulation') }">
               <router-link to="/admin/checkout-simulation" class="pc-link">
                 <span class="pc-micon"><i class="ti ti-shopping-cart"></i></span>

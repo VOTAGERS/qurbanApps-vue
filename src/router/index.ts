@@ -39,9 +39,9 @@ const router = createRouter({
         ...adminRoutes.map(route => ({
           ...route,
           meta: {
-            ...route.meta, // ← spread meta dari adminRoutes (termasuk title)
+            ...route.meta, 
             requiresAuth: true,
-            superAdminOnly: ['users', 'role-access', 'user-access'].includes(route.name as string)
+            superAdminOnly: ['users', 'role-access', 'user-access','konfigurasi'].includes(route.name as string)
           }
         }))
       ]

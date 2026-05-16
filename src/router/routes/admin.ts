@@ -54,6 +54,12 @@ export const adminRoutes = [
     component: () => import('../../views/admin/RoleAccessView.vue'),
     meta: { title: 'Role Access' }
   },
+   {
+    path: 'konfigurasi',
+    name: 'konfigurasi',
+    component: () => import('../../views/admin/KonfigurasiWebhook.vue'),
+    meta: { title: 'konfigurasi' }
+  },
   {
     path: 'user-access',
     name: 'user-access',
