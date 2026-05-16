@@ -52,7 +52,7 @@
   overflow: hidden;
 
   /* Background image sapi */
-  background-image: url('@/assets/image/bg_qurban.png');
+  /* background-image: url('@/assets/image/bg_qurban.png'); */
   background-size: cover;
   background-position: center 30%;
   background-repeat: no-repeat;
@@ -287,10 +287,27 @@
   .hero-badge-float { display: none; }
 }
 .ilm-logo img {
-  height: 150px;
+  height: 600px;
   width: auto;
   object-fit: contain;
   filter: brightness(0) invert(1);
+  transition: transform 0.3s ease;
+}
+
+.ilm-logo img:hover {
+  transform: scale(1.05);
+}
+
+@media (max-width: 1024px) {
+  .ilm-logo img {
+    height: 700px;
+  }
+}
+
+@media (max-width: 768px) {
+  .ilm-logo img {
+    height: 360px;
+  }
 }
 </style>
 
