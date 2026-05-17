@@ -92,6 +92,12 @@ import { socials } from '@/data/staticData.js'
   gap: 50px;
   margin-bottom: 50px;
 }
+.footer-logo img {
+  max-width: 180px; 
+  height: auto;
+  filter: brightness(0) invert(1); 
+  margin-bottom: 8px;
+}
 
 /* ── Brand & Logo ── */
 .footer-logo {
