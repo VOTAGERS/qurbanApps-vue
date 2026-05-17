@@ -100,12 +100,6 @@ import { socials } from '@/data/staticData.js'
   margin-bottom: 20px;
 }
 
-.footer-logo img {
-  max-width: 180px; /* Ukuran maksimal logo agar tidak kegedean */
-  height: auto;
-  filter: brightness(0) invert(1); /* Putihkan logo */
-  margin-bottom: 8px;
-}
 
 .sub-brand {
   color: #c8a355; /* Gold */
@@ -213,5 +207,11 @@ import { socials } from '@/data/staticData.js'
   .footer-luxury { padding: 60px 0 20px; }
   .footer-logo img { max-width: 150px; }
   .footer-title { margin-bottom: 15px; }
+}
+@media (max-width: 768px) {
+  .footer-logo img {
+    max-width: 140px;
+    margin: 0 auto;
+  }
 }
 </style>
