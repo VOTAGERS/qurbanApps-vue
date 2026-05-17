@@ -8,7 +8,7 @@
               <img src="@/assets/image/ternak.jpeg" alt="Professional Qurban Service" />
             </div>
 
-            <div class="why-float-card">
+            <!-- <div class="why-float-card">
               <div class="wfc-icon">
                 <i class="pi pi-shield"></i>
               </div>
@@ -16,12 +16,12 @@
                 <strong>ILM Tours Pte. Ltd.</strong>
                 <span>Trusted Qurban Partner</span>
               </div>
-            </div>
+            </div> -->
           </div>
         </div>
 
         <div class="why-content reveal">
-          <div class="sec-label">Why Us</div>
+          <!-- <div class="sec-label">Why Us</div> -->
           <h2 class="sec-title">Trustworthy & Professional <em>Qurban Services</em></h2>
 
           <div class="sec-description-group">

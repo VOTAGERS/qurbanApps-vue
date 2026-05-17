@@ -4,14 +4,14 @@
 
     <div class="container">
       <div class="sec-head-center reveal">
-        <div class="sec-label">
+        <!-- <div class="sec-label">
           <i class="pi pi-star-fill gold-icon"></i>
           Sacrifice Choice
           <i class="pi pi-star-fill gold-icon"></i>
-        </div>
-        <h2 class="sec-title">Premium <em>Sacrificial</em> Animals</h2>
+        </div> -->
+        <h2 class="sec-title">Qurban Animal Category</h2>
         <p class="sec-desc">
-          Selected premium livestock, healthy and fully Shariah compliant for your holy sacrifice.
+          Choose from carefully selected cattle, sheep and goats, that are healthy, <br>well-maintained and fully compliant with Islamic Sharia requirements 
         </p>
       </div>
 
@@ -44,17 +44,17 @@
           <div class="cat-body">
             <div class="cat-header">
               <h3>{{ item.title }}</h3>
-              <div class="cat-for-badge">MAKS. {{ item.for }}</div>
+              <div class="cat-for-badge d-none">MAKS. {{ item.for }}</div>
             </div>
 
             <div class="cat-price-box">
-              <span class="currency">Starting from</span>
+              <span class="currency d-none">Starting from</span>
               <div class="cat-price">
                 {{ item.price }}<sup class="gold-sup">{{ item.priceSup }}</sup>
               </div>
             </div>
 
-            <p class="item-desc">{{ item.desc }}</p>
+            <p class="item-desc d-none">{{ item.desc }}</p>
 
             <button
               class="cat-btn"

@@ -5,6 +5,7 @@
     <div class="hero-glow-2"></div>
 
     <div class="container hero-container">
+      
       <div class="hero-left parallax-left">
         <div class="logo-wrapper animate-pop">
           <img
@@ -47,7 +48,7 @@
             class="profile-img"
           />
 
-          <div class="floating-badge parallax-badge">
+          <!-- <div class="floating-badge parallax-badge">
             <div class="badge-icon">
               <i class="pi pi-verified"></i>
             </div>
@@ -55,9 +56,10 @@
               <span class="badge-name">ILM TOURS PTE. LTD.</span>
               <span class="badge-status">Certified Sharia</span>
             </div>
-          </div>
+          </div> -->
         </div>
       </div>
+
     </div>
   </header>
 </template>
@@ -65,6 +67,7 @@
 <script setup>
 import { onMounted, onUnmounted, ref } from 'vue'
 import 'primeicons/primeicons.css'
+
 const scrollY = ref(0)
 const handleScroll = () => {
   scrollY.value = window.scrollY
@@ -81,6 +84,7 @@ onUnmounted(() => {
 
 <style scoped>
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&display=swap');
+
 .hero {
   position: relative;
   min-height: 100vh;
@@ -89,6 +93,7 @@ onUnmounted(() => {
   align-items: center;
   overflow: hidden;
   font-family: 'Inter', sans-serif;
+  padding: 100px 0 60px 0;
 }
 
 .hero-overlay {
@@ -120,7 +125,6 @@ onUnmounted(() => {
   filter: blur(100px);
   z-index: 1;
 }
-
 .hero-container {
   position: relative;
   z-index: 10;
@@ -136,18 +140,18 @@ onUnmounted(() => {
 .hero-left {
   display: flex;
   flex-direction: column;
-  align-items: center;
-  gap: 50px;
+  justify-content: center;
+  align-items: flex-start; 
+  gap: 40px;
 }
 
 .logo-wrapper {
   display: flex;
-  justify-content: center;
+  justify-content: flex-start;
   width: 100%;
 }
 
 .logo-render {
-  height: 200px;
   filter: brightness(0) invert(1) drop-shadow(0 15px 35px rgba(0, 0, 0, 0.7));
 }
 
@@ -220,7 +224,7 @@ onUnmounted(() => {
 
 .profile-img {
   width: 100%;
-  max-width: 460px;
+  max-width: 440px;
   border-radius: 25px;
   display: block;
   filter: drop-shadow(0 20px 50px rgba(0, 0, 0, 0.6));
@@ -246,94 +250,113 @@ onUnmounted(() => {
   font-weight: 800;
   font-size: 13px;
 }
+
 .badge-status {
   color: #7a1b2e;
   font-weight: 700;
   font-size: 10px;
   text-transform: uppercase;
 }
-
-.parallax-left,
-.parallax-right,
-.parallax-badge,
-.parallax-glow {
+.parallax-left, .parallax-right, .parallax-badge, .parallax-glow {
   will-change: transform;
   transition: transform 0.15s ease-out;
 }
+.parallax-left { transform: translateY(calc(var(--scroll) * -0.15)); }
+.parallax-right { transform: translateY(calc(var(--scroll) * 0.08)); }
+.parallax-badge { transform: translateY(calc(var(--scroll) * -0.25)); }
+.parallax-glow { transform: translate(calc(var(--scroll) * 0.05), calc(var(--scroll) * -0.05)); }
 
-.parallax-left {
-  transform: translateY(calc(var(--scroll) * -0.15));
-}
-.parallax-right {
-  transform: translateY(calc(var(--scroll) * 0.08));
-}
-.parallax-badge {
-  transform: translateY(calc(var(--scroll) * -0.25));
-}
-.parallax-glow {
-  transform: translate(calc(var(--scroll) * 0.05), calc(var(--scroll) * -0.05));
-}
-
-.floating {
-  animation: floatingAnim 5s ease-in-out infinite;
-}
+.floating { animation: floatingAnim 5s ease-in-out infinite; }
 @keyframes floatingAnim {
-  0%,
-  100% {
-    transform: translateY(0);
-  }
-  50% {
-    transform: translateY(-15px);
-  }
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-15px); }
 }
-
-.animate-pop {
-  animation: popIn 1s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
-}
+.animate-pop { animation: popIn 1s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards; }
 @keyframes popIn {
-  from {
-    opacity: 0;
-    transform: scale(0.6);
-  }
-  to {
-    opacity: 1;
-    transform: scale(1);
-  }
+  from { opacity: 0; transform: scale(0.6); }
+  to { opacity: 1; transform: scale(1); }
 }
-
 .animate-fade-up {
   opacity: 0;
   transform: translateY(30px);
   animation: fadeUp 0.8s 0.4s forwards;
 }
-@keyframes fadeUp {
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
-}
-
+@keyframes fadeUp { to { opacity: 1; transform: translateY(0); } }
 @media (max-width: 1024px) {
+  .hero {
+    padding: 130px 0 60px 0;
+    height: auto;
+    min-height: 100vh;
+  }
   .hero-container {
+    display: grid;
     grid-template-columns: 1fr;
+    grid-template-areas: 
+      "logo"
+      "foto"
+      "kontak";
+    gap: 35px;
     text-align: center;
-    gap: 60px;
   }
-  .hero-left {
-    align-items: center;
-    transform: none !important;
-  }
-  .hero-right {
+  .logo-wrapper {
+    grid-area: logo;
     justify-content: center;
-    transform: none !important;
   }
-  .profile-frame {
+
+  .hero-right {
+    grid-area: foto;
+    justify-content: center;
+    width: 100%;
+  }
+
+  .contact-list {
+    grid-area: kontak;
     margin: 0 auto;
   }
+  .hero-left {
+    display: contents;
+  }
+
+  .hero-left, .hero-right, .parallax-left, .parallax-right, .parallax-badge, .parallax-glow {
+    transform: none !important;
+    transition: none !important;
+  }
+
+  .logo-render {
+    height: 180px;
+  }
+
+  .profile-frame {
+    margin: 0 auto;
+    max-width: 320px;
+  }
+
+  .profile-img {
+    width: 100%;
+  }
+
   .floating-badge {
     left: 50%;
     transform: translateX(-50%) !important;
     bottom: -20px;
+    white-space: nowrap;
+    padding: 10px 16px;
+  }
+}
+
+@media (max-width: 480px) {
+  .logo-render {
+    height: 100%;
+  }
+  .profile-frame {
+    max-width: 260px;
+  }
+  .contact-item {
+    padding: 12px 20px;
+    gap: 15px;
+  }
+  .contact-text {
+    font-size: 14px;
   }
 }
 </style>
