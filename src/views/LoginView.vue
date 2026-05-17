@@ -1,35 +1,34 @@
 <template>
   <div class="login-page">
+    <LockOverlay v-if="isLocked" :days-left="daysLeft" />
+
     <div class="bg-pattern"></div>
     <div class="login-card">
       <h2 class="login-header text-center mb-4">
         <span class="logo-qurban">{{ appName }}</span> Portal
       </h2>
-      
-      <!-- Login Method Toggle -->
+
       <div v-if="step === 1" class="method-toggle mb-4">
-        <button 
+        <button
           type="button"
-          class="toggle-btn" 
-          :class="{ active: loginMethod === 'otp' }" 
+          class="toggle-btn"
+          :class="{ active: loginMethod === 'otp' }"
           @click="loginMethod = 'otp'"
         >OTP</button>
-        <button 
+        <button
           type="button"
-          class="toggle-btn" 
-          :class="{ active: loginMethod === 'password' }" 
+          class="toggle-btn"
+          :class="{ active: loginMethod === 'password' }"
           @click="loginMethod = 'password'"
         >Password</button>
       </div>
-      
-      <!-- Styled Error Message -->
+
       <div v-if="errorMessage" class="alert-badge mb-4">
         <i class="ti ti-alert-circle me-2"></i>
         <span>{{ errorMessage }}</span>
         <button type="button" class="btn-close-alert" @click="errorMessage = ''">&times;</button>
       </div>
 
-      <!-- Step 1: Login Form -->
       <form v-if="step === 1" @submit.prevent="loginMethod === 'otp' ? requestOtp() : loginWithPassword()" class="form-grid">
         <div class="field full">
           <label for="email" class="form-label">Email Address</label>
@@ -47,11 +46,18 @@
         </button>
       </form>
 
-      <!-- Step 2: Verify OTP -->
       <form v-else @submit.prevent="verifyOtp" class="form-grid">
         <div class="field full">
           <label for="otp" class="form-label">Enter OTP Code</label>
-          <input type="text" id="otp" v-model="otpCode" placeholder="Enter 6-digit OTP" required maxlength="6" style="text-align: center; letter-spacing: 0.5em; font-weight: bold; font-size: 1.2rem;" />
+          <input
+            type="text"
+            id="otp"
+            v-model="otpCode"
+            placeholder="Enter 6-digit OTP"
+            required
+            maxlength="6"
+            style="text-align: center; letter-spacing: 0.5em; font-weight: bold; font-size: 1.2rem;"
+          />
         </div>
         <button type="submit" class="btn-pay mt-3" :disabled="isLoading">
           <span v-if="isLoading" class="spinner"></span>
@@ -59,7 +65,7 @@
         </button>
         <div class="mt-4 text-center">
           <a href="#" @click.prevent="step = 1" class="back-link">
-             &#8592; Back to Email
+            &#8592; Back to Email
           </a>
         </div>
       </form>
@@ -68,84 +74,80 @@
 </template>
 
 <script setup lang="ts">
-import { ref } from 'vue';
-import { useRouter } from 'vue-router';
-import axios from 'axios';
-import { useAuthStore } from '@/stores/auth';
+import { ref }           from 'vue'
+import { useRouter }     from 'vue-router'
+import axios             from 'axios'
+import { useAuthStore }  from '@/stores/auth'
+import { useLockStatus } from '@/composables/useLockStatus.js'
+import LockOverlay       from '@/components/LockOverlay.vue'
 
-const authStore = useAuthStore();
+const authStore              = useAuthStore()
+const { isLocked, daysLeft } = useLockStatus('IL-QURBAN')
 
-const step = ref(1);
-const loginMethod = ref('otp');
-const email = ref('');
-const password = ref('');
-const otpCode = ref('');
-const isLoading = ref(false);
-const errorMessage = ref('');
-const router = useRouter();
-const appName = import.meta.env.VITE_APP_NAME || 'QurbanHub';
+const step         = ref(1)
+const loginMethod  = ref('otp')
+const email        = ref('')
+const password     = ref('')
+const otpCode      = ref('')
+const isLoading    = ref(false)
+const errorMessage = ref('')
+const router       = useRouter()
+const appName      = import.meta.env.VITE_APP_NAME || 'ILM QURBAN'
 
 const requestOtp = async () => {
-  if (!email.value) return;
-  isLoading.value = true;
+  if (!email.value) return
+  isLoading.value = true
   try {
     const response = await axios.post(`${import.meta.env.VITE_API_BASE_URL}/api/auth/send-otp`, {
       email: email.value,
-    });
-    if (response.data.success) {
-      step.value = 2;
-    }
+    })
+    if (response.data.success) step.value = 2
   } catch (error: any) {
-    console.error('Failed to send OTP:', error);
-    errorMessage.value = error.response?.data?.message || 'Failed to send OTP. Please check your email.';
+    errorMessage.value = error.response?.data?.message || 'Failed to send OTP. Please check your email.'
   } finally {
-    isLoading.value = false;
+    isLoading.value = false
   }
-};
+}
 
 const loginWithPassword = async () => {
-  if (!email.value || !password.value) return;
-  isLoading.value = true;
+  if (!email.value || !password.value) return
+  isLoading.value = true
   try {
     const response = await axios.post(`${import.meta.env.VITE_API_BASE_URL}/api/auth/login-password`, {
       email: email.value,
       password: password.value,
-    });
-
+    })
     if (response.data.success) {
-      const { token, user, roles } = response.data.data;
-      authStore.setAuthData(user, roles, token);
-      window.location.href = '/admin';
+      const { token, user, roles } = response.data.data
+      authStore.setAuthData(user, roles, token)
+      window.location.href = '/admin'
     }
   } catch (error: any) {
-    console.error('Password login failed:', error);
-    errorMessage.value = error.response?.data?.message || 'Invalid email or password.';
+    errorMessage.value = error.response?.data?.message || 'Invalid email or password.'
   } finally {
-    isLoading.value = false;
+    isLoading.value = false
   }
-};
+}
 
 const verifyOtp = async () => {
-  if (!otpCode.value) return;
-  isLoading.value = true;
+  if (!otpCode.value) return
+  isLoading.value = true
   try {
     const response = await axios.post(`${import.meta.env.VITE_API_BASE_URL}/api/auth/verify-otp`, {
       email: email.value,
       otp_code: otpCode.value,
-    });
-
+    })
     if (response.data.success) {
-      const { token, user, roles } = response.data.data;
-      authStore.setAuthData(user, roles, token);
-      window.location.href = '/admin';
+      const { token, user, roles } = response.data.data
+      authStore.setAuthData(user, roles, token)
+      window.location.href = '/admin'
     }
   } catch (error: any) {
-    console.error('OTP verification failed:', error);
-    errorMessage.value = error.response?.data?.message || 'Invalid or expired OTP. Please try again.';
+    errorMessage.value = error.response?.data?.message || 'Invalid or expired OTP. Please try again.'
   } finally {
-    isLoading.value = false;
+    isLoading.value = false
   }
-};
+}
 </script>
 
 <style scoped>
@@ -210,10 +212,6 @@ const verifyOtp = async () => {
   color: var(--g900);
   font-weight: 600;
 }
-.logo-hub {
-  color: var(--gold);
-  font-weight: 600;
-}
 
 .form-grid {
   display: flex;
@@ -246,7 +244,7 @@ const verifyOtp = async () => {
 .toggle-btn.active {
   background: var(--white);
   color: var(--g900);
-  box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
 }
 
 .field {
@@ -377,6 +375,6 @@ input:focus {
 
 @keyframes slideIn {
   from { opacity: 0; transform: translateY(-10px); }
-  to { opacity: 1; transform: translateY(0); }
+  to   { opacity: 1; transform: translateY(0); }
 }
 </style>
