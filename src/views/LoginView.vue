@@ -78,7 +78,7 @@ import { ref }           from 'vue'
 import { useRouter }     from 'vue-router'
 import axios             from 'axios'
 import { useAuthStore }  from '@/stores/auth'
-import { useLockStatus } from '@/composables/useLockStatus.js'
+import { useLockStatus } from '@/composables/useLockStatus'
 import LockOverlay       from '@/components/LockOverlay.vue'
 
 const authStore              = useAuthStore()

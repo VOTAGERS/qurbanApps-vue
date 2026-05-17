@@ -88,7 +88,7 @@ router.beforeEach((to, from, next) => {
 const titleName = import.meta.env.VITE_APP_NAME || 'ILM Qurban'
 router.afterEach((to) => {
   const pageTitle = to.meta?.title as string
-  document.title = pageTitle ? `${pageTitle} | ${titleName}` : appName
+  document.title = pageTitle ? `${pageTitle} | ${titleName}` : titleName
 })
 
 export default router

@@ -1,6 +1,6 @@
 import { ref, onMounted } from 'vue'
 
-export function useLockStatus(slug) {
+export function useLockStatus(slug: string) {
   const isLocked  = ref(false)
   const daysLeft  = ref(3)
   const isLoading = ref(true)
