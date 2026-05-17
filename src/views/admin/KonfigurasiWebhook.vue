@@ -106,6 +106,28 @@
             </div>
             <div class="mb-4">
               <label class="form-label fw-bold">
+                Webhook Secret (Optional / Manual)
+                <span class="text-muted small fw-normal ms-1">(starts with whsec_)</span>
+              </label>
+              <div class="input-group">
+                <input
+                  :type="showWebhookSecret ? 'text' : 'password'"
+                  class="form-control"
+                  v-model="form.webhook_secret"
+                  :placeholder="isConfigured
+                    ? '(leave blank to keep existing key)'
+                    : 'whsec_...'"
+                >
+                <button class="btn btn-outline-secondary" @click="showWebhookSecret = !showWebhookSecret" type="button">
+                  <i :class="showWebhookSecret ? 'ti ti-eye-off' : 'ti ti-eye'"></i>
+                </button>
+              </div>
+              <div class="form-text text-muted">
+                Diperlukan untuk testing lokal (misal: Stripe CLI `whsec_...` atau Ngrok manual).
+              </div>
+            </div>
+            <div class="mb-4">
+              <label class="form-label fw-bold">
                 Webhook URL
                 <span class="badge bg-light-primary text-primary ms-1 small">Auto Registered</span>
               </label>
@@ -178,6 +200,10 @@
                 <div class="text-muted small mb-1">Secret Key</div>
                 <code class="small text-break">{{ config.secret_key }}</code>
               </div>
+              <div class="mb-3" v-if="config.webhook_secret">
+                <div class="text-muted small mb-1">Webhook Secret</div>
+                <code class="small text-break">{{ config.webhook_secret }}</code>
+              </div>
               <div class="mb-3">
                 <div class="text-muted small mb-1">Webhook URL</div>
                 <code class="small text-break">{{ config.webhook_url }}</code>
@@ -213,11 +239,13 @@ const API_URL   = import.meta.env.VITE_API_BASE_URL
 const form = ref({
   public_key: '',
   secret_key: '',
+  webhook_secret: '',
   mode: 'test'
 })
 
 const config     = ref<any>({})
 const showSecret = ref(false)
+const showWebhookSecret = ref(false)
 const isSaving   = ref(false)
 const isTesting  = ref(false)
 const isEditing  = ref(false)
@@ -244,6 +272,7 @@ const fetchConfig = async () => {
       console.log('is_active:', config.value.is_active) 
       form.value.public_key = result.data.public_key || ''
       form.value.secret_key = '' 
+      form.value.webhook_secret = '' 
       form.value.mode       = result.data.mode || 'test'
       isEditing.value       = false
     }
@@ -269,6 +298,9 @@ const saveConfig = async () => {
     }
     if (form.value.secret_key && !form.value.secret_key.includes('*')) {
       payload.secret_key = form.value.secret_key
+    }
+    if (form.value.webhook_secret && !form.value.webhook_secret.includes('*')) {
+      payload.webhook_secret = form.value.webhook_secret
     }
     const res    = await fetch(`${API_URL}/api/payment-config`, {
       method: 'POST',
