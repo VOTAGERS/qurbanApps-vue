@@ -11,6 +11,7 @@
       @retry="fetchCategories"
     />
     <!-- <WhySection /> -->
+     <VideoSection/>
     <CtaSection />
     <AppFooter />
     <a href="#" class="gototop" @click.prevent="scrollTop">↑</a>
@@ -31,6 +32,7 @@ import WhySection        from '@/components/layoutlanding/WhySection.vue'
 import CtaSection        from '@/components/layoutlanding/CtaSection.vue'
 import AppFooter         from '@/components/layoutlanding/AppFooter.vue'
 import LockOverlay       from '@/components/LockOverlay.vue'
+import VideoSection from '@/components/layoutlanding/VideoSection.vue'
 
 const { isScrolled, activeSection, scrollTop } = useScroll()
 const { observeNew }                           = useReveal()
