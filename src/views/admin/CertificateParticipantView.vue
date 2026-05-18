@@ -28,7 +28,7 @@
               <button class="btn btn-secondary" @click="$router.back()">
                 <i class="ti ti-arrow-left me-1"></i> Back
               </button>
-              <button
+              <!-- <button
                 v-if="participantsWithCert.length > 0"
                 class="btn btn-success"
                 :disabled="isBlasting || selectedIds.length === 0"
@@ -38,7 +38,7 @@
                 <i v-else class="ti ti-brand-whatsapp me-1"></i>
                 Blast WA
                 <span v-if="selectedIds.length > 0" class="badge bg-white text-success ms-1">{{ selectedIds.length }}</span>
-              </button>
+              </button> -->
 
               <button
                 class="btn btn-primary"
@@ -57,7 +57,7 @@
               <i class="ti ti-info-circle me-2 fs-4"></i>
               <div>
                 Klik <strong>Generate All Certificates</strong> untuk membuat sertifikat PDF massal.
-                Setelah tersedia, pilih peserta lalu klik <strong>Blast WA</strong>.
+                Setelah tersedia, pilih peserta lalu klik <strong>kirim</strong>.
               </div>
             </div>
 
@@ -113,11 +113,11 @@
                         <button
                           v-if="participant.certificate && participant.phone_number"
                           class="btn btn-sm btn-light-success me-1"
-                          title="Send WhatsApp"
+                          title="Send"
                           :disabled="isBlasting"
                           @click="blastSingleWA(participant)"
                         >
-                          <i class="ti ti-brand-whatsapp"></i>
+                          <i class="ti ti-message"></i>
                         </button>
                           <!-- Corrected Code -->
                           <a

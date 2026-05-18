@@ -8,10 +8,10 @@
         <div class="footer-brand">
           <div class="footer-logo">
             <img src="@/assets/image/llmqurban.png" alt="ILM Qurban" />
-            <span class="sub-brand">by Shameem Sultanah</span>
+            <!-- <span class="sub-brand">by Shameem Sultanah</span> -->
           </div>
           <p class="footer-tagline">
-            Your trusted, professional and Islamically-compliant qurban worship partner.
+            Your trusted, professional and Islamically-compliant qurban partner.
           </p>
           <div class="footer-socials">
             <a v-for="s in socials" 
